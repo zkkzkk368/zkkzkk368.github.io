@@ -1,0 +1,20 @@
+<html>
+<head>
+  <title>chap4安装CentOS 5.x与多重引导小技巧</title>
+  <basefont face="微软雅黑" size="2">
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta name="exporter-version" content="Evernote Windows/274507; Windows/6.3.9600;">
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="283">
+<h1>chap4安装CentOS 5.x与多重引导小技巧</h1>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;"><ul><li>linux文件系统类型</li><li style="list-style: none; display: inline"><ul><li>ext[2-4]：是linux适用的文件系统类型，ext3新增了日志的记录，对于系统的恢复比较快速</li><li>physical volume（LVM）：一种用来弹性调整文件系统大小的机制，可以让文件系统大小变化而不改变原本的数据内容</li><li>software RAID：利用linux操作系统特性，通过软件仿真出磁盘阵列的功能，由于是仿真的，并不会真的分配柱面</li><li>swap：内存交换空间，相当于windows的虚拟内存功能，无需挂载，一般设置为物理内存的1.5~2倍，物理内存4G以上也可不必设置swap</li><li>vfat：同时被windows和linux所支持，可以作为两系统间数据交换的空间</li></ul></li><li>grub引导装载程序可以设置密码，但是这不利于远程重启机器</li><li>一般默认网卡IP的获取方式为”自动获取IP“，也就是所谓的”DHCP“网络协议，不过该协议需要有DHCP服务器的辅助才行，如果所在环境中没有该服务器存在的话，开机过程中需要等待一段时间</li><li>内存压力测试软件：mentest86</li><li style="list-style: none; display: inline"><ul><li>不断对内存进行读写，测试内存稳定性</li><li>可以测试上一两天</li></ul></li><li>SELinux（Security Enhanced Linux）</li><li style="list-style: none; display: inline"><ul><li>由美国国家安全局（Nation Security Agency, NSA）开发</li><li>它不是防火墙，而是一个Linux系统访问控制（Access Control）的细化设置，重点在于控制程序对系统文件的访问权限限制</li><li>一般都要开启，并且设置为“强制”</li></ul></li><li>Kdump</li><li style="list-style: none; display: inline"><ul><li>当内核出现错误时，将当时的内存内的信息写入文件中，供内核开发者研究宕机的原因</li><li>一般用户并不需要</li></ul></li><li>上海时间服务器地址：tock.stdtime.gov</li><li>操作linxu系统时，除非必要，否则不要轻易使用root权限，而应创建一个一般身份用户</li><li>后期维护注意事项</li><li style="list-style: none; display: inline"><ul><li>windows环境中最好将linxu的根目录与swap取消挂载，防止不慎将其格式化</li><li>linux不可以随便删除，因为grub会去读取linux根目录下的/boot的目录内容，如果linux被删除，开机菜单也会不见</li></ul></li><li>如果计算机上有两个硬盘，只有第一个可开机的设备内的MBR会被系统主动读取</li><li><br></li></ul></div>
+</div></a></body></html>\00
