@@ -112,7 +112,7 @@
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-04-18
+            發表於 2015-04-20
           
         </span>
 
@@ -133,32 +133,45 @@
         
 
         
-          <h2 id="基本用法">基本用法</h2><p>i其实主要参考<a href="http://hexo.io/" target="_blank" rel="external">Hexo官方文档</a>即可<br>这里作简单归纳<br>安装就不说了，看文档    </p>
+          <p>Hexo是一个静态博客框架<br>可以方便地创建自己的博客<br>但是hexo的markdown解释引擎并不是很好用……有时候会出现一些奇怪的效果……  </p>
+<h2 id="基本用法">基本用法</h2><p>i其实主要参考<a href="http://hexo.io/" target="_blank" rel="external">Hexo官方文档</a>即可<br>这里作简单归纳<br>安装就不说了，看文档    </p>
 <ul>
 <li>初始化：<br>进入要作为blog的文件夹<br><code>hexo init</code><br><code>npm install</code>     </li>
-<li>文章（.md）：<br>放入文件夹<code>sources/_posts</code>中<br>文章开头可以写入信息，最基本的有<code>title</code>, <code>date</code> 和 <code>tags</code><br>内容要和冒号用空格隔开如：<code>title: aaaa</code><br>每个信息占用一行，<code>tags</code>可以有多个标签，如<code>tags: - aaa - bbbb</code>注意横线和标签内容也要用空格隔开，另外每个标签可以独占一行<br>写完信息后，在信息的后面应该加入三个横线<code>---</code>表示信息结束<br>总体大致如下：<br>  `title: TITLE<br>  date: 2015/03/04<br>  tags: <ul>
-<li>aaaaa</li>
-<li>bbbbb`</li>
-</ul>
+<li><p>文章（.md）：<br>放入文件夹<code>sources/_posts</code>中<br>文章开头可以写入信息，最基本的有<code>title</code>, <code>date</code> 和 <code>tags</code><br>内容要和冒号用空格隔开如：<code>title: aaaa</code><br>每个信息占用一行，<code>tags</code>可以有多个标签，如<code>tags: - aaa - bbbb</code>注意横线和标签内容也要用空格隔开，另外每个标签可以独占一行<br>写完信息后，在信息的后面应该加入三个横线<code>---</code>表示信息结束<br>总体大致如下：   </p>
+<pre><code><span class="string">title:</span> TITLE
+<span class="string">date:</span> <span class="number">2015</span><span class="regexp">/03/</span><span class="number">04</span>
+<span class="string">tags:</span> 
+- aaaaa
+- bbbbb
+</code></pre></li>
+<li><p>生成静态页面<br><code>hexo g</code>    </p>
 </li>
-<li>生成静态页面<br><code>hexo g</code>    </li>
 <li>本地查看<br><code>hexo s</code><br>输入网址<code>0.0.0.0:4000</code>查看     </li>
-<li>部署到github<ul>
+<li><p>部署到github</p>
+<ul>
 <li>在github上新建仓库<br>  仓库名必须是<code>USERNAME.github.io</code>USERNAME为github的用户名    </li>
 <li>安装git-deploy插件：<code>npm install hexo-deployer-git --save</code>     </li>
-<li>配置<code>_config.yml</code>文件：<br>  `deployer:    <ul>
-<li>type: git</li>
-<li>repo:<a href="http://github.com/USERNAME/USERNAME.github.io`" target="_blank" rel="external">http://github.com/USERNAME/USERNAME.github.io`</a><br>USERNAME为github用户名     </li>
-</ul>
+<li><p>配置<code>_config.yml</code>文件：</p>
+<pre><code><span class="string">deployer:</span>    
+- <span class="string">type:</span> git
+- <span class="string">repo:</span> <span class="string">http:</span><span class="comment">//github.com/USERNAME/USERNAME.github.io`    </span>
+#USERNAME为github用户名     
+</code></pre></li>
+<li><p>执行部署命令<br>  <code>hexo d</code><br>  随后根据提示输入github帐号密码即可     </p>
 </li>
-<li>执行部署命令<br>  <code>hexo d</code><br>  随后根据提示输入github帐号密码即可     </li>
 </ul>
 </li>
 <li>更换主题<br>以next主题为例<br>clone<code>https://github.com/iissnan/hexo-theme-next</code>到<code>themes/next</code>目录下<br>修改<code>_config.yml</code>文件，将<code>themes</code>修改为<code>next</code>即可   </li>
 <li>相关配置信息<br>在文件<code>_config.yml</code>中，包括博客名，作者名，主题，部署方式等    </li>
 <li>其他信息<br>参照hexo官方文档和相关主题的官方文档  </li>
 </ul>
-<h2 id="HTML、CSS、JS等资源的添加">HTML、CSS、JS等资源的添加</h2><p>在<code>source</code>目录下新建目录，将资源放入其中即可调用<br>hexo将自动在网站根目录下生成相应的目录和文件<br>HTML文件需要在文件内容头部加入<code>layout: FALSE</code>表示不对该文件使用布局<br>但是此时HTML不会作为文章直接显示出来，需要自己在<code>_post</code>目录下写md文章来跳转<br>比如我要把HTML格式的python的笔记挂上去<br>我在<code>source</code>目录下新建了目录<code>Note_for_Python</code>，把笔记内容放到该目录下<br>在<code>_post</code>写一个md文章作为笔记内容的目录，比如要跳转到目录下的<code>1.html</code>文件——<br><code>[1](/Note_for_Python/1.html)</code></p>
+<h2 id="HTML、CSS、JS等资源的添加">HTML、CSS、JS等资源的添加</h2><ul>
+<li>在<code>source</code>目录下新建目录，将资源放入其中即可调用<br>hexo将自动在网站根目录下生成相应的目录和文件  </li>
+<li>HTML文件需要在文件内容头部加入<code>layout: FALSE</code>表示不对该文件使用布局<br>但是此时HTML不会作为文章直接显示出来，需要自己在<code>_post</code>目录下写md文章来跳转  <blockquote>
+<p>比如我要把HTML格式的python的笔记挂上去<br>我在<code>source</code>目录下新建了目录<code>Note_for_Python</code>，把笔记内容放到该目录下<br>在<code>_post</code>写一个md文章作为笔记内容的目录，比如要跳转到目录下的<code>1.html</code>文件——<br><code>[1](/Note_for_Python/1.html)</code></p>
+</blockquote>
+</li>
+</ul>
 
         
       </div>
@@ -176,7 +189,7 @@
 
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2015/04/14/Note_for_Python/">《python基础教程》笔记</a>
+                <a href="/2015/04/14/Note_For_Linux/">《鸟哥的Linux私房菜》笔记</a>
               
             </div>
           </div>

@@ -124,6 +124,9 @@
 
         
           <p>在学校的时候把windows还原了一遍，导致linux进不去了，orz<br>回来之后重装linux，结果不小心操作不当，把硬盘格式化了！！<br>后来发现硬盘又出了点问题，哎烦，查了好多东西，试了好多方法，而且恰巧在看鸟哥的第三章（硬盘分区方面的内容），折腾了三天半终于把这娃整好，真是感动<br>查的东西好杂，让我写个总结冷静冷静  </p>
+<ul>
+<li>【补充】：重装linux后无法进入windows的解决方法<br>ubuntu和debian直接使用<code>update-grub</code>命令扫一遍即可<br>通用的方法是<code>grub-mkconfig -o /boot/grub/grub.cfg</code>  </li>
+</ul>
 <h2 id="还原windows导致linux无法进入的原因">还原windows导致linux无法进入的原因</h2><p>windows是相当霸道的，在安装时，<strong>win会主动覆盖掉MBR，也就直接把linux的引导加载程序给覆盖掉</strong>，linux就自然无法进入啦</p>
 <h2 id="那么，我们把linux引导加载程序grub修复了就好啦？">那么，我们把linux引导加载程序grub修复了就好啦？</h2><p>咳咳……蛋蛋让我去百度查查怎么修复grub，不过太弱了，看了三种修复的教程都没能看懂，最后似乎还把linux整坏了！！！只好重装linux，可又忘记重新分区，选了个“<strong>清除所有程序和数据</strong>”…………呵呵，linux比windows还霸道，清除的不只是linux的系统分区，而是全硬盘啊！！把我全硬盘都格式化成ext4，真是吓哭我了……      </p>
 <h2 id="找回丢失的数据">找回丢失的数据</h2><ol>
