@@ -469,6 +469,14 @@
   "<span class="attribute">method</span>":<span class="value"><span class="string">"aes-256-cfb"</span>
 </span>}
 </code></pre><h4 id="启动">启动</h4><p>前台启动：<code>sslocal -c /etc/shadowsocks/config.json</code><br>后台启动：在<code>/etc/shadowsocks/</code>目录下执行<code>nohup sslocal &gt; log &amp;</code>      </p>
+<h5 id="添加服务到systemd">添加服务到systemd</h5><p>安装完shadowsocks后会发现，systemd中并没有sslocal、ssserver、shadowsocks之类的服务，那么需要我们手动添加进去<br>= =不过我不会玩systemd哦，只好疯狂了翻资料，然后自己写了个low low的service凑活着用吧，等有空恶补一下systemd的知识再来进一步完善<br>首先，systemd的服务配置文件是在<code>/etc/systemd/system/</code>目录下<br>文件名即为<code>服务名.service</code>，比如我新建的一个<code>sslocal.service</code><br>文件内容我是这么写哒——  </p>
+<pre><code><span class="title">[Service]</span>
+<span class="setting">Type=<span class="value">simple</span></span>
+<span class="setting">ExecStart=<span class="value">/usr/bin/sslocal -c /etc/shadowsocks/config.json</span></span>
+
+<span class="title">[Intsall]</span>
+<span class="setting">WantedBy=<span class="value">multi-user.target  </span></span>
+</code></pre><p>Service字段呢指明了类型为简单，然后执行一条命令<br>只要有这条字段我们就可以<code>systemctl start sslocal</code>啦<br>但是一执行<code>enable</code>他就会报错缺少Install字段<br>额……还不是很理解这个字段干嘛的，看到各种资料给的例子上都写上这么一句，就直接拔了下来，也能成功地执行<code>systemctl enable sslocal</code>来使这个服务开机自启啦<br>这个配置写的lowlow的，而且不知道会不会有什么错误的地方……<br>等我好好学一下systemd的知识再来完善吧……=。=  </p>
 <h4 id="firefox-&gt;foxyproxy插件">firefox-&gt;foxyproxy插件</h4><h5 id="添加代理服务器">添加代理服务器</h5><p>服务器ip设置为127.0.0.1，端口1080<br>选择<code>SOCKS proxy</code>-&gt;<code>SOCKS v5</code>     </p>
 <h5 id="添加gwflist规则">添加gwflist规则</h5><p>让插件判断哪些网址需要代理，哪些不需要<br><code>Pattern Subscriptions</code>选项卡，添加规则订阅<br>URL: <code>https://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt</code><br>添加刚才加入的代理<code>Add Proxy</code><br><code>Refesh Rate: 600</code><br><code>Format: AutoProxy</code><br><code>ObFuscation: Base64</code><br><strong>这个是谷歌的一个规则，所以添加时必须打开代理服务器，否则将获取不到</strong><br>把<code>Select Mode</code>修改为<code>Use proxies based on their pre-defined pattens and priorities</code>即可   </p>
 <h3 id="apache+php+mysql安装与配置">apache+php+mysql安装与配置</h3><p>参考资料：<a href="http://my.oschina.net/matrixchan/blog/367591" target="_blank" rel="external">在fedora21 上的php+mysql+apache环境搭建</a></p>
