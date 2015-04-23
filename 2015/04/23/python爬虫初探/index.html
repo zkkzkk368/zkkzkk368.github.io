@@ -133,10 +133,9 @@
 </li>
 </ul>
 <h2 id="requests模块">requests模块</h2><p>参考资料：<a href="http://cn.python-requests.org/zh_CN/latest/" target="_blank" rel="external">requests官方文档</a><br>嗯……据说requests是基于urllib3的第三方库<br>简单的使用如下：</p>
-<ul>
-<li>requests.get获取页面<br>返回一个response对象<br>第一个参数为页面的url，可以加入关键词参数cookies  </li>
-<li>requests.post发送数据<br>也是返回一个response对象<br>第一个参数为页面的额url，可以加入关键词参数headers和data<br>headers即为Requests Headers的内容，参数形式是一个字典<br>data即为form data的内容，参数形式也是一个字典  </li>
-<li>response对象的属性<ul>
+<h3 id="requests-get获取页面">requests.get获取页面</h3><p>返回一个response对象<br>第一个参数为页面的url，可以加入关键词参数cookies  </p>
+<h3 id="requests-post发送数据">requests.post发送数据</h3><p>也是返回一个response对象<br>第一个参数为页面的额url，可以加入关键词参数headers和data<br>headers即为Requests Headers的内容，参数形式是一个字典<br>data即为form data的内容，参数形式也是一个字典  </p>
+<h3 id="response对象的属性">response对象的属性</h3><ul>
 <li>encoding：页面编码<br>一般requests会自动推测出编码  </li>
 <li>text：以文本的方式存放的页面内容</li>
 <li>content：以字节形式存放的页面内容</li>
@@ -144,13 +143,9 @@
 <li>headers：页面的响应头即Response Headers</li>
 <li>cookies：当前的cookies</li>
 </ul>
-</li>
-</ul>
 <h2 id="BeautifulSoup（bs4模块）">BeautifulSoup（bs4模块）</h2><p>参考资料：<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" target="_blank" rel="external">beautifulsoup官方文档</a>  </p>
 <ul>
-<li>BeautifulSoup函数：将文档转换为一个BeautifulSoup对象并返回<br>参数为一个字符串<br>文档内容会自动转换为unicode编码  </li>
-<li>BeautifulSoup对象<br>一般情况下可以直接当作它的子对象tag对象来使用<br>其中包含以下子对象  <ul>
-<li>tag对象<br>对象的名称与html和xml的标签名都相同  <ul>
+<li>BeautifulSoup函数：将文档转换为一个BeautifulSoup对象并返回<br>参数为一个字符串<br>文档内容会自动转换为unicode编码  <h3 id="BeautifulSoup对象">BeautifulSoup对象</h3>一般情况下可以直接当作它的子对象tag对象来使用<br>其中包含以下子对象  <h4 id="tag对象">tag对象</h4>对象的名称与html和xml的标签名都相同  </li>
 <li>name：即标签的名字</li>
 <li>attributes：即标签内包含的属性<br>比如class、id、name、type等<br>可以通过has_attr()方法判断对象内（也就是标签内）是否包含这些属性  </li>
 <li>contents：即始末标签间的显示内容  </li>
@@ -168,12 +163,7 @@
 <li>next_sibling：获取下一个同级节点</li>
 <li>next_siblings：迭代获取之后的所有节点</li>
 <li>previous_sibling：获取上一个同级节点</li>
-<li>previous_sibling：迭代获取之前的所有节点</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>string对象<br>即尖括号<code>&lt;&gt;</code>之外的内容</li>
+<li>previous_sibling：迭代获取之前的所有节点<h3 id="string对象">string对象</h3>即尖括号<code>&lt;&gt;</code>之外的内容<h3 id="其他">其他</h3></li>
 </ul>
 </li>
 <li>next_element和previous_element：获取下（上）一个对象，包括tag和string</li>
@@ -492,7 +482,7 @@ with <span class="function"><span class="title">open</span><span class="params">
         <div class="post-toc">
           
           
-            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#requests模块"><span class="nav-number">1.</span> <span class="nav-text">requests模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BeautifulSoup（bs4模块）"><span class="nav-number">2.</span> <span class="nav-text">BeautifulSoup（bs4模块）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从网页上爬下所需信息"><span class="nav-number">3.</span> <span class="nav-text">从网页上爬下所需信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟登录"><span class="nav-number">4.</span> <span class="nav-text">模拟登录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#收集信息"><span class="nav-number">4.1.</span> <span class="nav-text">收集信息</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="##"><span class="nav-number">4.1.0.0.1.</span> <span class="nav-text">#</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="##-1"><span class="nav-number">4.1.0.0.2.</span> <span class="nav-text">#</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模拟"><span class="nav-number">4.2.</span> <span class="nav-text">模拟</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#利用requests-post函数即可模仿post"><span class="nav-number">4.2.1.</span> <span class="nav-text">利用requests.post函数即可模仿post</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#练（wan）习（wan）：模拟登录10-71-45-100并爬下C大程的课件"><span class="nav-number">5.</span> <span class="nav-text">练（wan）习（wan）：模拟登录10.71.45.100并爬下C大程的课件</span></a></li></ol></div>
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#requests模块"><span class="nav-number">1.</span> <span class="nav-text">requests模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#requests-get获取页面"><span class="nav-number">1.1.</span> <span class="nav-text">requests.get获取页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#requests-post发送数据"><span class="nav-number">1.2.</span> <span class="nav-text">requests.post发送数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#response对象的属性"><span class="nav-number">1.3.</span> <span class="nav-text">response对象的属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BeautifulSoup（bs4模块）"><span class="nav-number">2.</span> <span class="nav-text">BeautifulSoup（bs4模块）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BeautifulSoup对象"><span class="nav-number">2.1.</span> <span class="nav-text">BeautifulSoup对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tag对象"><span class="nav-number">2.1.1.</span> <span class="nav-text">tag对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#string对象"><span class="nav-number">2.2.</span> <span class="nav-text">string对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">2.3.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从网页上爬下所需信息"><span class="nav-number">3.</span> <span class="nav-text">从网页上爬下所需信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟登录"><span class="nav-number">4.</span> <span class="nav-text">模拟登录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#收集信息"><span class="nav-number">4.1.</span> <span class="nav-text">收集信息</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="##"><span class="nav-number">4.1.0.0.1.</span> <span class="nav-text">#</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="##-1"><span class="nav-number">4.1.0.0.2.</span> <span class="nav-text">#</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模拟"><span class="nav-number">4.2.</span> <span class="nav-text">模拟</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#利用requests-post函数即可模仿post"><span class="nav-number">4.2.1.</span> <span class="nav-text">利用requests.post函数即可模仿post</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#练（wan）习（wan）：模拟登录10-71-45-100并爬下C大程的课件"><span class="nav-number">5.</span> <span class="nav-text">练（wan）习（wan）：模拟登录10.71.45.100并爬下C大程的课件</span></a></li></ol></div>
           
         </div>
         <div class="post-toc-indicator-bottom post-toc-indicator"></div>
