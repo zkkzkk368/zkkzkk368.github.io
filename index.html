@@ -106,6 +106,329 @@
           
           
             
+              <a class="post-title-link" href="/2015/04/23/python爬虫初探/">
+                python爬虫初探
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          
+            發表於 2015-04-23
+          
+        </span>
+
+        
+          
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    
+      <div class="post-body">
+
+        
+        
+
+        
+          
+            <ul>
+<li>主要涉及的模块和工具  <ul>
+<li>正则表达式（re模块）<br>主要用来匹配筛选所需要的字符串<br>基本的使用方法见python笔记：<a href="/Note_for_Python/chap10自带电池/4re模块、正则表达式.html">re模块、正则表达式</a>    </li>
+<li>requests模块<br>主要用来对网页发送请求，并处理响应的数据<br>参考资料：<a href="http://cn.python-requests.org/zh_CN/latest/" target="_blank" rel="external">requests官方文档</a>  </li>
+<li>BeautifulSoup（bs4模块）<br>用来简化数据筛选的过程<br>参考资料：<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" target="_blank" rel="external">beautifulsoup官方文档</a></li>
+<li>ie、firefox、chrome的开发者工具<br>用来分析网页上的数据，包括页面内容、headers、form data等  </li>
+</ul>
+</li>
+</ul>
+<h2 id="requests模块">requests模块</h2><p>参考资料：<a href="http://cn.python-requests.org/zh_CN/latest/" target="_blank" rel="external">requests官方文档</a><br>嗯……据说requests是基于urllib3的第三方库<br>简单的使用如下：</p>
+<ul>
+<li>requests.get获取页面<br>返回一个response对象<br>第一个参数为页面的url，可以加入关键词参数cookies  </li>
+<li>requests.post发送数据<br>也是返回一个response对象<br>第一个参数为页面的额url，可以加入关键词参数headers和data<br>headers即为Requests Headers的内容，参数形式是一个字典<br>data即为form data的内容，参数形式也是一个字典  </li>
+<li>response对象的属性<ul>
+<li>encoding：页面编码<br>一般requests会自动推测出编码  </li>
+<li>text：以文本的方式存放的页面内容</li>
+<li>content：以字节形式存放的页面内容</li>
+<li>status_code：页面的状态码<br>可以用来判断是否正常打开页面</li>
+<li>headers：页面的响应头即Response Headers</li>
+<li>cookies：当前的cookies</li>
+</ul>
+</li>
+</ul>
+<h2 id="BeautifulSoup（bs4模块）">BeautifulSoup（bs4模块）</h2><p>参考资料：<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" target="_blank" rel="external">beautifulsoup官方文档</a>  </p>
+<ul>
+<li>BeautifulSoup函数：将文档转换为一个BeautifulSoup对象并返回<br>参数为一个字符串<br>文档内容会自动转换为unicode编码  </li>
+<li>BeautifulSoup对象<br>一般情况下可以直接当作它的子对象tag对象来使用<br>其中包含以下子对象  <ul>
+<li>tag对象<br>对象的名称与html和xml的标签名都相同  <ul>
+<li>name：即标签的名字</li>
+<li>attributes：即标签内包含的属性<br>比如class、id、name、type等<br>可以通过has_attr()方法判断对象内（也就是标签内）是否包含这些属性  </li>
+<li>contents：即始末标签间的显示内容  </li>
+<li>tag对象内常常还会有tag对象，称为子节点  <ul>
+<li>children：一个生成器，依次生成直接子节点的内容，可用于迭代</li>
+<li>descendants：一个生成器，一次生成最里层的子孙节点的内容，可用于迭代<br>比较：children和descendants<br>假设有一个标签<code>&lt;head&gt;&lt;title&gt;aaa&lt;/title&gt;&lt;/head&gt;</code><br>通过<code>soup.children</code>将会获取<code>&lt;title&gt;aaa&lt;/title&gt;</code>整个直接子节点<br>通过<code>soup.descendants</code>则会获取<code>aaa</code>这样的子孙节点  </li>
+</ul>
+</li>
+<li>与子节点对应的为父节点  <ul>
+<li>parents：与children类似</li>
+<li>parent：得到某个父节点</li>
+</ul>
+</li>
+<li>既然有父有子，那么也会有兄弟节点<ul>
+<li>next_sibling：获取下一个同级节点</li>
+<li>next_siblings：迭代获取之后的所有节点</li>
+<li>previous_sibling：获取上一个同级节点</li>
+<li>previous_sibling：迭代获取之前的所有节点</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>string对象<br>即尖括号<code>&lt;&gt;</code>之外的内容</li>
+</ul>
+</li>
+<li>next_element和previous_element：获取下（上）一个对象，包括tag和string</li>
+<li>next_elements和previous_elements：迭代获取下（上）一个对象</li>
+<li><p>find_all方法<br>  查找标签<br>  直接访问tag对象只能得到第一个匹配结果，如果需要得到所有结果需要借助find_all函数<br>  函数返回一个包含所有该标签的内容的列表  </p>
+<ul>
+<li>单个指定<br>第一个参数为标签名，可以指定关键词参数，筛选属性<br>如：<code>soup.find(&#39;a&#39;, id=&#39;link3&#39;)</code>  </li>
+<li>正则匹配<br>将一个re.compile的对象作为参数代替标签名<br>BeautifulSoup将通过match的方式来查找匹配的标签  </li>
+<li>多个指定<br>将多个标签（字符串）放入列表作为参数传入</li>
+<li>True<br>传入<code>True</code>将表示匹配任何值</li>
+</ul>
+</li>
+<li><p>find方法<br>用法与find_all类似  </p>
+</li>
+<li>prettify方法<br>将文档返回为一个有缩进的字符串，便于print输出<br>无参数  </li>
+<li>UnicodeDammit函数（啧啧……这函数名）<br>自动检测编码，如果能导入<code>chardet</code>或<code>cchardet</code>可以大大提高自动检测的准确率<br>可直接用于任何字符串<br>返回一个具有以下属性的对象<br>unicode_markup：自动解码的结果<br>original_encoding：检测到的编码形式  </li>
+</ul>
+<h2 id="从网页上爬下所需信息">从网页上爬下所需信息</h2><p>这个比较简单，从源码中找到所需要的信息，观察它的规则，用正则表达式表达出来并且借助re模块的函数进行匹配提取即可<br>比如：我要爬下十大的标题——<br>查看源码：</p>
+<pre><code>&lt;<span class="tag">a</span> href=<span class="string">"dispbbs.asp?boardid=736&amp;id=4508354"</span> target=<span class="string">"_blank"</span>&gt;&lt;<span class="attribute">font</span> <span class="attribute">color</span>=<span class="hexcolor">#000066</span>&gt;[CIE创道人生大讲堂]世界那么大，出去创业吧——为你讲述众筹之王的创业之道（抢楼有大礼哦~）&lt;/<span class="attribute">font</span>&gt;&lt;/a&gt;
+&lt;<span class="tag">a</span> href=<span class="string">"dispbbs.asp?boardid=114&amp;id=4508053"</span> target=<span class="string">"_blank"</span>&gt;&lt;<span class="attribute">font</span> <span class="attribute">color</span>=<span class="hexcolor">#000066</span>&gt;真是哔狗了，刚加的妹子被我吓跑了&lt;/<span class="attribute">font</span>&gt;&lt;/a&gt;
+&lt;<span class="tag">a</span> href=<span class="string">"dispbbs.asp?boardid=100&amp;id=4508066"</span> target=<span class="string">"_blank"</span>&gt;&lt;<span class="attribute">font</span> <span class="attribute">color</span>=<span class="hexcolor">#000066</span>&gt;[微创业联盟]创业，就问你约不约！——抢楼有精美礼品相赠哦！&lt;/<span class="attribute">font</span>&gt;&lt;/a&gt;
+......（这里仅列出三条）  
+</code></pre><p>可以找到其中的规律，并且用以下正则表达式表示：</p>
+<pre><code><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"dispbbs\.asp\?boardid=[0-9]+&amp;id=[0-9]+"</span> <span class="attribute">target</span>=<span class="value">"_blank"</span>&gt;</span><span class="tag">&lt;<span class="title">font</span> <span class="attribute">color</span>=<span class="value">#000066</span>&gt;</span>(.+?)<span class="tag">&lt;/<span class="title">font</span>&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+</code></pre><ol>
+<li>要对特殊字符“.”和“?”进行转义</li>
+<li>可以看到“boardid”和“id”接的是一串数字，用<code>[0-9]+</code>进行匹配</li>
+<li>所要提取的部分内容为任意数量的任意字符，而且要防止贪婪匹配，用<code>(.+?)</code>进行匹配</li>
+</ol>
+<p>然后用<code>re.findall</code>函数把匹配项都找出来就可以了<br>接着我们把内容写入文件，比如把包含所有匹配项的<code>titles</code>写到<code>/home/zk/TopTen</code>文件中去  </p>
+<pre><code>import codecs, os
+f = codecs.<span class="function"><span class="title">open</span><span class="params">(<span class="string">'/home/zk/TopTen'</span>, <span class="string">'w'</span>, <span class="string">'utf-8'</span>)</span></span>
+<span class="keyword">for</span> <span class="tag">i</span>, title <span class="keyword">in</span> <span class="function"><span class="title">zip</span><span class="params">( range(<span class="number">1</span>,<span class="number">11</span>)</span></span>, titles ):
+    f.<span class="function"><span class="title">write</span><span class="params">( str(i)</span></span> + title + os<span class="class">.linesep</span> )
+f.<span class="function"><span class="title">close</span><span class="params">()</span></span>
+</code></pre><p>因为写入的内容包含中文，所以我们需要使用codecs模块的open函数打开文件，指定编码为utf-8  </p>
+<h2 id="模拟登录">模拟登录</h2><h3 id="收集信息">收集信息</h3><p>借助chrome的开发者工具，可以捕捉到网页的相关信息<br>登录后，我们只要找到POST了包含用户名信息的页面，就可以找到处理登录的页面<br>cc98是post到<code>sign.asp</code>中去<br>查看这个页面的post信息，主要关注以下的信息  </p>
+<blockquote>
+<p>General</p>
+<blockquote>
+<p>Request URL:<a href="http://www.cc98.org/sign.asp" target="_blank" rel="external">http://www.cc98.org/sign.asp</a></p>
+<h6 id="#">#</h6><p>Request Headers<br>Accept:text/plain, <em>/</em>; q=0.01<br>Accept-Encoding:gzip, deflate<br>Accept-Language:en-US,en;q=0.8<br>Connection:keep-alive<br>Content-Length:60<br>Content-Type:application/x-www-form-urlencoded; charset=UTF-8<br>Cookie:ASPSESSIONIDQSCRDADB=NMLCLJEDIAGPHCHGOKDBHPGN; upNum=0; aspsky=username=zkkzkk&amp;usercookies=3&amp;userid=509527&amp;useranony=&amp;userhidden=2&amp;password=6cc9bed70c3c80e1; BoardList=BoardID=Show; owaenabled=True; autoplay=True<br>Host:www.cc98.org<br>Origin:<a href="http://www.cc98.org" target="_blank" rel="external">http://www.cc98.org</a><br>Referer:<a href="http://www.cc98.org/" target="_blank" rel="external">http://www.cc98.org/</a><br>User-Agent:Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36<br>X-Requested-With:XMLHttpRequest</p>
+<h6 id="#-1">#</h6><p>Form Data<br>a:i<br>u:zkkzkk<br>p:<strong><strong><strong>*</strong></strong></strong><br>userhidden:2</p>
+</blockquote>
+</blockquote>
+<ul>
+<li>Request URL：<br>是这个请求发送的url  </li>
+<li>Request Headers：<br>是我们发送的请求头，其中<br><code>Host</code>不是自己指定和设置的，http请求会自动处理<br><code>Content-Type</code>、<code>User-Agent</code>、<code>Accept-Encoding</code>必须有，值照抄即可  </li>
+<li>Form Data：<br>就是我们提交的表单<br>这里的<code>a</code>和<code>userhidden</code>不知道是什么意思，先照搬<br><code>u</code>显然是用户名<br><code>p</code>则是密码，这里安全起见，我把他用星号代替了，这里其实是一个用hashlib.md5加密了的密码  </li>
+</ul>
+<h3 id="模拟">模拟</h3><h4 id="利用requests-post函数即可模仿post">利用<code>requests.post</code>函数即可模仿post</h4><pre><code><span class="preprocessor">#headers主要照搬Requests Headers的信息，删去Host和Cookie即可</span>
+headers = {
+    <span class="string">'Accept'</span>:<span class="string">'text/plain, */*; q=0.01'</span>,
+    <span class="string">'Accept-Encoding'</span>:<span class="string">'gzip, deflate'</span>,
+    <span class="string">'Accept-Language'</span>:<span class="string">'en-US,en;q=0.8'</span>,
+    <span class="string">'Connection'</span>:<span class="string">'keep-alive'</span>,
+    <span class="string">'Content-Length'</span>:<span class="string">'60'</span>,
+    <span class="string">'Content-Type'</span>:<span class="string">'application/x-www-form-urlencoded; charset=UTF-8'</span>,
+    <span class="string">'Origin'</span>:<span class="string">'http://www.cc98.org'</span>,
+    <span class="string">'Referer'</span>:<span class="string">'http://www.cc98.org/'</span>,
+    <span class="string">'User-Agent'</span>:<span class="string">'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'</span>,
+    <span class="string">'X-Requested-With'</span>:<span class="string">'XMLHttpRequest'</span>
+}
+<span class="preprocessor">#payload为一些表单信息</span>
+payload = {
+    <span class="string">'a'</span> : <span class="string">'i'</span>,
+    <span class="string">'u'</span> : <span class="string">'zkkzkk'</span>,
+    <span class="string">'p'</span> : <span class="string">'***********'</span>, 
+    <span class="string">'userhidden'</span> : <span class="string">'2'</span>
+}
+r = requests.post(<span class="string">'http://www.cc98.org/sign.asp'</span>, data=payload, headers=headers)
+</code></pre><p>函数返回一个包含登陆信息cookies的对象r<br>接下来我们只要用这个cookies去访问cc98上的页面即可  </p>
+<pre><code>rr = requests.<span class="function"><span class="title">get</span><span class="params">(<span class="string">'http://www.cc98.org'</span>, cookies=r.cookies)</span></span>
+</code></pre><h2 id="练（wan）习（wan）：模拟登录10-71-45-100并爬下C大程的课件">练（wan）习（wan）：模拟登录10.71.45.100并爬下C大程的课件</h2><p>先上源码——</p>
+<pre><code><span class="comment"># coding: utf-8</span>
+<span class="keyword">import</span> requests,sys,bs4,re,urllib,os,codecs
+
+<span class="comment">#设置编码为utf8，不然后边对中文进行url编码的时候会出现奇怪的错误</span>
+reload(sys)
+sys.setdefaultencoding(<span class="string">'utf8'</span>)
+
+<span class="comment">#登录URL</span>
+URL = <span class="string">'http://10.71.45.100/cstcx/web/login/check.asp?tn=xjc&amp;Rnd.7055475=.533424'</span>
+
+<span class="comment">#HEADERS</span>
+    <span class="comment">#这里只去掉了Request Headers中的Host和Cookie，其他照搬</span>
+headers = {
+<span class="string">'Accept'</span>:<span class="string">'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'</span>,
+<span class="string">'Accept-Encoding'</span>:<span class="string">'gzip, deflate'</span>,
+<span class="string">'Accept-Language'</span>:<span class="string">'en-US,en;q=0.8'</span>,
+<span class="string">'Cache-Control'</span>:<span class="string">'max-age=0'</span>,
+<span class="string">'Connection'</span>:<span class="string">'keep-alive'</span>,
+<span class="string">'Content-Length'</span>:<span class="string">'32'</span>,
+<span class="string">'Content-Type'</span>:<span class="string">'application/x-www-form-urlencoded'</span>,
+<span class="string">'Origin'</span>:<span class="string">'http://10.71.45.100'</span>,
+<span class="string">'Referer'</span>:<span class="string">'http://10.71.45.100/cstcx/web/index.asp?tid=27&amp;tt=xjc&amp;tn=%D0%EC%BE%B5%B4%BA&amp;Rnd.5751838=.1000522'</span>,
+<span class="string">'User-Agent'</span>:<span class="string">'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'</span>
+}
+
+<span class="comment">#FORM DATA</span>
+payload = {
+<span class="string">'txtUser'</span>:<span class="string">'3140100805'</span>,
+<span class="string">'txtPwd'</span>:<span class="string">'123456'</span>
+}
+
+<span class="comment">#模拟登录</span>
+check = requests.post(URL, data=payload, headers=headers)
+
+<span class="comment">#“参考资料”URL</span>
+rsrcURL = <span class="string">'http://10.71.45.100/cstcx/web/courceinfo/resource.asp?coid=18&amp;flag=0&amp;coname=C%D7%A8%CC%E215&amp;clsid=25&amp;clsname=C%D7%A8%CC%E215&amp;techid=27&amp;loc=%BF%CE%B3%CC%D0%C5%CF%A2%3E%3E%3E%B2%CE%BF%BC%D7%CA%C1%CF'</span>
+
+<span class="comment">#“讲稿”URL</span>
+docuURL = <span class="string">'http://10.71.45.100/cstcx/web/courceinfo/jianggao.asp?coid=18&amp;loc=%BF%CE%B3%CC%D0%C5%CF%A2%3E%3E%3E%BD%B2%B8%E5'</span>
+
+<span class="comment">#“参考资料”本地存放目录</span>
+rsrcDIR = <span class="string">'/home/zk/C大程资料/Resources/'</span>
+
+<span class="comment">#“讲稿”本地存放目录</span>
+docuDIR = <span class="string">'/home/zk/C大程资料/Documents/'</span>
+
+<span class="function"><span class="keyword">def</span> <span class="title">GetHref</span><span class="params">(URL)</span>:</span>
+    <span class="string">'''
+    利用模拟登录获得的cookies访问“参考资料”或“讲稿”的页面
+    获取所需资源的名称和url并返回（字典）
+    '''</span>
+    resources = requests.get(URL, cookies=check.cookies)
+    resources.encoding = <span class="string">'gb2312'</span>   <span class="comment">#requests识别出来的是iso，需要手动修改</span>
+    rsrc_soup = bs4.BeautifulSoup(resources.text)    <span class="comment">#用BeautifulSoup处理页面内容</span>
+    rsrc_a = rsrc_soup.find_all(<span class="string">'a'</span>)    <span class="comment">#找出页面内容中的a标签</span>
+    rsrc = {}    <span class="comment">#初始化一个字典，用于储存name-href键值对</span>
+    <span class="keyword">for</span> a <span class="keyword">in</span> rsrc_a:    <span class="comment">#逐个处理每个a标签</span>
+        href = re.findall(<span class="string">'href="(.+?)"'</span>, str(a))[<span class="number">0</span>]    <span class="comment">#用正则表达式筛选出文件的url</span>
+        href = href.replace(<span class="string">'../../'</span>, <span class="string">'http://10.71.45.100/cstcx/'</span>)    <span class="comment">#由于页面上写的是相对路径，我们需要将其恢复为绝对路径，以便后边的正常访问</span>
+        name = href.split(<span class="string">'/'</span>)[-<span class="number">1</span>]    <span class="comment">#截取文件名</span>
+        rsrc[name] = href    <span class="comment">#存入字典</span>
+    <span class="keyword">return</span> rsrc
+
+<span class="function"><span class="keyword">def</span> <span class="title">Download</span><span class="params">(rsrc, DIR)</span>:</span>
+    <span class="string">'''
+    依据本地文件名判断文件是否已经下载过
+    如果是新文件则下载到本地、打印下载信息
+    注释掉的代码为原先采用文件记录的形式判断是否重复
+    '''</span>
+    <span class="comment">#lst = open(DIR + 'list','r')</span>
+    <span class="comment">#lst_name = lst.readlines()</span>
+    <span class="comment">#lst.close()</span>
+    <span class="comment">#lst = codecs.open(DIR + 'list', 'a','utf8')</span>
+    lst_name = os.listdir(DIR)    <span class="comment">#获取本地目录的文件名</span>
+    <span class="keyword">for</span> name,url <span class="keyword">in</span> rsrc.items():    <span class="comment">#逐个处理所获取的name-href键值对</span>
+        <span class="keyword">if</span> name <span class="keyword">not</span> <span class="keyword">in</span> lst_name:    <span class="comment">#如果这个文件不在本地？</span>
+            <span class="comment">#lst.write(name + os.linesep)</span>
+            urllib.urlretrieve(url, DIR + name)    <span class="comment">#下载该文件</span>
+            <span class="keyword">print</span> <span class="string">'New file: '</span> + DIR + name    <span class="comment">#打印信息</span>
+        <span class="comment">#lst.close()</span>
+
+<span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span>
+    rsrc = GetHref(rsrcURL)
+    Download(rsrc, rsrcDIR)    
+    docu = GetHref(docuURL)
+    Download(docu, docuDIR)
+    <span class="keyword">print</span> <span class="string">'Finished~'</span>
+
+
+<span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:
+    main()
+</code></pre><p>信息的抓取和登录模拟就跟玩CC98差不多<br>在这个玩这个练习的时候呢，主要遇到的是页面的编码问题  </p>
+<ol>
+<li>requests编码判断错误<br>requests自带自动识别页面编码的功能，所以没过多的关注页面的编码问题<br>但是在保存本地文件的时候发现文件名都是乱码<br>最后发现是它的识别出错了，识别的结果是<code>ISO8859-1</code>，这是一个英文的编码<br>查看页面的源码后可以看到head标签下的meta子标签说明了<code>charset=gb2312</code><br>所以我们需要手动修改requests对象的encoding属性为<code>gb2312</code>  </li>
+<li><p>python编码问题<br>原先的默认编码是啥我倒是不知道<br>但是我把取出来的带中文的页面内容作为url去下载文件时会出错，说是不存在页面<br>后来百度了一下，在程序最前端加入以下代码修改python默认编码即可——  </p>
+<pre><code>import sys
+<span class="function"><span class="title">reload</span><span class="params">(sys)</span></span>
+sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf8'</span>)</span></span>
+</code></pre></li>
+</ol>
+<p>另外一个问题是如何下载文件，有以下三种方法：<br>参考资料：<a href="http://www.pythontab.com/html/2014/pythonjichu_0121/681.html" target="_blank" rel="external">python下载文件的三种方法</a>  </p>
+<ol>
+<li><p>urllib.urlretrieve直接下载<br>第一个参数为url，第二个参数为保存的本地路径<br>如这次的代码  </p>
+<pre><code>urlli.<span class="function"><span class="title">urlretrieve</span><span class="params">(url, DIR + name)</span></span>
+</code></pre></li>
+<li><p>urllib2.urlopen获取文件内容，以二进制的形式写入本地文件</p>
+<pre><code>url = <span class="string">'.....'</span>
+f = urllib2.<span class="function"><span class="title">urlopen</span><span class="params">(url)</span></span>
+data = f.<span class="function"><span class="title">read</span><span class="params">()</span></span>
+with <span class="function"><span class="title">open</span><span class="params">(<span class="string">'demo2.zip'</span>, <span class="string">'wb'</span>)</span></span> as <span class="tag">code</span>:
+    <span class="tag">code</span>.<span class="function"><span class="title">write</span><span class="params">(data)</span></span>
+</code></pre></li>
+<li><p>requests.get获取文件内容，以二进制的形式写入本地文件</p>
+<pre><code>url = <span class="string">'....'</span>
+r = requests.<span class="function"><span class="title">get</span><span class="params">(url)</span></span>
+with <span class="function"><span class="title">open</span><span class="params">(<span class="string">'demo3.zip'</span>, <span class="string">'wb'</span>)</span></span> as <span class="tag">code</span>:
+    <span class="tag">code</span>.<span class="function"><span class="title">write</span><span class="params">(r.content)</span></span>
+</code></pre></li>
+</ol>
+<p>显然urllib模块的方法最简单</p>
+
+          
+        
+      </div>
+    
+
+    
+      <div class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/python/">
+                #python
+              </a>
+            
+              <a href="/tags/爬虫/">
+                #爬虫
+              </a>
+            
+          </div>
+        
+
+        
+
+        
+        
+          <div class="post-eof"></div>
+        
+      </div>
+    
+  </div>
+
+
+  
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
               <a class="post-title-link" href="/2015/04/20/Hexo的使用/">
                 Hexo的使用
               </a>
@@ -1037,7 +1360,7 @@ dialog <span class="tag">p</span> {
       <div class="site-state motion-element">
         <div class="site-state-item site-state-posts">
           <a href="/archives">
-            <span class="site-state-item-count">7</span>
+            <span class="site-state-item-count">8</span>
             <span class="site-state-item-name">文章</span>
           </a>
         </div>
@@ -1051,7 +1374,7 @@ dialog <span class="tag">p</span> {
 
         <div class="site-state-item site-state-tags">
           <a href="/tags">
-            <span class="site-state-item-count">7</span>
+            <span class="site-state-item-count">8</span>
             <span class="site-state-item-name">標籤</span>
           </a>
         </div>
