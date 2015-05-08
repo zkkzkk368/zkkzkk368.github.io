@@ -106,6 +106,569 @@
           
           
             
+              <a class="post-title-link" href="/2015/05/08/C语言图形化编程（WIN）/">
+                C语言图形化编程（WIN）
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          
+            發表於 2015-05-08
+          
+        </span>
+
+        
+          
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    
+      <div class="post-body">
+
+        
+        
+
+        
+          
+            <p>TC图形函数库：<code>#include &lt;graphics.h&gt;</code><br>平台：<code>watcom</code><br>参考资料：  </p>
+<ul>
+<li><a href="/Graphics+Watcom/C语言图形编程.pdf">C语言图形编程</a>  </li>
+<li><a href="/Graphics+Watcom/Linux图形界面编程.pdf">Linux图形界面编程</a>  </li>
+<li><a href="/Graphics+Watcom/（bhh）Dosbox+Watcom.pdf">（bhh）Dosbox+Watcom</a>  </li>
+<li><a href="/Graphics+Watcom/（bhh）watcom.pdf">（bhh）watcom</a>  </li>
+</ul>
+<p>本文多数例子来自上述材料，自己额外添加注释，方便理解  </p>
+<h3 id="初始化">初始化</h3><p><code>void far initgraph(int far *gdriver, int far *gmode, char *path);</code>  </p>
+<h4 id="far类型">far类型</h4><p>这是早期的dos编程中使用的内存分段模式<br>far类型表示代码段采用远跳转<br>near类型表示代码段采用近跳转<br>但现在的win都采用平坦内存模式，不存在近跳转和远跳转，所以可以不用考虑  </p>
+<h4 id="参数">参数</h4><ul>
+<li>gdriver为驱动器<br>可以采用常量或数值  <ul>
+<li>CGA(1)</li>
+<li>EGA(3)</li>
+<li>VGA(9)</li>
+<li>DETECT(0)</li>
+</ul>
+</li>
+<li>gmode为模式<br>不同的驱动器提供的不同的模式<br>可以采用常量或数值  </li>
+<li>path为图形驱动程序所在的目录<br>一般传入空字符串  </li>
+<li><p>一般自动检测即可<br>即<code>gdriver = 0</code><br>此时<code>gmode</code>的参数将被自动检测，但还是得传递一个变量，可以不赋值<br>如：</p>
+<pre><code><span class="keyword">int</span> gdriver = <span class="number">0</span>, gmode;
+initgraph(&amp;gdriver, &amp;gmode, <span class="string">""</span>);  <span class="comment">//此时gmode并没有赋值</span>
+</code></pre></li>
+<li><p>注意：<br>函数的形参都是指针，不要直接传递整型数据  </p>
+</li>
+</ul>
+<h3 id="错误捕捉示例">错误捕捉示例</h3><p>通过<code>graphresult()</code>函数返回图形模式初始化结果<br>与常量<code>grOk</code>进行比较<br><strong>注意：<code>graphresult()</code>必须在<code>initgraph()</code>之后调用</strong>  </p>
+<pre><code><span class="keyword">int</span> gdriver = <span class="number">0</span>, gmode;
+initgraph(&amp;gdriver, &amp;gmode, <span class="string">""</span>);
+errorcode = graphresult();
+<span class="keyword">if</span>(errorcode != grOk)
+{
+    <span class="keyword">printf</span>(<span class="string">"Graphics error: <span class="variable">%s</span>\n"</span>, grapherrormsg(errorcode));
+    <span class="keyword">printf</span>(<span class="string">"Press any key to halt:"</span>);
+    getchar();
+    <span class="keyword">exit</span>(<span class="number">1</span>);
+}
+</code></pre><h3 id="图形的坐标">图形的坐标</h3><h4 id="文本模式">文本模式</h4><p>屏幕一般分为25或40或50行，80或40列<br>以左上角为原点(1,1)，向右为x正方向，向下为y正方向  </p>
+<h4 id="图形模式">图形模式</h4><p>屏幕被划分为像素，每个像素为一个点，像素的个数与视频适配器的类型和适配器的工作方式有关<br>系统默认以左上角为原点(0,0)，向右为x正方向，向下为y正方向<br><strong>注意：文本模式跟图形模式的原点坐标不同</strong>  </p>
+<h5 id="获取坐标最大值">获取坐标最大值</h5><p><code>getmaxx()</code>函数返回当前图形模式下的最大x坐标（整型）<br><code>getmaxy()</code>函数返回当前图形模式下的最大y坐标（整型）  </p>
+<h5 id="坐标轴变换">坐标轴变换</h5><p>选择一个原点，建立以右为x正方向，以上为y正方向的坐标系（符合我们的习惯）<br>假设选定新的坐标原点(origin_x, origin_y)<br>原先坐标系的点(before_x, before_y)与新坐标系上的对应点(later_x, later_y)存在以下关系<br><strong>before_x = origin_x + later_x</strong><br><strong>before_y = origin_y - later_y</strong>  </p>
+<h3 id="文本模式与图形模式的切换">文本模式与图形模式的切换</h3><p>模式间切换不需要重复关闭、初始化图形模式  </p>
+<h4 id="获取当前图形模式">获取当前图形模式</h4><p><code>int far getgraphmode(voide);</code><br><strong>注意：前提是已经成功调用过<code>initgraph()</code>函数</strong>  </p>
+<h4 id="恢复为图形初始化前的模式（也就是文本模式）">恢复为图形初始化前的模式（也就是文本模式）</h4><p><code>void far restorecrtmode(void);</code>  </p>
+<h4 id="切换到文本模式(bhh)">切换到文本模式(bhh)</h4><p><code>closegraph();</code><br><code>text_mode();</code><br><code>textmode(C80);</code>  </p>
+<h4 id="将系统设置为指定的图形模式并清屏">将系统设置为指定的图形模式并清屏</h4><p><code>void far setgraphmode(int mode);</code>  </p>
+<h4 id="示例：">示例：</h4><pre><code><span class="comment">//......省略图形初始化的代码</span>
+gmode = getgraphmode<span class="comment">()</span>;  <span class="comment">//获取当前图形模式</span>
+restorecrtmode<span class="comment">()</span>;  <span class="comment">//恢复为文本模式  </span>
+setgraphmode<span class="comment">(gmode)</span>;  <span class="comment">//设置（恢复）为之前的图形模式并清屏</span>
+</code></pre><h3 id="关闭图形系统">关闭图形系统</h3><p><code>void far closegraph(void);</code><br>所有的有关图形的程序段必须在<code>initgraph()</code>和<code>closegraph()</code>之间（类型于文件操作）  </p>
+<h3 id="背景色和作图色设置">背景色和作图色设置</h3><p>背景色： <code>setbkcolor(int color);</code><br>作图色： <code>setcolor(int color);</code>  </p>
+<h4 id="参数color">参数color</h4><p>可以使用常量或数值表示  </p>
+<ul>
+<li>BLACK(0)  </li>
+<li>BLUE(1)  </li>
+<li>GREEN(2)  </li>
+<li>CYAN(3)  —&gt;青色  </li>
+<li>RED(4)</li>
+<li>MAGENTA(5)—&gt;洋红</li>
+<li>BROWN(6)</li>
+<li>LIGHTGRAY(7)</li>
+<li>DARKGRAY(8)</li>
+<li>LIGHTBLUE(9)</li>
+<li>LIGHTGREEN(10)</li>
+<li>LIGHTCYAN(11)</li>
+<li>LIGHTRED(12)</li>
+<li>LIGHTMAGENTA(13)</li>
+<li>YELLOW(14)</li>
+<li>WHITE(15)</li>
+</ul>
+<p>9-13为1-5对应的浅色  </p>
+<h3 id="基本图形函数">基本图形函数</h3><h4 id="画点函数">画点函数</h4><p><code>void far putpixel(int x, int y, int pixelcolor);</code>  </p>
+<h4 id="坐标位置函数">坐标位置函数</h4><p>获取最大x坐标：<code>int far getmaxx(void);</code><br>获取最大y坐标：<code>int far getmaxy(void);</code><br>获取当前x坐标：<code>int far getx(void);</code><br>获取当前y坐标：<code>int far gety(void);</code><br>移动画笔到绝对坐标：<code>void far moveto(int x, int y);</code><br>移动画笔到相对坐标：<code>void far moverel(int dx, int dy);</code>  </p>
+<h4 id="图形模式下的文本输出函数">图形模式下的文本输出函数</h4><p><strong>只支持英文输出，且文字大小固定，为8*16点阵</strong><br>在当前位置输出文本：<code>void far outtext(char far *textstring);</code><br>在指定位置输出文本：<code>void far outtextxy(int x, int y, char *textstring);</code>  </p>
+<h4 id="画线函数">画线函数</h4><p>指定直线起止点：<code>void far line(int x0, int y0, int x1, int x2);</code><br>以当前位置为直线起点，指定终点（绝对坐标），并移动画笔：<code>void far lineto(int x, int y);</code><br>以当前位置为直线起点，指定终点（相对坐标），并移动画笔：<code>void far linerel(int dx, int dy);</code>  </p>
+<h4 id="画圆函数，画圆弧函数">画圆函数，画圆弧函数</h4><p>画圆：<code>void far circle(int x, int y, int radius);</code><br>画圆弧：<code>void far arc(int x, int y, int stangle, int endangle, int radius);</code><br><code>stangle</code>和<code>endangle</code>参数采用角度制（0-360），以x轴正方向为0度，以逆时针为正方向  </p>
+<h4 id="画椭圆（弧）函数">画椭圆（弧）函数</h4><p><code>void far ellipse(int x, int y, int stangle, int endangle, int xradius, int yradius);</code>  </p>
+<h4 id="画矩形函数">画矩形函数</h4><p><code>void far rectangle(int left, int top, int right, int bottom);</code><br>指定左上角的坐标为(<code>left</code>, <code>top</code>)，右下角的坐标为(<code>right</code>, <code>bottom</code>)  </p>
+<h4 id="线型设定函数">线型设定函数</h4><p><code>void far setlinestyle(int linestype, unsigned upattern, int thick);</code>  </p>
+<ul>
+<li>linestype为直线类型（常量或数值）  <ul>
+<li>实线（缺省）：SOLID_LINE(0)</li>
+<li>点线：DOTTED_LINE(1)</li>
+<li>中心线：CENTER_LINE(2)</li>
+<li>虚线：DASHED_LINE(3)</li>
+<li>用户自定义线型：USERBIT_LINE(4)</li>
+</ul>
+</li>
+<li>upattern为自定义线型（十六进制数）<br>若linestype不为<code>USERBIT_LINE</code>或<code>4</code>，则该参数取0即可  </li>
+<li>thick为直线粗细（单位：px）<br>相关常量：<br>NORM_WIDTH(1)，缺省<br>THICK_WIDTH(3)  </li>
+</ul>
+<h4 id="填充函数">填充函数</h4><h5 id="设置填充模式和颜色">设置填充模式和颜色</h5><p><code>void far setfillsytle(int pattern, int color);</code><br>pattern可以采用常量或数值：  </p>
+<ul>
+<li>用背景色：EMPTY_FILL(0)</li>
+<li>用指定颜色：SOLID_FILL(1)</li>
+<li>用线：LINE_FILL(2)</li>
+<li>用斜线：LTSLASH_FILL(3)</li>
+<li>用粗斜线：SLASH_FILL(4)</li>
+<li>用粗反斜线：BKLASH_FILL(5)</li>
+<li>用反斜线：LTKLASH_FILL(6)</li>
+<li>用网格线：HATCH_FILL(7)</li>
+<li>用斜交线：XHATCH_FILL(8)</li>
+<li>用间隔线：INTERLEAVE_FILL(9)</li>
+<li>用稀疏点：WIDE_DOT_FILL(10)</li>
+<li>用密集点：CLOSE_DOT_FILL(11)</li>
+<li>用用户自定义模式：USER_FILL(12)</li>
+</ul>
+<h5 id="有界区域填充">有界区域填充</h5><p><code>void far floodfill(int x, int y, int bcolor);</code><br>(x, y)为所要填充的有界区域的任意点<br><strong>bcolor不是填充色，而是边框颜色</strong>  </p>
+<h5 id="椭圆填充">椭圆填充</h5><p><code>void far fillellipse(int x, int y, int xradius, int yradius);</code>  </p>
+<h5 id="椭圆扇区填充">椭圆扇区填充</h5><p><code>void far sector(int x, int y, int stangle, int endangle, int xradius, int yradius);</code></p>
+<h5 id="多边形填充">多边形填充</h5><p><code>void far fillpoly(int numpoints, int far *polypoints);</code><br>polypoints参数为各个点的坐标，存放规则如下：（假设一个poly数组）<br>(<code>poly[0]</code>, <code>poly[1]</code>) 为第一个顶点<br>(<code>poly[2]</code>, <code>poly[3]</code>) 为第二个顶点<br>…………以此类推  </p>
+<h3 id="图片输出">图片输出</h3><h4 id="8bit图片输出">8bit图片输出</h4><p><code>void load_8bit_bmp(int x, int y, char *path);</code></p>
+<pre><code><span class="preprocessor">#<span class="keyword">include</span> &lt;graphics.h&gt;</span>
+<span class="preprocessor">#<span class="keyword">include</span> &lt;stdio.h&gt;</span>
+main()
+{
+   <span class="keyword">int</span> x, y;
+   <span class="keyword">int</span> driver=<span class="number">0</span>, mode=VESA_1024x768x8bit;
+   initgraph(&amp;driver, &amp;mode, <span class="string">""</span>);
+
+   load_8bit_bmp(<span class="number">0</span>, <span class="number">0</span>, <span class="string">"pic256.bmp"</span>);
+   load_8bit_bmp(<span class="number">200</span>, <span class="number">200</span>, <span class="string">"hello.bmp"</span>);
+
+   getchar();
+   closegraph();
+}
+</code></pre><h4 id="24bit图片输出（系统没有提供函数）">24bit图片输出（系统没有提供函数）</h4><p>通过读取bmp文件的二进制数据输出图片  </p>
+<pre><code><span class="preprocessor">#<span class="keyword">include</span> &lt;graphics.h&gt;</span>
+<span class="preprocessor">#<span class="keyword">include</span> &lt;stdio.h&gt;</span>
+<span class="preprocessor">#<span class="keyword">include</span> &lt;mem.h&gt;</span>
+<span class="function"><span class="keyword">int</span> <span class="title">load_24bit_bmp</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">char</span> *filename)</span>
+</span>{
+   FILE *fp = NULL;
+   byte *p = NULL; <span class="comment">/* pointer to a line of bmp data */</span>
+   byte *vp = _vp + (y*_width + x) * (_color_bits/<span class="number">8</span>);
+   dword width, height, bmp_data_offset, bytes_per_line, offset;
+   <span class="keyword">int</span> i;
+   p = <span class="built_in">malloc</span>(<span class="number">1024L</span> * <span class="number">3</span>);  <span class="comment">/* memory for holding a line of bmp data */</span>
+   <span class="keyword">if</span>(p == NULL)  <span class="comment">/* cannot allocate enough memory for drawing 1 line */</span>
+      <span class="keyword">goto</span> display_bmp_error;
+   fp = fopen(filename, <span class="string">"rb"</span>);
+   <span class="keyword">if</span>(fp == NULL) <span class="comment">/* cannot open bmp file */</span>
+      <span class="keyword">goto</span> display_bmp_error;
+   fread(p, <span class="number">1</span>, <span class="number">0x36</span>, fp);     <span class="comment">/* read BMP head */</span>
+   <span class="keyword">if</span>(*(word *)p != <span class="number">0x4D42</span>)   <span class="comment">/* check BMP signature */</span>
+      <span class="keyword">goto</span> display_bmp_error; <span class="comment">/* not a BMP file */</span>
+   <span class="keyword">if</span>(*(word *)(p+<span class="number">0x1C</span>) != <span class="number">24</span>)
+      <span class="keyword">goto</span> display_bmp_error; <span class="comment">/* not a 24-bit-color BMP file */</span>
+   width = *(dword *)(p+<span class="number">0x12</span>);
+   height = *(dword *)(p+<span class="number">0x16</span>);
+   bmp_data_offset = *(dword *)(p+<span class="number">0x0A</span>);
+   fseek(fp, bmp_data_offset, SEEK_SET); <span class="comment">/* skip BMP head */</span>
+   bytes_per_line = (width * <span class="number">3</span> + <span class="number">3</span>) / <span class="number">4</span> * <span class="number">4</span>; <span class="comment">/* must be multiple of 4 */</span>
+   <span class="keyword">for</span>(i=height-<span class="number">1</span>; i&gt;=<span class="number">0</span>; i--)          <span class="comment">/* draw from bottom to top */</span>
+   {
+      fread(p, <span class="number">1</span>, bytes_per_line, fp); <span class="comment">/* read a line of bmp data */</span>
+      offset = i * <span class="number">1024</span> * <span class="number">3</span>;
+      <span class="built_in">memcpy</span>(vp+offset, p, width*<span class="number">3</span>);
+   }
+   <span class="built_in">free</span>(p);
+   fclose(fp);
+   <span class="keyword">return</span> <span class="number">1</span>;
+display_bmp_error:
+   <span class="keyword">if</span>(p != NULL)
+      <span class="built_in">free</span>(p);
+   <span class="keyword">if</span>(fp != NULL)
+      fclose(fp);
+   <span class="keyword">return</span> <span class="number">0</span>;
+}
+
+main()
+{
+   <span class="keyword">int</span> driver=<span class="number">0</span>, mode=VESA_1024x768x24bit;
+   initgraph(&amp;driver, &amp;mode, <span class="string">""</span>);
+   load_24bit_bmp(<span class="number">0</span>, <span class="number">0</span>, <span class="string">"pic.bmp"</span>);
+   getchar();
+   closegraph();
+}
+</code></pre><h3 id="中文输出">中文输出</h3><h4 id="点阵字库">点阵字库</h4><p>字库有固定的字体大小<br>读取字库文件中对应文字的16*16点阵共32字节的信息，若为1则在对应的位置上输出一个点，否则跳过<br>示例：（读取16*16的字库，并将其放大四倍打印）  </p>
+<pre><code><span class="preprocessor">#<span class="keyword">include</span> &lt;graphics.h&gt;</span>
+<span class="function"><span class="keyword">void</span> <span class="title">draw_hz</span><span class="params">(byte buf[16][2])</span></span>;
+main()
+{
+   <span class="keyword">int</span> driver=<span class="number">0</span>, mode=VESA_640x480x8bit;
+   FILE *fp;
+   byte hz[<span class="number">3</span>]=<span class="string">"我"</span>, buf[<span class="number">16</span>][<span class="number">2</span>];    <span class="comment">//每个汉字占用两个字节 </span>
+   <span class="keyword">long</span> offset;
+   <span class="keyword">int</span> x, y,  button;
+   initgraph(&amp;driver, &amp;mode, <span class="string">""</span>);
+   fp = fopen(<span class="string">"hzk16"</span>, <span class="string">"rb"</span>); <span class="comment">// 打开16x16点阵字库文件</span>
+   <span class="keyword">if</span>(fp == NULL)
+   {
+      <span class="built_in">puts</span>(<span class="string">"Cannot open file hzk16."</span>);
+      <span class="built_in">exit</span>(<span class="number">0</span>);
+   }
+   <span class="comment">// 计算"我"字点阵的偏移位置</span>
+   offset = ((hz[<span class="number">0</span>] - <span class="number">0xA1</span>) * <span class="number">94</span> + (hz[<span class="number">1</span>] - <span class="number">0xA1</span>)) * <span class="number">0x20</span>;         <span class="comment">//呃？这是啥？莫非是固定的计算公式？ </span>
+   fseek(fp, offset, SEEK_SET); <span class="comment">// 移动文件指针到该偏移位置</span>
+   fread(buf, <span class="number">1</span>, <span class="number">2</span>*<span class="number">16</span>, fp);     <span class="comment">// 读取32字节点阵数据</span>
+   fclose(fp);
+   draw_hz(buf); <span class="comment">// 画"我"字</span>
+   getchar();
+   closegraph();
+}
+
+<span class="function"><span class="keyword">void</span> <span class="title">draw_hz</span><span class="params">(byte buf[16][2])</span>
+</span>{
+   word sixteen_dots;
+   <span class="keyword">int</span> x0=_width/<span class="number">2</span>-<span class="number">32</span>, y0=_height/<span class="number">2</span>-<span class="number">32</span>;  <span class="comment">//打印的起始位置</span>
+   <span class="comment">//居中显示，注意我们把字库的字体放大了四倍，也就是实际上打印出来是64*64的点阵汉字 </span>
+   <span class="keyword">int</span> x, y;    <span class="comment">//当前打印的“点”的坐标 </span>
+   <span class="keyword">int</span> i, j;
+   x = x0;
+   y = y0;
+   <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">16</span>; i++) <span class="comment">// 16行</span>
+   {
+      sixteen_dots = buf[i][<span class="number">0</span>]&lt;&lt;<span class="number">8</span> | buf[i][<span class="number">1</span>]; <span class="comment">// 把两个一字节的word合并为一个两字节的int，共16位，代表1行16个点 </span>
+      <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;<span class="number">16</span>; j++) <span class="comment">// 16列</span>
+      {
+         <span class="keyword">if</span>(sixteen_dots  &amp;  <span class="number">1</span>&lt;&lt;(<span class="number">15</span>-j)) <span class="comment">// 判断第(15-j)位是否为1, 为1表示有笔画</span>
+         <span class="comment">//假设j=14，则1&lt;&lt;(15-j)的结果为0000 0000 0000 0010</span>
+         <span class="comment">//假设sixteen_dots为...........0101 0101 0101 0101</span>
+         <span class="comment">//取位“与”即可判断第2位是否为1 </span>
+         {
+            setfillstyle(SOLID_FILL, RED);
+            bar(x, y, x+<span class="number">3</span>, y+<span class="number">3</span>); <span class="comment">// 画一个4*4的红色方块代替一个前景点</span>
+         }
+         <span class="keyword">else</span> <span class="comment">// 第(15-j)位为0，为0表示没笔画</span>
+         {
+            setfillstyle(SOLID_FILL, BLACK);
+            bar(x, y, x+<span class="number">3</span>, y+<span class="number">3</span>); <span class="comment">// 画一个4*4的黑色方块代替一个背景点</span>
+         }
+         x += <span class="number">4</span>;    <span class="comment">//把“画笔”移动到当前行的下一个4*4的“点”的位置 </span>
+      }
+
+      <span class="comment">//把“画笔”移动到下一行第一个4*4的“点”的位置</span>
+      x = x0;
+      y += <span class="number">4</span>;     
+   }
+}
+</code></pre><p><strong>缺陷：当字体放大时，会出现明显的锯齿形</strong>  </p>
+<h4 id="TTF曲线字库">TTF曲线字库</h4><p>有两种方式——<br>1、将多行字符串转换为多幅图片再输出，速度较快<br>2、逐行输出字符串  </p>
+<p>相关类型——  </p>
+<pre><code><span class="keyword">typedef</span> <span class="keyword">struct</span> _PIC      <span class="comment">// 照片结构类型</span>
+{
+   <span class="keyword">struct</span> picture *img;  <span class="comment">// 照片的图像</span>
+   <span class="keyword">struct</span> picture *mask; <span class="comment">// 照片的掩码</span>
+   <span class="keyword">int</span> width, height;    <span class="comment">// 照片的宽度及高度</span>
+} PIC;
+</code></pre><p>相关函数——  </p>
+<ul>
+<li><p>字符串转换为图片<br><code>PIC * get_ttf_text_pic(char text[], char fontname[], int fontsize);</code><br>text为要转换的字符串<br>fontname为使用的曲线字库<br>fontsize为字体大小<br>返回指向图片(PIC)的指针</p>
+</li>
+<li><p>绘制图片<br><code>void  draw_picture(int x, int y, PIC *p);</code><br>p为指向所要绘制的图片的指针  </p>
+</li>
+<li><p>销毁图片，释放资源<br><code>void  destroy_picture(PIC *p);</code><br>只有一个参数（指针），为指向所要销毁的图片的指针  </p>
+</li>
+<li><p>直接打印字符串<br><code>dword out_ttf_text_xy(int x0, int y0, char text[], char fontname[], int fontsize);</code><br>返回32位整型，高16位记录图片宽度，低16位记录图片高度  </p>
+</li>
+</ul>
+<p>示例：  </p>
+<pre><code><span class="preprocessor">#<span class="keyword">include</span> &lt;stdio.h&gt;</span>
+<span class="preprocessor">#<span class="keyword">include</span> &lt;graphics.h&gt;</span>
+
+main()
+{   
+   <span class="keyword">int</span> driver=<span class="number">0</span>, mode=VESA_1024x768x24bit;
+   <span class="keyword">short</span> <span class="keyword">int</span> x=<span class="number">0</span>, y=<span class="number">100</span>;
+   <span class="keyword">int</span> i;
+   PIC *p[<span class="number">4</span>];
+   initgraph(&amp;driver, &amp;mode, <span class="string">""</span>);
+
+   <span class="comment">/* TTF字体输出演示1: 先把多行字符串转化成多幅照片, 再输出, 速度较快 */</span>
+   setcolor(<span class="number">0xFF0000</span>); <span class="comment">// 红色</span>
+   p[<span class="number">0</span>] = get_ttf_text_pic(<span class="string">"A QUICK BROWN FOX JUMPS"</span>, <span class="string">"courier.ttf"</span>, <span class="number">40</span>);
+          <span class="comment">// 把字符串转化成照片, 其中"courier.ttf"是TTF字库名, 40是字体大小</span>
+          <span class="comment">// p[0]用来接收函数返回的照片指针</span>
+   setcolor(<span class="number">0xFFFF00</span>); <span class="comment">// 黄色</span>
+   p[<span class="number">1</span>] = get_ttf_text_pic(<span class="string">"a quick brown fox jumps"</span>, <span class="string">"courier.ttf"</span>, <span class="number">36</span>);
+   setcolor(<span class="number">0x00FF00</span>); <span class="comment">// 绿色</span>
+   p[<span class="number">2</span>] = get_ttf_text_pic(<span class="string">"0123456789"</span>, <span class="string">"courier.ttf"</span>, <span class="number">32</span>);
+   setcolor(<span class="number">0x0000FF</span>); <span class="comment">// 蓝色</span>
+   p[<span class="number">3</span>] = get_ttf_text_pic(<span class="string">"`~!@#$%^&amp;*()-=_+[]{}\\|;:'\",.&lt;&gt;/?"</span>, <span class="string">"courier.ttf"</span>, <span class="number">28</span>);
+   <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">4</span>; i++)
+   {  
+      draw_picture(x, y, p[i]); <span class="comment">// 在(x,y)坐标输出照片p[i]</span>
+      y += p[i]-&gt;height;        <span class="comment">// 计算下一行的y坐标</span>
+      destroy_picture(p[i]);    <span class="comment">// 销毁已画照片占用的资源</span>
+   }
+
+   getchar();
+
+   <span class="comment">/* TTF字体输出演示2: 逐行输出字符串, 速度较慢 */</span>
+   driver=<span class="number">0</span>;
+   mode=VESA_1024x768x8bit;
+   initgraph(&amp;driver, &amp;mode, <span class="string">""</span>);
+   y = <span class="number">100</span>;
+   setcolor(LIGHTRED);
+   y += out_ttf_text_xy(x, y, <span class="string">"夏天的飞鸟,飞到我窗前唱歌,又飞去了。"</span>, <span class="string">"simyahei.ttf"</span>, <span class="number">40</span>);
+   <span class="comment">// 函数的返回值 = (照片宽度&lt;&lt;16) | 照片高度</span>
+   <span class="comment">// 故类型为short int的y实际仅加上照片高度值, 从而得到下行的y坐标</span>
+   y += out_ttf_text_xy(x, y, <span class="string">"Stray birds of summer come to my window"</span>, <span class="string">"courier.ttf"</span>, <span class="number">32</span>);
+   y += out_ttf_text_xy(x, y, <span class="string">"to sing and fly away."</span>, <span class="string">"courier.ttf"</span>, <span class="number">32</span>);
+   setcolor(YELLOW);
+   y += out_ttf_text_xy(x, y, <span class="string">"秋天的黄叶,它们没什么可唱,"</span>, <span class="string">"simyahei.ttf"</span>, <span class="number">36</span>);
+   y += out_ttf_text_xy(x, y, <span class="string">"And yellow leaves of autumn"</span>, <span class="string">"courier.ttf"</span>, <span class="number">28</span>);
+   y += out_ttf_text_xy(x, y, <span class="string">"which have no songs"</span>, <span class="string">"courier.ttf"</span>, <span class="number">28</span>);
+   setcolor(LIGHTGREEN);
+   y += out_ttf_text_xy(x, y, <span class="string">"只叹息一声,"</span>, <span class="string">"simyahei.ttf"</span>, <span class="number">32</span>);
+   y += out_ttf_text_xy(x, y, <span class="string">"Flutter and fall there"</span>, <span class="string">"courier.ttf"</span>, <span class="number">24</span>);
+   setcolor(LIGHTBLUE);
+   y += out_ttf_text_xy(x, y, <span class="string">"飞落在那里。"</span>, <span class="string">"simyahei.ttf"</span>, <span class="number">28</span>);
+   y += out_ttf_text_xy(x, y, <span class="string">"with a sigh."</span>, <span class="string">"courier.ttf"</span>, <span class="number">20</span>);
+
+   getchar();
+   closegraph();
+}
+</code></pre><h3 id="声音输出">声音输出</h3><h4 id="扬声器输出">扬声器输出</h4><p>过于机械麻烦，这里跳过  </p>
+<h4 id="声卡输出">声卡输出</h4><p>只支持midi音乐文件和wav波形文件  </p>
+<p>相关类型——<br><strong>知道有这两个类型即可，具体成员不必深究</strong>  </p>
+<pre><code><span class="keyword">typedef</span> <span class="keyword">struct</span> midi <span class="comment">// MIDI file data structure</span>
+{                 
+   word format;                       <span class="comment">// 0 or 1</span>
+   word num_tracks;                   <span class="comment">// 1 - 32</span>
+   word divisions;                    <span class="comment">// number ticks per quarter note</span>
+   <span class="keyword">byte</span>  *track[<span class="number">16</span>];                  <span class="comment">// Track data pointers</span>
+   word repeat;
+   <span class="keyword">struct</span> midi *chain;
+   <span class="keyword">void</span>  (*chainfunc)(<span class="keyword">struct</span> midi *);
+} MIDI;
+
+<span class="keyword">typedef</span> <span class="keyword">struct</span> wave 
+{
+   dword id;
+   dword sample_rate;
+   dword byte_rate;
+   <span class="keyword">byte</span> *data;
+   dword chunk_size;                   <span class="comment">// size of this chunk in bytes</span>
+   dword sample_size;                  <span class="comment">// size of entire linked sample</span>
+   <span class="keyword">struct</span> wave  *next;                 <span class="comment">// points to next link.</span>
+   <span class="keyword">struct</span> wave  *head;                 <span class="comment">// points to top link.</span>
+} WAVE;
+</code></pre><p>相关函数——  </p>
+<ul>
+<li>初始化<br><code>int initsound(void);</code>   </li>
+<li>载入<br><code>WAVE * load_wave(char *filename);</code><br><code>MIDI * load_midi(char *filename);</code>  </li>
+<li>播放<br><code>void play_wave(WAVE *p, int repeat);</code><br><code>void play_midi(MIDI *p, int repeat);</code><br>若repeat为-1，表示无限循环  </li>
+<li>释放<br><code>void free_wave(WAVE *p);</code><br><code>void free_midi(MIDI *p);</code>  </li>
+<li>关闭<br><code>void closesound(void);</code>  </li>
+</ul>
+<p>示例：  </p>
+<pre><code><span class="preprocessor">#<span class="keyword">include</span> &lt;graphics.h&gt;</span>
+
+main()
+{
+   MIDI *pmidi;
+   WAVE *pwave;
+
+   initsound(); <span class="comment">// 初始化声卡</span>
+   pmidi = load_midi(<span class="string">"bach.mid"</span>);  <span class="comment">// 载入midi文件, 返回MIDI指针</span>
+   pwave = load_wave(<span class="string">"sheep.wav"</span>); <span class="comment">// 载入wav文件, 返回WAVE指针</span>
+
+   play_midi(pmidi, -<span class="number">1</span>); <span class="comment">// repeat forever 播放midi音乐</span>
+   play_wave(pwave, <span class="number">3</span>);  <span class="comment">// repeat 3 times 播放wav声音</span>
+
+   <span class="built_in">puts</span>(<span class="string">"Press a key to continue.\n"</span>);
+   getchar();
+
+   free_midi(pmidi); <span class="comment">// 释放midi音乐占用的资源</span>
+   free_wave(pwave); <span class="comment">// 释放wav声音占用的资源</span>
+   closesound(); <span class="comment">// 关闭声卡</span>
+   <span class="keyword">return</span> <span class="number">1</span>;
+}
+</code></pre><p>详细函数——（包括一些控制函数）</p>
+<pre><code><span class="function"><span class="keyword">int</span>  <span class="title">initsound</span><span class="params">(<span class="keyword">void</span>)</span></span>;                  <span class="comment">// 声卡初始化</span>
+<span class="function"><span class="keyword">void</span> <span class="title">closesound</span><span class="params">(<span class="keyword">void</span>)</span></span>;                 <span class="comment">// 关闭声卡</span>
+WAVE * load_wave(<span class="keyword">char</span> *filename);      <span class="comment">// 载入wav文件</span>
+<span class="function"><span class="keyword">void</span> <span class="title">play_wave</span><span class="params">(WAVE *p, <span class="keyword">int</span> repeat)</span></span>;   <span class="comment">// 播放wav, repeat为循环次数, repeat=-1为无限循环</span>
+<span class="function"><span class="keyword">void</span> <span class="title">stop_wave</span><span class="params">(WAVE *p)</span></span>;               <span class="comment">// 停止播放wav</span>
+<span class="function"><span class="keyword">void</span> <span class="title">pause_wave</span><span class="params">(WAVE *p)</span></span>;              <span class="comment">// 暂停播放wav</span>
+<span class="function"><span class="keyword">void</span> <span class="title">resume_wave</span><span class="params">(WAVE *p)</span></span>;             <span class="comment">// 继续播放wav</span>
+<span class="function"><span class="keyword">void</span> <span class="title">free_wave</span><span class="params">(WAVE *p)</span></span>;               <span class="comment">// 释放wav占用的资源</span>
+MIDI * load_midi(<span class="keyword">char</span> *filename);      <span class="comment">// 载入midi文件</span>
+<span class="function"><span class="keyword">void</span> <span class="title">play_midi</span><span class="params">(MIDI *p, <span class="keyword">int</span> repeat)</span></span>;   <span class="comment">// 播放midi, repeat为循环次数, repeat=-1为无限循环</span>
+<span class="function"><span class="keyword">void</span> <span class="title">stop_midi</span><span class="params">(MIDI *p)</span></span>;               <span class="comment">// 停止播放midi</span>
+<span class="function"><span class="keyword">void</span> <span class="title">pause_midi</span><span class="params">(MIDI *p)</span></span>;              <span class="comment">// 暂停播放midi</span>
+<span class="function"><span class="keyword">void</span> <span class="title">resume_midi</span><span class="params">(MIDI *p)</span></span>;             <span class="comment">// 继续播放midi</span>
+<span class="function"><span class="keyword">void</span> <span class="title">free_midi</span><span class="params">(MIDI *p)</span></span>;               <span class="comment">// 释放midi占用的资源  </span>
+</code></pre><h3 id="键盘输入：bioskey()">键盘输入：bioskey()</h3><ul>
+<li><code>bioskey(0)</code><br>若键盘缓存区为空，将等待用户输入<br>若键盘缓存区不为空，将直接读走其中的键  </li>
+<li><code>bioskey(1)</code><br>若键盘缓存区为空，返回0<br>若键盘缓存区不为空，返回非零</li>
+</ul>
+<blockquote>
+<p>什么是键盘缓冲区？<br>CPU能在运行程序时处理外部中断(interrupt)。当用户按下某个键时，键盘会向CPU发出一个中断请求，此时CPU会暂停正在运行的程序而转去处理键盘中断，处理的结果是把当前按住的键读走并存放到键盘缓冲区中。键盘缓冲区是一个队列(queue)，相当于一个数组。</p>
+</blockquote>
+<h3 id="鼠标输入">鼠标输入</h3><pre><code>int x, y, b;
+union REGS r;
+r.w.ax = 0x0003;    /<span class="keyword">*</span>调用0003号功能<span class="keyword">*</span>/
+int86(0x33, &amp;r, &amp;r);
+x = r.w.cx; /<span class="keyword">*</span> 当前鼠标的x坐标 <span class="keyword">*</span>/
+y = r.w.dx; /<span class="keyword">*</span> 当前鼠标的y坐标 <span class="keyword">*</span>/
+b = r.w.bx; /<span class="keyword">*</span> 当前鼠标的按键状态 <span class="keyword">*</span>/
+</code></pre><p>其他常见功能：  </p>
+<ul>
+<li>0000<br>检测鼠标驱动是否安装  </li>
+<li>0004<br>把鼠标定位到（x，y）  </li>
+<li>0007<br>设置水平方向的鼠标移动范围  </li>
+<li>0008<br>设置竖直方向的鼠标移动范围  </li>
+</ul>
+<p>详见<a href="http://www.ctyme.com/intr/int.htm" target="_blank" rel="external">中断大全</a>  </p>
+<h3 id="watcom平台提供的VESA图形库（bhh）">watcom平台提供的VESA图形库（bhh）</h3><p>通过直接给坐标对应的内存赋值画图  </p>
+<blockquote>
+<p>一些程序可能会出现byte, word, dword类型<br>其实这都是自定义类型<br><code>byte</code>对应<code>char</code><br><code>word</code>对应<code>short</code><br><code>dword</code>对应<code>int</code>  </p>
+</blockquote>
+<h4 id="相关的全局变量">相关的全局变量</h4><ul>
+<li><code>_vp</code>：             指向坐标(0,0)的指针</li>
+<li><code>_width</code>：         屏幕宽度</li>
+<li><code>_height</code>：        屏幕高度</li>
+<li><code>_color_bits</code>：   每个像素占用内存的位(bit)数</li>
+<li><code>_visual_page</code>：  当前显示画面(前景)对应的页号</li>
+<li><code>_active_page</code>：  当前输出画面对应的页号</li>
+<li><code>_back_page</code>：    后台画面(背景)对应的页号</li>
+<li><code>_page_gap</code>：     后台画面与显示画面的距离</li>
+<li><code>_mode_index</code>：   当前视频模式的编号</li>
+<li><code>_mode</code>：          当前视频模式的内部编号</li>
+<li><code>_draw_color</code>：   前景色</li>
+<li><code>_back_color</code>：   背景色</li>
+<li><code>_fill_color</code>：   填充前景色</li>
+<li><code>_fill_mask_index</code>：  填充掩码</li>
+<li><code>_x</code>：              当前x坐标</li>
+<li><code>_y</code>：              当前y坐标</li>
+</ul>
+<p>指向(x,y)的指针p，指向char类型数据公式：<br><code>p = _vp + ( y * _width + x ) * ( _color_bits / 8 )</code><br>解释：（(x, y)的指针） = （原点指针） + （跳过的元素总数） * （每个元素占用的字节） </p>
+<h4 id="文本模式-1">文本模式</h4><p>每个元素占用两个字节——</p>
+<ol>
+<li>第一个字节为文本内容  </li>
+<li>第二个内容为文本样式<br>高四位为背景色，低四位为前景色</li>
+</ol>
+<p>每个指针指向一个一字节（8位）的数据<br>示例（输出一个蓝底红字的A）：</p>
+<pre><code>char *p = _vp;
+*p = <span class="string">'A'</span>;  
+*<span class="comment">(p+1)</span> = <span class="comment">( BLUE &lt;&lt; 4 )</span> + RED;  <span class="comment">//或*(p+1) = 0x14;</span>
+</code></pre><h4 id="图形模式-1">图形模式</h4><h5 id="gmode常量">gmode常量</h5><p>watcom平台提供的VESA图形库中相关常量：<br>包含8bit，24bit, 32bit三种颜色模式   </p>
+<ul>
+<li>VESA_320x200x8bit</li>
+<li>VESA_320x200x24bit  </li>
+<li>VESA_320x200x32bit  </li>
+<li>VESA_640x480x8bit   </li>
+<li>VESA_640x480x32bit  </li>
+<li>VESA_800x600x8bit   </li>
+<li>VESA_800x600x24bit  </li>
+<li>VESA_800x600x32bit  </li>
+<li>VESA_1024x768x8bit  </li>
+<li>VESA_1024x768x24bit </li>
+<li>VESA_1024x768x32bit  以上为图形模式</li>
+<li>TEXT_80x25x16bit     文本模式</li>
+</ul>
+<h5 id="8bit颜色模式">8bit颜色模式</h5><p>每个点占用显卡一个字节，每个点有2^8（256）种颜色，前十六种(0~15)颜色定义如下：  </p>
+<pre><code><span class="class"><span class="keyword">enum</span> <span class="title">COLORS</span>
+</span>{
+   BLACK,       <span class="comment">/* dark colors */</span>
+   BLUE,
+   GREEN,
+   CYAN,
+   RED,
+   MAGENTA,
+   BROWN,
+   LIGHTGRAY,
+   DARKGRAY,    <span class="comment">/* light colors */</span>
+   LIGHTBLUE,
+   LIGHTGREEN,
+   LIGHTCYAN,
+   LIGHTRED,
+   LIGHTMAGENTA,
+   YELLOW,
+   WHITE
+};
+</code></pre><h5 id="24bit颜色模式">24bit颜色模式</h5><p>每个点占用显卡三个字节，分别代表RGB的蓝色（B），绿色（G），红色（R），<strong>（没错，就是逆序的）</strong>，每个点有2^24种颜色。<br>示例：  </p>
+<pre><code>char *p;
+p = _vp;
+*p = <span class="number">0</span>x<span class="number">56</span>;    <span class="comment">//Blue</span>
+*<span class="comment">(p+1)</span> = <span class="number">0</span>x<span class="number">34</span>;    <span class="comment">//Green</span>
+*<span class="comment">(p+2)</span> = <span class="number">0</span>x<span class="number">12</span>;    <span class="comment">//Red</span>
+</code></pre><h5 id="32bit颜色模式">32bit颜色模式</h5><p>每个点占用显卡四个字节，前三个字节表示RGB（同24bit），第四个字节通常为<code>0x00</code>  </p>
+<h4 id="前景页和背景页">前景页和背景页</h4><p>显示页面存在两个层次，前景和背景<br><code>_active_page</code>为当前输出的页面<br><code>_visual_page</code>为当前显示的页面，非显示页面将被隐藏<br><code>_back_page</code>为当前的背景页<br><code>setviualpage()</code>函数能够设置显示页面<br><code>setactivepage()</code>函数能够设置输出页面<br>示例：  </p>
+<pre><code>setvivualpage<span class="comment">(_back_page)</span>;    <span class="comment">//表示将背景页设置为当前显示页面  </span>
+stactivepage<span class="comment">(_back_page)</span>;    <span class="comment">//表示将背景页设置为当前输出页面</span>
+</code></pre>
+          
+        
+      </div>
+    
+
+    
+      <div class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/C/">
+                #C
+              </a>
+            
+          </div>
+        
+
+        
+
+        
+        
+          <div class="post-eof"></div>
+        
+      </div>
+    
+  </div>
+
+
+  
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
               <a class="post-title-link" href="/2015/05/02/Note_for_Python/">
                 python笔记
               </a>
@@ -1512,7 +2075,7 @@ dialog <span class="tag">p</span> {
       <div class="site-state motion-element">
         <div class="site-state-item site-state-posts">
           <a href="/archives">
-            <span class="site-state-item-count">8</span>
+            <span class="site-state-item-count">9</span>
             <span class="site-state-item-name">文章</span>
           </a>
         </div>
@@ -1526,7 +2089,7 @@ dialog <span class="tag">p</span> {
 
         <div class="site-state-item site-state-tags">
           <a href="/tags">
-            <span class="site-state-item-count">8</span>
+            <span class="site-state-item-count">9</span>
             <span class="site-state-item-name">標籤</span>
           </a>
         </div>
