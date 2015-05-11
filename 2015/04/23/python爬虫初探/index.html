@@ -145,7 +145,11 @@
 </ul>
 <h2 id="BeautifulSoup（bs4模块）">BeautifulSoup（bs4模块）</h2><p>参考资料：<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" target="_blank" rel="external">beautifulsoup官方文档</a>  </p>
 <ul>
-<li>BeautifulSoup函数：将文档转换为一个BeautifulSoup对象并返回<br>参数为一个字符串<br>文档内容会自动转换为unicode编码  <h3 id="BeautifulSoup对象">BeautifulSoup对象</h3>一般情况下可以直接当作它的子对象tag对象来使用<br>其中包含以下子对象  <h4 id="tag对象">tag对象</h4>对象的名称与html和xml的标签名都相同  </li>
+<li>BeautifulSoup函数：将文档转换为一个BeautifulSoup对象并返回<br>参数为一个字符串<br>文档内容会自动转换为unicode编码  </li>
+</ul>
+<h3 id="BeautifulSoup对象">BeautifulSoup对象</h3><p>一般情况下可以直接当作它的子对象tag对象来使用<br>其中包含以下子对象  </p>
+<h4 id="tag对象">tag对象</h4><p>对象的名称与html和xml的标签名都相同  </p>
+<ul>
 <li>name：即标签的名字</li>
 <li>attrs：即标签内包含的属性<br>比如class、id、name、type等<br>可以通过has_attr()方法判断对象内（也就是标签内）是否包含这些属性  </li>
 <li>contents：即始末标签间的显示内容  </li>
@@ -163,9 +167,12 @@
 <li>next_sibling：获取下一个同级节点</li>
 <li>next_siblings：迭代获取之后的所有节点</li>
 <li>previous_sibling：获取上一个同级节点</li>
-<li>previous_sibling：迭代获取之前的所有节点<h3 id="string对象">string对象</h3>即尖括号<code>&lt;&gt;</code>之外的内容<h3 id="其他">其他</h3></li>
+<li>previous_sibling：迭代获取之前的所有节点</li>
 </ul>
 </li>
+</ul>
+<h3 id="string对象">string对象</h3><p>即尖括号<code>&lt;&gt;</code>之外的内容</p>
+<h3 id="其他">其他</h3><ul>
 <li>next_element和previous_element：获取下（上）一个对象，包括tag和string</li>
 <li>next_elements和previous_elements：迭代获取下（上）一个对象</li>
 <li><p>find_all方法<br>  查找标签<br>  直接访问tag对象只能得到第一个匹配结果，如果需要得到所有结果需要借助find_all函数<br>  函数返回一个包含所有该标签的内容的列表  </p>
@@ -446,7 +453,7 @@ with <span class="function"><span class="title">open</span><span class="params">
       <div class="site-state motion-element">
         <div class="site-state-item site-state-posts">
           <a href="/archives">
-            <span class="site-state-item-count">9</span>
+            <span class="site-state-item-count">10</span>
             <span class="site-state-item-name">文章</span>
           </a>
         </div>

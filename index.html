@@ -106,6 +106,306 @@
           
           
             
+              <a class="post-title-link" href="/2015/05/11/javascript笔记/">
+                JS笔记
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          
+            發表於 2015-05-11
+          
+        </span>
+
+        
+          
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    
+      <div class="post-body">
+
+        
+        
+
+        
+          
+            <p>学习网站：<br><a href="http://www.w3school.com.cn/js/index.asp" target="_blank" rel="external">w3cschool-javascript</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript" target="_blank" rel="external">MDN-javascript</a>  </p>
+<h2 id="起步">起步</h2><p>javascript的语法很多都跟C差不多  </p>
+<h3 id="浏览器兼容问题">浏览器兼容问题</h3><p>不同浏览器在功能的实现上有很多不同，但是可以使用javascript API接口来解决兼容性问题<br>WIN8支持javascript来创建windows8 app  </p>
+<h3 id="基本的语法（只讲和C不同的）">基本的语法（只讲和C不同的）</h3><h4 id="书写脚本的位置">书写脚本的位置</h4><p>脚本内容必须包含在<code>script</code>标签中<br>HTML中的<code>head</code>标签或<code>body</code>标签中<br>外部js文件中不能包含<code>script</code>标签<br>引用外部js文件：在<code>head</code>或<code>body</code>标签中插入<code>&lt;script src=&#39;&#39;&gt;&lt;/script&gt;</code>  </p>
+<h4 id="变量">变量</h4><h5 id="变量类型">变量类型</h5><p>字符串，数值，布尔，数组，对象，null，Undefined  </p>
+<ol>
+<li>当一个变量被定义但却不赋值时，其类型为Undefined，不可引用    </li>
+<li>数值可采用科学计数法，如：<code>var x=2e-2;</code>  </li>
+</ol>
+<h5 id="声明">声明</h5><ol>
+<li>一般变量无需指明类型，直接使用<code>var</code>语句，如：<code>var x=0;</code>   </li>
+<li><p>也可以指明变量类型，借助<code>new</code>关键词   </p>
+<pre><code><span class="keyword">var</span> carname=<span class="keyword">new</span> <span class="built_in">String</span>;
+<span class="keyword">var</span> x=      <span class="keyword">new</span> <span class="built_in">Number</span>;
+<span class="keyword">var</span> y=      <span class="keyword">new</span> <span class="built_in">Boolean</span>;
+<span class="keyword">var</span> cars=   <span class="keyword">new</span> <span class="built_in">Array</span>;
+<span class="keyword">var</span> person= <span class="keyword">new</span> <span class="built_in">Object</span>;
+</code></pre></li>
+<li>也可以不显式声明，直接对一个未声明的变量复制  </li>
+</ol>
+<h6 id="对于对象">对于对象</h6><ul>
+<li>声明方式<br>与python的字典类似，但“键”只能使用字符串，且不加引号<br><code>var person={firstname:&quot;Bill&quot;, lastname:&quot;Gates&quot;, id:5566};</code>  </li>
+</ul>
+<h6 id="对于数组">对于数组</h6><ul>
+<li>声明方式与python的列表类似<br><code>var cars=[&quot;Audi&quot;,&quot;BMW&quot;,&quot;Volvo&quot;];</code>  </li>
+<li>也可以借助<code>new_Array()</code><br><code>var cars=new Array(&quot;Audi&quot;,&quot;BMW&quot;,&quot;Volvo&quot;);</code><br>或  <pre><code><span class="keyword">var</span> cars=<span class="keyword">new</span> <span class="built_in">Array</span>();
+cars[<span class="number">0</span>]=<span class="string">"Audi"</span>;
+cars[<span class="number">1</span>]=<span class="string">"BMW"</span>;
+cars[<span class="number">2</span>]=<span class="string">"Volvo"</span>;  
+</code></pre></li>
+</ul>
+<h5 id="变量命名规则">变量命名规则</h5><ol>
+<li>字母开头  </li>
+<li>支持<code>$</code>和<code>_</code>符号开头，但不建议  </li>
+<li>大小写敏感  </li>
+</ol>
+<h5 id="重新声明">重新声明</h5><p>重新声明并不影响变量的值  </p>
+<h4 id="函数">函数</h4><h5 id="定义">定义</h5><pre><code><span class="function"><span class="keyword">function</span> <span class="title">myFunction</span><span class="params">(var1,var2)</span>
+</span>{
+    ......
+}
+</code></pre><h4 id="运算符">运算符</h4><p>字符串连接使用加号（+）<br>字符串与数字相加：数字将转化为字符串<br>全等运算符（===）表示值和类型都相同<br>其他算术、逻辑运算符与C完全相同  </p>
+<h4 id="条件语句">条件语句</h4><p>与C完全相同  </p>
+<h4 id="循环语句">循环语句</h4><p>包含C的所有循环语句<br>另外支持<code>for/in</code>循环语句，用于遍历，如：  </p>
+<pre><code>var person={<span class="string">fname:</span><span class="string">"John"</span>,<span class="string">lname:</span><span class="string">"Doe"</span>,<span class="string">age:</span><span class="number">25</span>};
+<span class="keyword">for</span> (x <span class="keyword">in</span> person)
+  {
+  txt=txt + person[x];
+  }
+</code></pre><h4 id="break与continue语句">break与continue语句</h4><p>与C相同  </p>
+<h4 id="标签">标签</h4><p>与C相同，可用于语句或代码块<br>continue（带或不带标签）都只能跳出循环<br>break（不带标签）只能跳出循环和switch语句<br>break（带标签）能跳出所有代码块<br>示例：  </p>
+<pre><code>cars=[<span class="string">"BMW"</span>,<span class="string">"Volvo"</span>,<span class="string">"Saab"</span>,<span class="string">"Ford"</span>];
+<span class="type">list</span>:
+{
+document.<span class="command">write</span>(cars[<span class="number">0</span>] + <span class="string">"&lt;br&gt;"</span>);
+document.<span class="command">write</span>(cars[<span class="number">1</span>] + <span class="string">"&lt;br&gt;"</span>);
+document.<span class="command">write</span>(cars[<span class="number">2</span>] + <span class="string">"&lt;br&gt;"</span>);
+break <span class="type">list</span>;
+document.<span class="command">write</span>(cars[<span class="number">3</span>] + <span class="string">"&lt;br&gt;"</span>);
+document.<span class="command">write</span>(cars[<span class="number">4</span>] + <span class="string">"&lt;br&gt;"</span>);
+document.<span class="command">write</span>(cars[<span class="number">5</span>] + <span class="string">"&lt;br&gt;"</span>);
+}
+</code></pre><h4 id="错误">错误</h4><h5 id="抛出错误">抛出错误</h5><p>当出现问题时，Javascript引擎会停止，并生成一个错误信息  </p>
+<h5 id="测试与捕捉">测试与捕捉</h5><p>与python的<code>try/except</code>语句类似  </p>
+<pre><code><span class="tag">try</span>
+  {
+      <span class="comment">//在这里运行代码</span>
+  }
+<span class="tag">catch</span>(err)
+  {
+      <span class="comment">//在这里处理错误</span>
+  }
+</code></pre><p>catch括号的err内为一个变量，用于错误对象<br>并且可以在catch代码块中引用这个变量  </p>
+<h5 id="抛出异常">抛出异常</h5><p><code>throw</code>语句，可以接错误信息<br>如：<code>throw &quot;empty&quot;;</code>  </p>
+<h2 id="JS_HTML_DOM">JS HTML DOM</h2><h3 id="HTML_DOM（文档对象模型）">HTML DOM（文档对象模型）</h3><p>当网页被加载时，浏览器会创建页面的文档对象类型（Document Object Model），该模型被构造为对象的树<br><img src="http://www.w3school.com.cn/i/ct_htmltree.gif" alt="HTML DOM树"><br>每一个标签都作为对象的一个元素（就像BeautifulSoup的处理方式）<br>每个元素都包含“属性”和“文本”两部分内容  </p>
+<h3 id="查找元素">查找元素</h3><h4 id="通过id，document-getElementById()">通过id，document.getElementById()</h4><p><code>var x=document.getElementById(&quot;intro&quot;);</code><br>若找到，返回对象；否则返回null<br><strong>注意大小写</strong>  </p>
+<h4 id="通过标签名,x-getElementsByTagName(“p”)">通过标签名,x.getElementsByTagName(“p”)</h4><pre><code><span class="variable"><span class="keyword">var</span> x</span>=document.getElementById(<span class="string">"main"</span>);
+<span class="variable"><span class="keyword">var</span> y</span>=x.getElementsByTagName(<span class="string">"p"</span>);
+</code></pre><p>返回的是一个包含多个对象的数组，所以这里的“element”是复数，要注意  </p>
+<h4 id="通过类名">通过类名</h4><p>由于IE不支持，所以最好不要用  </p>
+<h3 id="改变HTML">改变HTML</h3><h4 id="改变HTML输出流">改变HTML输出流</h4><p>可以用<code>document.write()</code>创建动态的内容，但是绝对不要在文档加载后使用  </p>
+<h4 id="改变HTML内容">改变HTML内容</h4><p>直接修改对象的<code>.innerHTML</code>属性的值  </p>
+<h4 id="改变HTML属性">改变HTML属性</h4><p>直接修改对象的<code>.ATTRIBUTE</code>属性的值<br>这里的ATTRIBUTE为所要修改的“属性名” ，如：<code>x.src=&quot;&quot;;</code>  </p>
+<h3 id="改变CSS">改变CSS</h3><p>直接修改对象的<code>.style.ATTRIBUTE</code>属性的值<br>这里的ATTRIBUTE为所要修改的“CSS属性名”，如：<code>x.style.color=&#39;red&#39;;</code>  </p>
+<h3 id="DOM事件">DOM事件</h3><p>可以对标签加入事件属性，用来触发javascript语句（一般触发一个函数）<br>提供的事件属性如下：</p>
+<ul>
+<li><code>onload</code>：进入页面时触发<br>通常用来检测访问者的浏览器类型、版本，或者处理cookie  </li>
+<li><code>onunload</code>：离开页面时触发<br>通常用来处理cookie  </li>
+<li><code>onchange</code>：字段变化时触发<br>通常配合input使用来进行验证  </li>
+<li><code>onmouseover</code>：鼠标移动到元素上时触发  </li>
+<li><code>onmouseout</code>：鼠标移出元素时触发  </li>
+<li><code>onmousedown</code>：鼠标按住时触发  </li>
+<li><code>onmouseup</code>：鼠标按住后释放时触发  </li>
+<li><code>onclick</code>：鼠标点击时触发  </li>
+</ul>
+<h3 id="DOM_节点">DOM 节点</h3><ul>
+<li>创建元素节点：<code>document.createElement(TAGNAME)</code><br>返回对应标签的对象  </li>
+<li>创建文本节点：<code>document.createTextNode(CONTENT)</code><br>返回对应文本节点的对象  </li>
+<li>追加节点：<code>x.appendChild(NODE)</code><br>不返回值  </li>
+<li>删除节点：<code>x.removeChild(NODE)</code><br>不返回值  </li>
+</ul>
+<p>示例：  </p>
+<pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"div1"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">p</span> <span class="attribute">id</span>=<span class="value">"p1"</span>&gt;</span>这是一个段落<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
+<span class="tag">&lt;<span class="title">p</span> <span class="attribute">id</span>=<span class="value">"p2"</span>&gt;</span>这是另一个段落<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="dart">
+<span class="keyword">var</span> para=<span class="built_in">document</span>.createElement(<span class="string">"p"</span>);    <span class="comment">//创建&lt;p&gt;元素</span>
+<span class="keyword">var</span> node=<span class="built_in">document</span>.createTextNode(<span class="string">"这是新段落。"</span>);    <span class="comment">//创建文本节点</span>
+para.appendChild(node);        <span class="comment">//把文本节点追加到&lt;p&gt;元素上</span>
+
+<span class="keyword">var</span> element=<span class="built_in">document</span>.getElementById(<span class="string">"div1"</span>);    <span class="comment">//查找id=div1的标签元素</span>
+element.appendChild(para);    <span class="comment">//把&lt;p&gt;元素追加到id=div1的元素上</span>
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+</code></pre><h2 id="JavaScript对象">JavaScript对象</h2><h3 id="创建对象">创建对象</h3><h4 id="直接定义并创建">直接定义并创建</h4><p><code>person={firstname:&quot;John&quot;,lastname:&quot;Doe&quot;,age:50,eyecolor:&quot;blue&quot;};</code>  </p>
+<h4 id="通过函数创建">通过函数创建</h4><pre><code><span class="variable">person=</span>new Object();
+person.<span class="variable">firstname=</span><span class="string">"Bill"</span>;
+person.<span class="variable">lastname=</span><span class="string">"Gates"</span>;
+person.<span class="variable">age=</span><span class="number">56</span>;
+person.<span class="variable">eyecolor=</span><span class="string">"blue"</span>;
+//这里同时也演示了属性的添加
+</code></pre><h3 id="对象构造器">对象构造器</h3><p>其实就是一个用来构造对象的函数<br>示例：（this即为对象自身）</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">person</span><span class="params">(firstname,lastname,age,eyecolor)</span>
+</span>{
+    <span class="keyword">this</span>.firstname=firstname;
+    <span class="keyword">this</span>.lastname=lastname;
+    <span class="keyword">this</span>.age=age;
+    <span class="keyword">this</span>.eyecolor=eyecolor;
+}
+myFather=<span class="keyword">new</span> person(<span class="string">"Bill"</span>,<span class="string">"Gates"</span>,<span class="number">56</span>,<span class="string">"blue"</span>);
+<span class="comment">//注意这里的new运算符，而不是直接调用函数</span>
+</code></pre><h3 id="添加方法">添加方法</h3><p>把对象的一个属性绑定到一个内部的一个函数上，这个函数就是该对象的方法<br>可以通过追加属性添加，也可以在构造器内添加  </p>
+<h3 id="类">类</h3><p>Javascript时基于prototype的面向对象的语言，并不基于类<br>也就是说，没有类  </p>
+<h3 id="数字">数字</h3><p>所有数值都为8字节，整数精度为15位，小数精度为17位  </p>
+<h4 id="属性">属性</h4><ul>
+<li><code>MAX_VALUE</code></li>
+<li><code>MIN_VALUE</code></li>
+<li><code>NEGATIVE_INFINITIVE</code>：负无穷大，溢出时返回该值</li>
+<li><code>POSITIVE_INFINITY</code>：正无穷大，溢出时返回该值  </li>
+<li><code>NaN</code>：指示值，表明这个数据不是数字<br>通常用<code>isNaN()</code>函数来判断一个变量是否为数字  </li>
+</ul>
+<p>这些属性是构造函数<code>Number()</code>本身的属性，而不是某个Number对象的属性<br>所以只能这么用：<code>big = Number.MAX_VALUE;</code>  </p>
+<h4 id="方法">方法</h4><ul>
+<li><code>toString(radix)</code>：以radix进制转化为字符串（默认十进制）</li>
+<li><code>toLocaleString()</code>：以本地的格式转化为字符串（本地格式？？）  </li>
+<li><code>toFixed(num)</code>：四舍五入转化为num位小数  </li>
+<li><code>toExponential(num)</code>：四舍五入转化为num位小数（科学计数法）  </li>
+</ul>
+<h3 id="字符串">字符串</h3><h4 id="属性-1">属性</h4><p>这个是对象的属性，而不是构造函数的属性  </p>
+<ul>
+<li>length</li>
+</ul>
+<h4 id="方法-1">方法</h4><ul>
+<li><code>anchor(ANCHORNAME)</code>：创建HTML锚，即将该字符串转换为带属性<code>name=&quot;ANCHORNAME&quot;</code>的<code>&lt;a&gt;</code>标签  </li>
+<li><code>bold()</code>：用粗体显示</li>
+<li><code>fontcolor(COLOR)</code>：用指定颜色显示  </li>
+<li><code>fontsize(SIZE)</code>：用指定字体大小显示，SIZE为1-7  </li>
+<li><code>indexOf(SEARCHVALUE, FROMINDEX)</code>：从FROMINDEX位置（可选）开始搜索SEARCHVALUE子字符串，并返回头部索引，否则返回-1  </li>
+<li><code>italics()</code>：用斜体显示  </li>
+<li><code>link(URL)</code>：显示为指向URL的超链接  </li>
+<li><code>match(SEARCHVALUE | REGEXP)</code>：直接搜索子字符串或通过正则表达式匹配，返回数组</li>
+<li><code>replace(REGEXP/SUBSTR, REPLACEMENT)</code>：替换，返回结果字符串  </li>
+<li><code>search(REGEXP)</code>：indexof函数的正则匹配版本  </li>
+<li><code>split(SEPARATOR, HOWMANY)</code>：以指定的分隔字符串或正则表达式分割字符串，值返回HOWMANY个结果（可选）的数组</li>
+<li><code>strike()</code>：以删除线显示</li>
+<li><code>sub()</code>：以下标形式显示  </li>
+<li><code>toLowerCase()</code>：转换为小写</li>
+<li><code>toUpperCase()</code>：转换为大写</li>
+</ul>
+<p>String对象都是不可变的，因此其方法都不做原位操作  </p>
+<h3 id="日期">日期</h3><h4 id="定义，new_Date()">定义，new Date()</h4><p><code>var myDate=new Date();</code><br>自动使用当前日期时间作为初始值  </p>
+<h4 id="方法-2">方法</h4><p>设置日期：<code>myDate.setFullYear(2008,7,9);</code><br>获取时间（从1970/1/1至今的毫秒数）：<code>myDate.getTime();</code><br>转换为字符串：<code>myDate.toUTCString()</code><br>获取本周为第几天（返回一个数字，注意每周第一天是周日）：<code>myDate.getDay()</code>  </p>
+<h4 id="日期比较">日期比较</h4><p>两个Date对象可以直接用比较运算符进行比较  </p>
+<h3 id="算数">算数</h3><p>Math对象</p>
+<h4 id="属性-2">属性</h4><ul>
+<li><code>Math.E</code></li>
+<li><code>Math.PI</code></li>
+</ul>
+<h4 id="方法-3">方法</h4><ul>
+<li><code>Math.round(NUM)</code>：四舍五入</li>
+<li><code>Math.random()</code>：产生0-1的随机数</li>
+<li><code>Math.floor(NUM)</code>：向下取整</li>
+</ul>
+<p>示例：（产生0-10的随机数）<br><code>Math.floor( Math.random() * 11 )</code></p>
+<h3 id="正则表达式">正则表达式</h3><h4 id="定义-1">定义</h4><p>类似python的complie<br><code>var patt1=new RegExp(PATTERN)</code>，PATTERN为匹配模式<br>可添加第二个参数为<code>&quot;g&quot;</code>，表明(global)  </p>
+<h4 id="方法-4">方法</h4><ul>
+<li><code>test(STRING)</code>：检查是否匹配，返回布尔值true和false</li>
+<li><code>exec(SRING)</code>：检索匹配项并返回第一个匹配项，否则返回null<br>如果定义时指定了参数<code>&quot;g&quot;</code>，那么再次执行<code>exec()</code>可以进行下一项的匹配  </li>
+<li><code>compile(PATTERN)</code>：修改匹配模式，也可以添加修改删除第二个参数  </li>
+</ul>
+<h2 id="JS_Window">JS Window</h2><p>浏览器对象模型（Browser Object Model, BOM）尚无正式标准，但现代浏览器几乎都已经实现了JS交互性方面的相同方法和属性  </p>
+<h3 id="window对象">window对象</h3><p>window对象表示浏览器窗口<br>任何JS全局对象、函数以及变量都作为window对象的成员<br>全局变量作为window对象的属性<br>全局函数作为window对象的方法<br>如：<br><code>document.getElementById(&quot;header&quot;);</code><br>实际上是<br><code>window.document.getElementById(&quot;header&quot;);</code><br>但<code>window</code>一般省略  </p>
+<h4 id="window尺寸">window尺寸</h4><p>尺寸即浏览器的视口部分，不包括工具栏和滚动条<br>有以下三种方法：  </p>
+<ul>
+<li>对于IE、Chrome、Firefox、Opera、Safari<br><code>window.innerHeight</code><br><code>window.innerWidth</code>  </li>
+<li>对于IE5、6、7、8<br><code>document.documentElement.clientHeight</code><br><code>document.documentElement.clientWidth</code><br>或<br><code>document.body.clientHeight</code><br><code>document.body.clientWidth</code>  </li>
+</ul>
+<p>通常直接使用以下方法来兼容所有浏览器：  </p>
+<pre><code><span class="reserved">var</span> w=<span class="built_in">window</span>.innerWidth
+|| <span class="built_in">document</span>.documentElement.clientWidth
+|| <span class="built_in">document</span>.body.clientWidth;
+
+<span class="reserved">var</span> h=<span class="built_in">window</span>.innerHeight
+|| <span class="built_in">document</span>.documentElement.clientHeight
+|| <span class="built_in">document</span>.body.clientHeight;    
+</code></pre><h4 id="window方法">window方法</h4><p><code>window.open()</code>：打开新窗口<br><code>window.close()</code>：关闭当前窗口<br><code>window.moveTo()</code>：移动当前窗口<br><code>window.resizeTo()</code>：调整当前窗口尺寸  </p>
+<h3 id="window-screen对象">window.screen对象</h3><p>包含有关用户屏幕的信息，window前缀可以省略  </p>
+<h4 id="属性-3">属性</h4><p><code>screen.availWidth</code>：可用宽度<br><code>screen.availHeight</code>：可用高度  </p>
+<h3 id="window-location对象">window.location对象</h3><p>用于获得当前页面的信息如URL，也可以把浏览器重定向到新的页面，window前缀可省略  </p>
+<h4 id="属性-4">属性</h4><p><code>location.hostname</code>：web主机域名<br><code>location.port</code>：web主机端口<br><code>location.protocol</code>：所用的web协议（http或https）<br><code>location.href</code>：当前页面的完整的URL<br><code>location.pathname</code>：当前页面路径和文件名  </p>
+<h4 id="方法-5">方法</h4><p><code>location.assign(URL)</code>：加载新文档  </p>
+<h3 id="window-history对象">window.history对象</h3><p>包含浏览器的历史信息，window前缀可以省略<br>为了保护用户隐私，该对象只允许访问前一个页面和下一个页面（后退和前进）  </p>
+<h4 id="方法-6">方法</h4><p><code>history.back()</code>：加载历史列表的前一个URL（后退）<br><code>history.forward()</code>：加载历史列表的后一个URL（前进）  </p>
+<h3 id="window-navigator对象">window.navigator对象</h3><p>不包含有关访问者浏览器的信息，window前缀可以省略  </p>
+<h4 id="属性-5">属性</h4><p><code>appCodeName</code>、<code>appName</code>、<code>appVersion</code>、<code>cookieEnabled</code>、<code>platform</code>、<code>userAgent</code>、<code>systemLanguage</code>  </p>
+<h4 id="注意">注意</h4><p>该对象信息具有误导性，一方面数据可以人为伪造；另一方面，浏览器无法报告晚于浏览器发布的新操作系统  </p>
+<h4 id="正确的浏览器检测方法">正确的浏览器检测方法</h4><p>尝试访问不同浏览器的特殊属性，如Opera浏览器的<code>opera</code>属性<br><code>if(window.opera){.....}</code>  </p>
+<h3 id="PopupAlert消息框">PopupAlert消息框</h3><h4 id="警告框">警告框</h4><p><code>alert(MESSAGE)</code>：警告弹框，需要点击确定才能继续操作<br>如果信息内容需要换行，使用换行符<code>\n</code>  </p>
+<h4 id="确认框">确认框</h4><p><code>confirm(MESSAGE)</code>：确认弹框，需要用户点击确定或取消才能继续操作<br>确认返回true，取消返回false  </p>
+<h4 id="提示框">提示框</h4><p><code>prompt(MESSAGE, DEFAULT_VALUE)</code>：提示弹框，要求用户输入值（默认值为参数DEFAULT_VALUE），点击确定或取消<br>若点击确定，返回输入值；若点击取消，返回null  </p>
+<h3 id="Timing计时">Timing计时</h3><ul>
+<li>若干毫秒后执行指定JS语句<br><code>var t=setTimeout(&quot;JS语句&quot;, 毫秒);</code><br>返回某个值，可用于取消setTimeout<br><strong>可以通过不断调用自己来实现无限循环</strong>  </li>
+<li>取消setTimeout<br><code>clearTimeout(t);</code><br>t为setTimeout的返回值  </li>
+</ul>
+<h3 id="JS_Cookie">JS Cookie</h3><p>将<code>document.cookie</code>作为一个字符串去玩就可以  </p>
+
+          
+        
+      </div>
+    
+
+    
+      <div class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/前端/">
+                #前端
+              </a>
+            
+          </div>
+        
+
+        
+
+        
+        
+          <div class="post-eof"></div>
+        
+      </div>
+    
+  </div>
+
+
+  
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
               <a class="post-title-link" href="/2015/05/08/C语言图形化编程（WIN）/">
                 C语言图形化编程（WIN）
               </a>
@@ -842,7 +1142,11 @@ stactivepage<span class="comment">(_back_page)</span>;    <span class="comment">
 </ul>
 <h2 id="BeautifulSoup（bs4模块）">BeautifulSoup（bs4模块）</h2><p>参考资料：<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" target="_blank" rel="external">beautifulsoup官方文档</a>  </p>
 <ul>
-<li>BeautifulSoup函数：将文档转换为一个BeautifulSoup对象并返回<br>参数为一个字符串<br>文档内容会自动转换为unicode编码  <h3 id="BeautifulSoup对象">BeautifulSoup对象</h3>一般情况下可以直接当作它的子对象tag对象来使用<br>其中包含以下子对象  <h4 id="tag对象">tag对象</h4>对象的名称与html和xml的标签名都相同  </li>
+<li>BeautifulSoup函数：将文档转换为一个BeautifulSoup对象并返回<br>参数为一个字符串<br>文档内容会自动转换为unicode编码  </li>
+</ul>
+<h3 id="BeautifulSoup对象">BeautifulSoup对象</h3><p>一般情况下可以直接当作它的子对象tag对象来使用<br>其中包含以下子对象  </p>
+<h4 id="tag对象">tag对象</h4><p>对象的名称与html和xml的标签名都相同  </p>
+<ul>
 <li>name：即标签的名字</li>
 <li>attrs：即标签内包含的属性<br>比如class、id、name、type等<br>可以通过has_attr()方法判断对象内（也就是标签内）是否包含这些属性  </li>
 <li>contents：即始末标签间的显示内容  </li>
@@ -860,9 +1164,12 @@ stactivepage<span class="comment">(_back_page)</span>;    <span class="comment">
 <li>next_sibling：获取下一个同级节点</li>
 <li>next_siblings：迭代获取之后的所有节点</li>
 <li>previous_sibling：获取上一个同级节点</li>
-<li>previous_sibling：迭代获取之前的所有节点<h3 id="string对象">string对象</h3>即尖括号<code>&lt;&gt;</code>之外的内容<h3 id="其他">其他</h3></li>
+<li>previous_sibling：迭代获取之前的所有节点</li>
 </ul>
 </li>
+</ul>
+<h3 id="string对象">string对象</h3><p>即尖括号<code>&lt;&gt;</code>之外的内容</p>
+<h3 id="其他">其他</h3><ul>
 <li>next_element和previous_element：获取下（上）一个对象，包括tag和string</li>
 <li>next_elements和previous_elements：迭代获取下（上）一个对象</li>
 <li><p>find_all方法<br>  查找标签<br>  直接访问tag对象只能得到第一个匹配结果，如果需要得到所有结果需要借助find_all函数<br>  函数返回一个包含所有该标签的内容的列表  </p>
@@ -2075,7 +2382,7 @@ dialog <span class="tag">p</span> {
       <div class="site-state motion-element">
         <div class="site-state-item site-state-posts">
           <a href="/archives">
-            <span class="site-state-item-count">9</span>
+            <span class="site-state-item-count">10</span>
             <span class="site-state-item-name">文章</span>
           </a>
         </div>
