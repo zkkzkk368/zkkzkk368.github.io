@@ -106,6 +106,594 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/12/vim实用技巧/">
+                《vim实用技巧》笔记
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          
+            發表於 2015-08-11
+          
+        </span>
+
+        
+          
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    
+      <div class="post-body">
+
+        
+        
+
+        
+          
+            <p>=。=最近在看《vim实用技巧》<br>对一些内容作点简单的记录，方便以后查阅  </p>
+<h2 id="Vim解决问题的方式">Vim解决问题的方式</h2><ul>
+<li>多用<code>.</code>命令（一个微型宏）来重复一些简单的操作  </li>
+<li>减少无关的移动，形成合理的撤销块  </li>
+<li>善用复合命令减少操作<br>  <code>A</code>    == <code>$a</code>，插入在行末<br>  <code>C</code> == <code>c$</code>，替换行末字符并持续插入<br>  <code>s</code> == <code>cl</code>，替换当前字符并持续插入<br>  <code>S</code> == <code>^c</code>，替换前一字符并持续插入<br>  <code>I</code> == <code>^i</code>，从行首开始编辑<br>  <code>o</code> == <code>A&lt;CR&gt;</code>，在下方插入新行<br>  <code>O</code> == <code>ko</code>，在上方插入新行<br>  <code>……</code>  </li>
+<li>尽可能使修改、移动变得可重复  </li>
+<li>常用的重复与回退操作  <ul>
+<li>一般的修改<code>{edit}</code>：<br>  <code>.</code>重复，<code>u</code>回退  </li>
+<li>行内的查找<code>[f|F|t|T]{char}</code>：<br>  <code>;</code>重复，<code>,</code>回退  下</li>
+<li>文档内的查找<code>[/|?]{pattern}&lt;CR&gt;</code>：<br>  <code>n</code>重复，<code>N</code>回退  </li>
+<li>执行替换<code>:s/target/replacement</code>：<br>  <code>&amp;</code>重复，<code>u</code>回退  </li>
+<li>执行一系列修改<code>qx{changes}q</code>：<br>  <code>@x</code>重复，<code>u</code>回退  </li>
+</ul>
+</li>
+<li><code>.</code>范式<br>  用一个键移动，用另一个键执行的可重复修改操作  </li>
+</ul>
+<h2 id="普通模式">普通模式</h2><ul>
+<li>停顿思考时切换到普通模式</li>
+<li>合理地切分撤销单元（模式间的切换）  </li>
+<li>如果在插入模式中移动的光标，将会产生一个新的撤销单元  </li>
+<li>删除单词<code>daw</code>，可以解读为”delete a word”，该命令可重复  </li>
+<li>简单的算术运算<code>{num}&lt;C-a&gt;</code>加法，<code>{num}&lt;C-x&gt;</code>减法<br>  不需要把光标移动到数字上<br>  运算为num加减当前光标或光标以后的数字<br>  注意：默认情况下0开头的数字会被当作八进制，0x开头则为十六进制<br>  <em>可以通过<code>set nrformats=</code>关闭进制识别（都作为十进制数）</em>  </li>
+<li>重复&amp;次数<br>  删除多个单词有两种风格——  <ol>
+<li><code>dw</code>+<code>.</code>的重复风格<br> 常用风格，使用灵活，方便回退，无需数单词个数  </li>
+<li><code>d2w</code>或<code>2dw</code>的次数风格<br> 多用于删除一整块词组，如<code>a couple of</code>;可以提高撤销单元的连贯性  </li>
+</ol>
+</li>
+<li>操作 = 操作符 + 动作命令{motion}  <ul>
+<li>操作符  <ul>
+<li><code>c</code>：修改  </li>
+<li><code>d</code>：删除</li>
+<li><code>y</code>：复制到寄存器  </li>
+<li><code>g~</code>：字母大小写反转  </li>
+<li><code>gu</code>：字母转换为小写  </li>
+<li><code>gU</code>：字母转换为大写  </li>
+<li><code>&gt;</code>：增加缩进  </li>
+<li><code>&lt;</code>：减小缩进  </li>
+<li><code>=</code>：自动缩进</li>
+<li><code>!</code>：用外部程序过滤{motion}跨越的行</li>
+</ul>
+</li>
+<li>动作命令  <ul>
+<li><code>[h|j|k|l]</code>：左下上右  </li>
+<li><code>[-|+]</code>：上一行（下一行）的非空白字符</li>
+<li><code>0</code>（数字）：行首（含空白）</li>
+<li><code>^</code>：行首（不含空白），即本行第一个非空白字符  </li>
+<li><code>$</code>：行末  </li>
+<li><code>gg</code>：文首  </li>
+<li><code>G</code>：文末  </li>
+<li><code>[f|F|t|T]{char}</code>：右侧（左侧）的第一个char字符</li>
+<li><code>[;|,]</code>：下一个（上一个）”f|F|t|T”的char字符</li>
+<li><code>:{num}</code>：至第num行  </li>
+<li><code>[w|b]</code>：后一个（前一个）或当前单词的头部（尾部）——含符号  </li>
+<li><code>[W|B]</code>：后一个（前一个）或当前单词的头部（尾部）——跳过符号（仅字母和数字包括负号）</li>
+<li><code>............................</code>  </li>
+<li>动作命令可以待有修饰符前缀<ul>
+<li><code>a</code>：即an，表示一个非空白对象  </li>
+<li><code>i</code>：即inner，表示一个内含对象</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>当一个操作符被连续调用两次，就表示作用于当前行<br>  <em>特例：<code>g~~</code>、<code>guu</code>、<code>gUU</code></em>  </li>
+</ul>
+</li>
+<li>操作符待决模式<br>  键入操作符后vim会进入操作符待决模式，此时vim会等待一个动作命令后执行操作<br>  在该模式下可以按<code>&lt;ESC&gt;</code>来退回普通模式<br>  因为该模式的存在，使得自定义操作符及动作指令能够存在  </li>
+</ul>
+<h2 id="插入模式">插入模式</h2><ul>
+<li>单词输入错误，应删除整个单词再重新输入<br>  <em>可以减少以后输入出错</em>  </li>
+<li>删除  <ul>
+<li><code>&lt;C-h&gt;</code>：删除前一个字符，相当于退格键  </li>
+<li><code>&lt;C-w&gt;</code>：删除前一个单词  </li>
+<li><code>&lt;C-u&gt;</code>：删除至行首  </li>
+<li><strong>注意：只能删除本次插入模式下插入的内容</strong>  </li>
+<li><em>这些命令不是插入模式独有，也不是vim独有，在命令行模式、shell中都能使用它们</em>  </li>
+</ul>
+</li>
+<li>切换到普通模式使用<code>&lt;C-[&gt;</code>更加方便  </li>
+<li>插入-普通模式：<code>&lt;C-o&gt;</code><br>  执行一个普通模式命令后，马上就可以返回到插入命令<br>  在插入模式下，通过<code>&lt;C-o&gt;zz</code>迅速把当前行移动到屏幕正中  </li>
+<li>插入模式下的粘贴几个单词<br>  <code>&lt;C-r&gt;{register}</code>：将register号寄存器的内容粘贴到当前位置<br>  <em>普通模式下复制文本默认保存在0号寄存器中</em><br>  <strong>注意：当文本比较多的时候，应切换到普通模式下操作比较合适</strong>  </li>
+<li>运算<br>  <code>&lt;C-r&gt;={expr}&lt;CR&gt;</code>：执行expr运算并且把结果插入到当前位置  </li>
+<li>用字符编码插入字符  <ul>
+<li>十进制ASCII字符：<code>&lt;C-v&gt;{code}</code><br>  只能插入三位十进制数的ASCII码，注意高位补0  </li>
+<li>十六进制unicode字符：<code>&lt;C-v&gt;u{code}</code><br>  插入四位十六进制数的unicode码，注意高位补0  </li>
+<li>通过二合字母插入字符<br>  <code>&lt;C-k&gt;{char1}{char2}</code><br>  二合字母集可以通过<code>:digraphs</code>查看<br>  <code>:digraph-table</code>可以获得二合字母集更详细的信息  </li>
+</ul>
+</li>
+<li>查看当前字符的编码<br>  <code>ga</code>：屏幕下方会显示当前字符的十进制、十六进制、八进制编码信息  </li>
+<li>虚拟替换模式<br>  <code>R</code>：替换模式，<code>&lt;Tab&gt;</code>会作为一个字符被替换<br>  <code>gR</code>：虚拟替换模式，<code>&lt;Tab&gt;</code>会作为多个字符（一般为八个）被逐个替换（直到末尾才替换掉<code>&lt;Tab&gt;</code>）<br>  <code>r</code>和<code>gr</code>同理～<br>  <strong>应尽量使用虚拟替换模式</strong>  </li>
+</ul>
+<h2 id="可视模式">可视模式</h2><ul>
+<li>三种可视模式  <ol>
+<li><code>v</code>：操作字符文本  </li>
+<li><code>V</code>：操作行文本  </li>
+<li><code>&lt;C-v&gt;</code>：操作块文本  </li>
+</ol>
+</li>
+<li>该模式与其他模式不同，是先选择文本后触发命令  </li>
+<li>选择模式<code>&lt;C-g&gt;</code><br>  类似与windows的选择模式，输入的可见字符会替换掉选中的文本，之后vim进入插入模式<br>  这个模式只是为了迎合windows用户，应尽量少用  </li>
+<li><code>gv</code>：重选上次的高亮选区  </li>
+<li>该模式下的<code>.</code>命令有时候会出现异常<br>  <strong>所以应尽可能使用操作命令而不是可视命令</strong>  </li>
+<li>有时候修改文本的范围很难用动作命令表达出来，这时候才用到可视命令  </li>
+<li>修改多行文本时，只有第一行发生变化，只有当返回普通模式后，其他行才会发生变化  </li>
+<li><code>&lt;C-v&gt;</code>不仅可以选中矩形的区域，还可以选中长短不一的块<br>  当在该模式下选中行末部分，可以实现长短不一的块的选择  </li>
+</ul>
+<h2 id="命令行模式">命令行模式</h2><ul>
+<li>三种形式的命令行模式  <ol>
+<li>按下<code>:</code>的Ex命令  </li>
+<li>按下<code>/</code>的查找命令  </li>
+<li>用<code>&lt;C-r&gt;=</code>访问表达式寄存器  </li>
+</ol>
+</li>
+<li>指定命令作用范围<ul>
+<li>指定行<br>  <code>:{number}....</code><br>  只包含数字的Ex命令表示跳转<br>  <strong>可以使用特殊符号<code>$</code>表示最后一行，<code>%</code>表示当前文件的所有行</strong>  </li>
+<li>用地址来指定一个范围<br>  <code>:{start},{end}....</code>，执行命令后光标将跳转到end行  </li>
+<li>用高亮选取指定范围<br>  先用可视模式<code>v</code>,<code>V</code>,<code>&lt;C-v&gt;</code>选取高亮区<br>  再按下<code>:</code>，此时命令行会自动填充成<code>:&#39;&lt;,&#39;&gt;</code>，表示作用在高亮区上  </li>
+<li>用模式指定<br>  <code>:/{pattern1},/{pattern2}/....</code><br>  例如：<code>:/&lt;html&gt;/,/&lt;\/html&gt;/</code>指定了html内的所有内容（包含<code>&lt;html&gt;</code>和<code>&lt;/html&gt;</code>）<br>  <em>注意：斜杠<code>/</code>有特殊含义，需要用反斜杠<code>\</code>转义</em>  </li>
+<li>地址偏移<br>  直接对地址进行<code>+</code>或<code>-</code>运算<br>  如：<code>:/&lt;html&gt;/+1,/&lt;\/html&gt;/-1</code>则排除了<code>&lt;html&gt;</code>和<code>&lt;/html&gt;</code>而只包含了其中间的内容<br>  <strong>如果不加数字，默认偏移量为1</strong>  </li>
+<li>特殊符号总结  <ul>
+<li><code>1</code>：第一行  </li>
+<li><code>0</code>：虚拟行，位于第一行上方，常用于插入到首行等功能</li>
+<li><code>$</code>：最后一行  </li>
+<li><code>.</code>：当前行  </li>
+<li><code>%</code>：整个文件，相当于<code>:1,$</code>  </li>
+<li><code>&#39;m</code>：包含位置标记m的行  </li>
+<li><code>&#39;&lt;</code>和<code>&#39;&gt;</code>：高亮选取的起始和结束行  </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>复制命令：<code>:t</code>或<code>:co</code>或<code>:copy</code><br>  <code>:{range}t {address}</code><br>  与普通模式下的<code>y</code>命令不同，该命令不把文本保存到寄存器  </li>
+<li>移动命令：<code>:move</code>或<code>:m</code><br>  <code>:{range}m {address}</code>  </li>
+<li>在指定范围上执行普通模式命令<br>  <code>:{range}normal {commands}</code>，常用于多行的处理<br>  常用的命令如下：  <ul>
+<li><code>:{range}normal .</code>：对多行重复同一操作   </li>
+<li><code>:{range}normal A;</code>：对多行末尾补上分号  </li>
+<li><code>:{range}normal i//</code>：将多行内容注释掉  </li>
+</ul>
+</li>
+<li>重复上一条命令：<code>@:</code>  </li>
+<li>使用<code>&lt;C-o&gt;</code>进入插入-普通模式时，命令记录会跳转到上一条命令，可以借此进行命令记录的跳转</li>
+<li>自动补全  <ul>
+<li><code>&lt;Tab&gt;</code>自动补全命令<br>  多次按<code>&lt;Tab&gt;</code>会正向遍历补全列表的内容  </li>
+<li><code>&lt;S-Tab&gt;</code>反向遍历补全列表，<em>S表示<code>&lt;shift&gt;</code>按键</em>  </li>
+<li><code>&lt;C-d&gt;</code>显示可用的补全列表  </li>
+<li>自定义补全行为  <ul>
+<li>bash shell形式：<code>set wildmode=longest,list</code>  </li>
+<li>zsh形式：<code>set wildmenu</code>和<code>set wildmode=full</code>  <ul>
+<li><code>wildmenu</code>为补全导航列表  </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>将当前单词插入到命令行中<br>  常用于替换命令和查看帮助文档<br>  在命令行模式下，<code>&lt;C-r&gt;&lt;C-w&gt;</code>会复制当前单词到命令行中  </li>
+<li>回溯历史命令  <ul>
+<li>回溯所有命令<br>  在<code>:</code>下保持提示符为空按<code>&lt;up&gt;</code>(<code>&lt;C-p&gt;</code>)和<code>&lt;down&gt;</code>(<code>&lt;C-n&gt;</code>)  <ul>
+<li><code>&lt;C-p&gt;``&lt;C-n&gt;</code>和<code>&lt;up&gt;``&lt;down&gt;</code>的区别<br>  前者方便，但不能过滤命令<br>  解决方法：<br>  在<code>.vim</code>文件中创建映射项<br>  <code>cnoremap &lt;C-p&gt; &lt;Up&gt;</code><br>  <code>cnoremap &lt;C-n&gt; &lt;Down&gt;</code>  </li>
+</ul>
+</li>
+<li>过滤回溯的命令<br>  如<code>:help&lt;up&gt;</code>回溯以”help”开头的命令  </li>
+<li>命令历史容量设置<br>  缺省只有20<br>  推荐<code>set history=200</code>  </li>
+<li>除了Ex命令，查找命令也会记录下来并保存在另一个文件中   </li>
+</ul>
+</li>
+<li>一次性执行多条命令<br>  用<code>|</code>隔开命令即可  </li>
+<li>命令行窗口<br>  像一个常规的vim缓冲区，其中每一行是命令历史中的一个条目<br>  可以在该窗口下修改命令历史记录，对之前使用过的命令做调整后方便重复利用<br>  <em>当打开命令行窗口时，它始终拥有焦点，除非关闭它，否则无法切换到其他窗口</em>  <ul>
+<li><code>q:</code>：打开Ex命令的命令行窗口   </li>
+<li><code>q/</code>：打开查找命令的命令行窗口  </li>
+<li><code>&lt;C-f&gt;</code>：从命令行模式切换到命令行窗口（起始命令行模式下输入的内容仍然保留下来）  </li>
+</ul>
+</li>
+<li>运行shell命令<br>  <code>!{command}</code>  <ul>
+<li><code>%</code>代表当前文件名  </li>
+<li><code>:shell</code>可以打开一个交互式的shell会话（通过<code>exit</code>退出）<br>  更好的方法是用<code>&lt;C-z&gt;</code>挂起vim所属进程，用<code>fp</code>唤醒挂起的作业<br>  <em>shell下的<code>jobs</code>命令可以查看当前的作业列表</em>  </li>
+</ul>
+</li>
+<li>大量读取或写入命令输入输出<br>  <code>:read !{cmd}</code>将命令输出读取到当前缓冲区中<br>  <code>:write !{cmd}</code>：将当前缓冲区内容作为命令的标准输入   </li>
+<li>借助shell命令过滤指定范围<br>  <code>:{range}!{filter}</code><br>  如用sort命令，<code>:2,$!sort -t &#39;,&#39; -k 2</code>表示第2行到最后一行之间，以逗号为分隔符的第二字段排序  </li>
+<li>常见的和操作缓冲区文本的Ex命令  <ul>
+<li><code>:{range}d {x}</code>：删除指定内容（并保存到寄存器x中）</li>
+<li><code>:{range}y {x}</code>：复制指定内容到寄存器x中  </li>
+<li><code>:{line}put {x}</code>：在指定行后粘贴寄存器x中的内容   </li>
+<li><code>:{range}t {address}</code>：复制指定内容到address处  </li>
+<li><code>:{range}m {address}</code>：移动指定内容到address处  </li>
+<li><code>:{range}join</code>：连接指定行内容  </li>
+<li><code>:{range}normal {commands}</code>：对指定范围执行普通模式命令  </li>
+<li><code>:{range}s/{pattern}/{string}/{flag}</code>：替换  </li>
+<li><code>:{range}global/{pattern}/{cmd}</code>：对指定范围内匹配pattern的所有行执行cmd命令（Ex）  </li>
+</ul>
+</li>
+</ul>
+<h2 id="管理多个文件">管理多个文件</h2><h3 id="缓冲区列表">缓冲区列表</h3><p>文件读取后在内存缓冲区中  </p>
+<ul>
+<li><code>:ls</code>命令可以列出所有被载入到内存中的缓冲区列表   <ul>
+<li>每个条目开头的数字为系统自动分配而<strong>不可改变</strong>的缓冲区编号</li>
+<li><code>%</code>：当前窗口中可见的缓冲区   </li>
+<li><code>#</code>：轮换文件<br>  <strong>按<code>&lt;C-^&gt;</code>可以在两个文件之间快速轮换</strong>  </li>
+</ul>
+</li>
+<li>缓冲区切换<ul>
+<li>遍历缓冲区列表：  <ul>
+<li>正向移动：<code>:bn</code>或<code>:bnext</code>  </li>
+<li>反向移动：<code>:bp</code>或<code>:bprevious</code>  </li>
+</ul>
+</li>
+<li><code>:buffer {N}</code>：跳转到指定编号的缓冲区  </li>
+<li><code>:buffer {bufname}</code>：跳转到可以被bufname唯一标识的缓冲区（若多个缓冲区具有同一标识，可以通过<code>&lt;Tab&gt;</code>选择）  </li>
+</ul>
+</li>
+<li><code>:bufdo {commands}</code>：对所有缓冲区执行Ex命令  </li>
+<li><p>创建快速遍历缓冲区列表的键盘映射  </p>
+<pre><code>nnoremap &lt;silent&gt; [b <span class="symbol">:bp&lt;CR&gt;</span>  
+nnoremap &lt;silent&gt; ]b <span class="symbol">:bn&lt;CR&gt;</span>  
+nnoremap &lt;silent&gt; [<span class="constant">B </span><span class="symbol">:bfirst&lt;CR&gt;</span>  
+nnoremap &lt;silent&gt; ]<span class="constant">B </span><span class="symbol">:blast&lt;CR&gt;</span>  
+</code></pre></li>
+<li><p>删除<code>:bd</code>或<code>:bdelect</code><br>  <code>:bd {N1,N2,N3....}</code>：删除列出的缓冲区<br>  <code>:{N,M} bd</code>：删除连续的缓冲区  </p>
+</li>
+</ul>
+<h3 id="参数列表">参数列表</h3><p>对一批文件进行分组，其<strong>文件顺序可调整*</strong>   </p>
+<ul>
+<li>初始的参数列表为启动时vim的文件列表   </li>
+<li><code>:args</code>：查看参数列表<br>  其中<code>[]</code>表明了当前的活动文件  </li>
+<li><code>:args {arglist}</code>：填充参数列表<br>  arglist可以是文件名、通配符、shell命令的输出结果等   <ul>
+<li>用文件名指定文件<br>  <code>:args {file1,file2,....}</code>  </li>
+<li>用Glob模式指定文件<br>  <code>*</code>：表示0到无穷多个字符，但不包含子目录<br>  <code>**</code>：表示0到无穷多个字符，包含子目录  </li>
+<li>用反引号结构指定文件<br>  将shell命令用反引号括起来，其输出将填充到相应的位置<br>  如：<code>:args \</code>cat .chapters``  </li>
+</ul>
+</li>
+<li>隐藏缓冲区<br>  缓冲区列表中，<code>+</code>代表缓冲区被修改过，此时切换缓冲区会弹出错误信息，可以用感叹号强制切换，此时列表中被标记为<code>a</code>的为活动缓冲区（active），被标记为<code>h</code>的为隐藏活动区（hidden）  <ul>
+<li>处理隐藏缓冲区  <ul>
+<li><code>:w</code>或<code>:write</code>：写入磁盘  </li>
+<li><code>:e</code>或<code>:edit</code>：从磁盘中读入到缓冲区（回滚修改操作）  </li>
+<li><code>:qa</code>或<code>:qall</code>：关闭所有窗口，放弃所有修改  </li>
+<li><code>:wa</code>或<code>:wall</code>：全部写入磁盘   </li>
+</ul>
+</li>
+<li>用<code>:argdo</code>或<code>:bufdo</code>修改一组缓冲区<br>  前提：<strong>打开<code>hidden</code>选项</strong><br>  打开后，对已修改的缓冲区执行<code>:next</code>,<code>:bnext</code>,<code>cnext</code>等命令无需再加感叹号   </li>
+</ul>
+</li>
+</ul>
+<h3 id="窗口">窗口</h3><ul>
+<li>分割  <ul>
+<li><code>&lt;C-w&gt;s</code>：水平切分（同高度），新窗口仍为当前缓冲区   </li>
+<li><code>&lt;C-w&gt;v</code>：垂直切分（同宽度），新窗口仍未当前缓冲区  </li>
+<li><code>:sp {file}</code>或<code>:split {file}</code>：水平切分，新窗口为file内容   </li>
+<li><code>:vsp {file}</code>或<code>:vsplit {file}</code>：垂直切分，新窗口为file内容  </li>
+</ul>
+</li>
+<li>切换  <ul>
+<li><code>&lt;C-w&gt;w</code>：轮换   </li>
+<li><code>&lt;C-w&gt;{h|j|k|l}</code>：切换到左（下上右）侧的窗口  </li>
+<li>若为GVIM，可以直接点击对用窗口进行切换    </li>
+</ul>
+</li>
+<li>关闭  <ul>
+<li><code>:clo</code>或<code>:close</code>或<code>&lt;C-w&gt;c</code>：关闭当前窗口   </li>
+<li><code>:on</code>或<code>:only</code>或<code>&lt;C-w&gt;o</code>：关闭其他重口   </li>
+</ul>
+</li>
+<li>改变窗口大小和重排列  <ul>
+<li><code>&lt;C-w&gt;=</code>：使所有窗口等宽、等高  </li>
+<li><code>&lt;C-w&gt;_</code>：使当前窗口高度最大化  </li>
+<li><code>&lt;C-w&gt;|</code>：使当前窗口宽度最大化   </li>
+<li><code>{N}&lt;C-w&gt;_</code>：使当前窗口高度调整为N行  </li>
+<li><code>{N}&lt;C-w&gt;|</code>：使当前窗口宽度调整为N列  </li>
+<li>若为GVIM，可以直接用鼠标拖动窗口的分界线   </li>
+</ul>
+</li>
+</ul>
+<h3 id="标签页">标签页</h3><p>对窗口进行分组   </p>
+<ul>
+<li><code>:lcd {path}</code>：设置工作路径<br>  限定标签页的工程范围  <ul>
+<li>只能改变当前窗口，而不是当前标签页  </li>
+<li>如果要改变标签页的所有窗口，应用<code>:windo lcd {path}</code>   </li>
+</ul>
+</li>
+<li>打开和关闭      <ul>
+<li><code>:tabe {file}</code>或<code>tabedit {file}</code>：在新标签页中打开file  </li>
+<li><code>&lt;C-w&gt;T</code>：将当前窗口移动到一个新标签页   </li>
+<li><code>:tabc</code>或<code>:tabclos</code>：关闭当前标签页及其所有窗口   </li>
+<li><code>:tabo</code>或<code>:tabonly</code>：关闭其他标签页及其所有窗口   </li>
+</ul>
+</li>
+<li>切换  <ul>
+<li>标签页从1开始编号   </li>
+<li><code>:tabn {N}</code>或<code>:tabnext {N}</code>或<code>{N}gt</code>：切换到N号标签页   </li>
+<li><code>:tabn</code>或<code>:tabnext</code>或<code>gt</code>：切换到下一标签页  </li>
+<li><code>:tabp</code>或<code>:tabprevious</code>或<code>gT</code>：切换到上一标签页  </li>
+</ul>
+</li>
+<li>重排列  <ul>
+<li><code>:tabmove {N}</code>：将当前标签页移动到N号标签页之后  <ul>
+<li><code>:tabmove 0</code>：表示移动到开头   </li>
+<li><code>:tabmove</code>：表示移动到末尾   </li>
+</ul>
+</li>
+<li>若为GVIM，可以直接用鼠标拖曳</li>
+</ul>
+</li>
+</ul>
+<h2 id="打开及保存文件">打开及保存文件</h2>
+          
+        
+      </div>
+    
+
+    
+      <div class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/linux/">
+                #linux
+              </a>
+            
+              <a href="/tags/vim/">
+                #vim
+              </a>
+            
+          </div>
+        
+
+        
+
+        
+        
+          <div class="post-eof"></div>
+        
+      </div>
+    
+  </div>
+
+
+  
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2015/08/01/Note_For_Linux/">
+                《鸟哥的Linux私房菜》笔记
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          
+            發表於 2015-08-01
+          
+        </span>
+
+        
+          
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    
+      <div class="post-body">
+
+        
+        
+
+        
+          
+            <p>学习《鸟哥的Linux私房菜》时，<br>在印象笔记上手码的Linux笔记  </p>
+<ul>
+<li><a href="/Note_for_Linux/chap0计算机概论.html">chap0计算机概论</a></li>
+<li><a href="/Note_for_Linux/chap1linux是什么.html">chap1linux是什么</a></li>
+<li><a href="/Note_for_Linux/chap3主机规划与磁盘分区.html">chap3主机规划与磁盘分区</a></li>
+<li><a href="/Note_for_Linux/chap4安装CentOS 5.x与多重引导小技巧.html">chap4安装CentOS 5.x与多重引导小技巧</a></li>
+<li><a href="/Note_for_Linux/chap5首次登录与在线求助manpage.html">chap5首次登录与在线求助manpage</a></li>
+<li><a href="/Note_for_Linux/chap6Linux的文件权限与目录配置.html">chap6Linux的文件权限与目录配置</a></li>
+<li><a href="/Note_for_Linux/chap7Linux文件与目录管理.html">chap7Linux文件与目录管理</a></li>
+<li><a href="/Note_for_Linux/chap8Linux磁盘与文件系统管理.html">chap8Linux磁盘与文件系统管理</a></li>
+<li><a href="/Note_for_Linux/chap9文件与文件系统的压缩与打包.html">chap9文件与文件系统的压缩与打包</a></li>
+<li><a href="/Note_for_Linux/chap10vim程序编辑器.html">chap10vim程序编辑器</a></li>
+<li><a href="/Note_for_Linux/chap11认识bash这个shell.html">chap11认识bash这个shell</a></li>
+<li><a href="/Note_for_Linux/chap12正则表达式与文件格式化处理.html">chap12正则表达式与文件格式化处理</a></li>
+<li><a href="/Note_for_Linux/chap13学习shell script.html">chap13学习shell script</a></li>
+</ul>
+
+          
+        
+      </div>
+    
+
+    
+      <div class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/linux/">
+                #linux
+              </a>
+            
+          </div>
+        
+
+        
+
+        
+        
+          <div class="post-eof"></div>
+        
+      </div>
+    
+  </div>
+
+
+  
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2015/08/01/Note_for_Python/">
+                python笔记
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          
+            發表於 2015-08-01
+          
+        </span>
+
+        
+          
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    
+      <div class="post-body">
+
+        
+        
+
+        
+          
+            <p>使用ipython notebook学习python<br>模仿教材敲代码并用<strong>注释</strong>或<strong>markdown</strong>在旁写下注解   </p>
+<h3 id="《python基础教程》笔记">《python基础教程》笔记</h3><ul>
+<li><a href="/Note_for_Python/chap1基础知识.html">chap1基础知识</a></li>
+<li>chap2列表和元组<ul>
+<li><a href="/Note_for_Python/chap2列表和元组/1序列概览.html">1序列概览</a></li>
+<li><a href="/Note_for_Python/chap2列表和元组/2列表.html">2列表</a></li>
+<li><a href="/Note_for_Python/chap2列表和元组/3元组.html">3元组</a></li>
+</ul>
+</li>
+<li>chap3使用字符串<ul>
+<li><a href="/Note_for_Python/chap3使用字符串/1字符串格式化.html">1字符串格式化</a></li>
+<li><a href="/Note_for_Python/chap3使用字符串/2字符串方法.html">2字符串方法</a></li>
+</ul>
+</li>
+<li><a href="/Note_for_Python/chap4字典.html">chap4字典</a></li>
+<li>chap5条件、循环和其他语句<ul>
+<li><a href="/Note_for_Python/chap5条件、循环和其他语句/1print、import和赋值.html">1print、import和赋值</a></li>
+<li><a href="/Note_for_Python/chap5条件、循环和其他语句/2条件语句、断言.html">2条件语句、断言</a></li>
+<li><a href="/Note_for_Python/chap5条件、循环和其他语句/3循环.html">3循环</a></li>
+<li><a href="/Note_for_Python/chap5条件、循环和其他语句/4pass、del、exec.html">4pass、del、exec</a></li>
+</ul>
+</li>
+<li><a href="/Note_for_Python/chap6抽象——函数.html">chap6抽象——函数</a></li>
+<li><a href="/Note_for_Python/chap7更加抽象——对象.html">chap7更加抽象——对象</a></li>
+<li><a href="/Note_for_Python/chap8异常.html">chap8异常</a></li>
+<li>chap9魔法方法、属性、迭代器<ul>
+<li><a href="/Note_for_Python/chap9魔法方法、属性、迭代器/1魔法方法.html">1魔法方法</a></li>
+<li><a href="/Note_for_Python/chap9魔法方法、属性、迭代器/2属性.html">2属性</a></li>
+<li><a href="/Note_for_Python/chap9魔法方法、属性、迭代器/3迭代器和生成器.html">3迭代器和生成器</a></li>
+<li><a href="/Note_for_Python/chap9魔法方法、属性、迭代器/4实例：八皇后问题.html">4实例：八皇后问题</a></li>
+</ul>
+</li>
+<li>chap10自带电池<ul>
+<li><a href="/Note_for_Python/chap10自带电池/1模块.html">1模块</a></li>
+<li><a href="/Note_for_Python/chap10自带电池/2标准库.html">2标准库</a></li>
+<li><a href="/Note_for_Python/chap10自带电池/3实例：简单的数据库.html">3实例：简单的数据库</a></li>
+<li><a href="/Note_for_Python/chap10自带电池/4re模块、正则表达式.html">4re模块、正则表达式</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="模块学习笔记">模块学习笔记</h3><h4 id="Bottle框架">Bottle框架</h4><ul>
+<li><a href="/Note_for_Python/Bottle/Bottle.html">Bottle</a></li>
+<li><a href="/Note_for_Python/Bottle/Template.html">Template</a></li>
+</ul>
+
+          
+        
+      </div>
+    
+
+    
+      <div class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/python/">
+                #python
+              </a>
+            
+          </div>
+        
+
+        
+
+        
+        
+          <div class="post-eof"></div>
+        
+      </div>
+    
+  </div>
+
+
+  
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
               <a class="post-title-link" href="/2015/07/28/指针&数组/">
                 指针&数组
               </a>
@@ -117,7 +705,7 @@
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-07-28
+            發表於 2015-07-27
           
         </span>
 
@@ -247,7 +835,7 @@
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-06-03
+            發表於 2015-06-02
           
         </span>
 
@@ -356,96 +944,6 @@
           
           
             
-              <a class="post-title-link" href="/2015/05/31/Note_For_Linux/">
-                《鸟哥的Linux私房菜》笔记
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          
-            發表於 2015-06-01
-          
-        </span>
-
-        
-          
-        
-
-        
-          
-        
-      </div>
-    </div>
-
-    
-      <div class="post-body">
-
-        
-        
-
-        
-          
-            <p>学习《鸟哥的Linux私房菜》时，<br>在印象笔记上手码的Linux笔记  </p>
-<ul>
-<li><a href="/Note_for_Linux/chap0计算机概论.html">chap0计算机概论</a></li>
-<li><a href="/Note_for_Linux/chap1linux是什么.html">chap1linux是什么</a></li>
-<li><a href="/Note_for_Linux/chap3主机规划与磁盘分区.html">chap3主机规划与磁盘分区</a></li>
-<li><a href="/Note_for_Linux/chap4安装CentOS 5.x与多重引导小技巧.html">chap4安装CentOS 5.x与多重引导小技巧</a></li>
-<li><a href="/Note_for_Linux/chap5首次登录与在线求助manpage.html">chap5首次登录与在线求助manpage</a></li>
-<li><a href="/Note_for_Linux/chap6Linux的文件权限与目录配置.html">chap6Linux的文件权限与目录配置</a></li>
-<li><a href="/Note_for_Linux/chap7Linux文件与目录管理.html">chap7Linux文件与目录管理</a></li>
-<li><a href="/Note_for_Linux/chap8Linux磁盘与文件系统管理.html">chap8Linux磁盘与文件系统管理</a></li>
-<li><a href="/Note_for_Linux/chap9文件与文件系统的压缩与打包.html">chap9文件与文件系统的压缩与打包</a></li>
-<li><a href="/Note_for_Linux/chap10vim程序编辑器.html">chap10vim程序编辑器</a></li>
-<li><a href="/Note_for_Linux/chap11认识bash这个shell.html">chap11认识bash这个shell</a></li>
-<li><a href="/Note_for_Linux/chap12正则表达式与文件格式化处理.html">chap12正则表达式与文件格式化处理</a></li>
-<li><a href="/Note_for_Linux/chap13学习shell script.html">chap13学习shell script</a></li>
-</ul>
-
-          
-        
-      </div>
-    
-
-    
-      <div class="post-footer">
-        
-          <div class="post-tags">
-            
-              <a href="/tags/linux/">
-                #linux
-              </a>
-            
-          </div>
-        
-
-        
-
-        
-        
-          <div class="post-eof"></div>
-        
-      </div>
-    
-  </div>
-
-
-  
-    
-
-  <div class="post post-type-normal ">
-    <div class="post-header">
-
-      
-      
-        <h1 class="post-title">
-          
-          
-            
               <a class="post-title-link" href="/2015/05/11/javascript笔记/">
                 JS笔记
               </a>
@@ -457,7 +955,7 @@
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-05-11
+            發表於 2015-05-10
           
         </span>
 
@@ -757,7 +1255,7 @@ myFather=<span class="keyword">new</span> person(<span class="string">"Bill"</sp
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-05-08
+            發表於 2015-05-07
           
         </span>
 
@@ -1309,124 +1807,6 @@ stactivepage<span class="comment">(_back_page)</span>;    <span class="comment">
           
           
             
-              <a class="post-title-link" href="/2015/05/02/Note_for_Python/">
-                python笔记
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          
-            發表於 2015-05-02
-          
-        </span>
-
-        
-          
-        
-
-        
-          
-        
-      </div>
-    </div>
-
-    
-      <div class="post-body">
-
-        
-        
-
-        
-          
-            <p>使用ipython notebook学习python<br>模仿教材敲代码并用<strong>注释</strong>或<strong>markdown</strong>在旁写下注解   </p>
-<h3 id="《python基础教程》笔记">《python基础教程》笔记</h3><ul>
-<li><a href="/Note_for_Python/chap1基础知识.html">chap1基础知识</a></li>
-<li>chap2列表和元组<ul>
-<li><a href="/Note_for_Python/chap2列表和元组/1序列概览.html">1序列概览</a></li>
-<li><a href="/Note_for_Python/chap2列表和元组/2列表.html">2列表</a></li>
-<li><a href="/Note_for_Python/chap2列表和元组/3元组.html">3元组</a></li>
-</ul>
-</li>
-<li>chap3使用字符串<ul>
-<li><a href="/Note_for_Python/chap3使用字符串/1字符串格式化.html">1字符串格式化</a></li>
-<li><a href="/Note_for_Python/chap3使用字符串/2字符串方法.html">2字符串方法</a></li>
-</ul>
-</li>
-<li><a href="/Note_for_Python/chap4字典.html">chap4字典</a></li>
-<li>chap5条件、循环和其他语句<ul>
-<li><a href="/Note_for_Python/chap5条件、循环和其他语句/1print、import和赋值.html">1print、import和赋值</a></li>
-<li><a href="/Note_for_Python/chap5条件、循环和其他语句/2条件语句、断言.html">2条件语句、断言</a></li>
-<li><a href="/Note_for_Python/chap5条件、循环和其他语句/3循环.html">3循环</a></li>
-<li><a href="/Note_for_Python/chap5条件、循环和其他语句/4pass、del、exec.html">4pass、del、exec</a></li>
-</ul>
-</li>
-<li><a href="/Note_for_Python/chap6抽象——函数.html">chap6抽象——函数</a></li>
-<li><a href="/Note_for_Python/chap7更加抽象——对象.html">chap7更加抽象——对象</a></li>
-<li><a href="/Note_for_Python/chap8异常.html">chap8异常</a></li>
-<li>chap9魔法方法、属性、迭代器<ul>
-<li><a href="/Note_for_Python/chap9魔法方法、属性、迭代器/1魔法方法.html">1魔法方法</a></li>
-<li><a href="/Note_for_Python/chap9魔法方法、属性、迭代器/2属性.html">2属性</a></li>
-<li><a href="/Note_for_Python/chap9魔法方法、属性、迭代器/3迭代器和生成器.html">3迭代器和生成器</a></li>
-<li><a href="/Note_for_Python/chap9魔法方法、属性、迭代器/4实例：八皇后问题.html">4实例：八皇后问题</a></li>
-</ul>
-</li>
-<li>chap10自带电池<ul>
-<li><a href="/Note_for_Python/chap10自带电池/1模块.html">1模块</a></li>
-<li><a href="/Note_for_Python/chap10自带电池/2标准库.html">2标准库</a></li>
-<li><a href="/Note_for_Python/chap10自带电池/3实例：简单的数据库.html">3实例：简单的数据库</a></li>
-<li><a href="/Note_for_Python/chap10自带电池/4re模块、正则表达式.html">4re模块、正则表达式</a></li>
-</ul>
-</li>
-</ul>
-<h3 id="模块学习笔记">模块学习笔记</h3><h4 id="Bottle框架">Bottle框架</h4><ul>
-<li><a href="/Note_for_Python/Bottle/Bottle.html">Bottle</a></li>
-<li><a href="/Note_for_Python/Bottle/Template.html">Template</a></li>
-</ul>
-
-          
-        
-      </div>
-    
-
-    
-      <div class="post-footer">
-        
-          <div class="post-tags">
-            
-              <a href="/tags/python/">
-                #python
-              </a>
-            
-          </div>
-        
-
-        
-
-        
-        
-          <div class="post-eof"></div>
-        
-      </div>
-    
-  </div>
-
-
-  
-    
-
-  <div class="post post-type-normal ">
-    <div class="post-header">
-
-      
-      
-        <h1 class="post-title">
-          
-          
-            
               <a class="post-title-link" href="/2015/04/23/python爬虫初探/">
                 python爬虫初探
               </a>
@@ -1438,7 +1818,7 @@ stactivepage<span class="comment">(_back_page)</span>;    <span class="comment">
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-04-23
+            發表於 2015-04-22
           
         </span>
 
@@ -1758,7 +2138,7 @@ with <span class="function"><span class="title">open</span><span class="params">
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-04-20
+            發表於 2015-04-19
           
         </span>
 
@@ -1863,7 +2243,7 @@ with <span class="function"><span class="title">open</span><span class="params">
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-04-06
+            發表於 2015-04-05
           
         </span>
 
@@ -2112,145 +2492,6 @@ LD_PRELOAD=<span class="variable">$LD_LIB</span> <span class="variable">$SUBLIME
 
 
   
-    
-
-  <div class="post post-type-normal ">
-    <div class="post-header">
-
-      
-      
-        <h1 class="post-title">
-          
-          
-            
-              <a class="post-title-link" href="/2015/03/24/春纳后端/">
-                俱乐部春纳网页后端小结
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          
-            發表於 2015-03-24
-          
-        </span>
-
-        
-          
-        
-
-        
-          
-        
-      </div>
-    </div>
-
-    
-      <div class="post-body">
-
-        
-        
-
-        
-          
-            <h2 id="ubuntu下开发环境的搭建">ubuntu下开发环境的搭建</h2><h3 id="php_+_apache_+_mysql_安装">php + apache + mysql 安装</h3><p><code>sudo apt-get install apache2</code><br><code>sudo apt-get install libapache2-mod-php5 php5</code><br><code>sudo apt-get install mysql-server mysql-client</code><br>参考资料：<a href="http://www.cnblogs.com/lynch_world/archive/2012/01/06/2314717.html" target="_blank" rel="external">ubuntu下安装Apache+PHP+Mysql</a></p>
-<h3 id="apache的使用">apache的使用</h3><p>把文件放到<code>/var/www/html</code>目录下，通过<code>localhost</code>访问<br>一般情况下apache是自动打开的，手动开启关闭重启的命令如下：<br><code>apachectl -k start</code><br><code>apachectl -k stop</code><br><code>apachectl -k restart</code>       </p>
-<h3 id="mysql的使用">mysql的使用</h3><h4 id="登录前">登录前</h4><p>登录：<code>mysql [-h 服务器] -u 用户名 -p</code>然后按照提示输入密码<br>修改密码：<code>mysqladmin -u 用户名 password &quot;新密码&quot;</code>然后按照提示输入原密码      </p>
-<h4 id="登录后">登录后</h4><h5 id="用户相关操作、创建数据库（root）">用户相关操作、创建数据库（root）</h5><p>创建用户：<code>insert into mysql.user(Host, User, Password) values(&#39;主机&#39;, &#39;用户名&#39;, password(&#39;密码&#39;));</code><br><em>本地访问的主机是localhost， 如果要远程通过phpmyadmin管理数据库，那么主机是%</em><br>创建数据库：<code>creat database 数据库名;</code><br>用户授权：<code>grant [select, update, insert, delect, all] on 数据库.表 to &#39;用户名&#39;@‘主机名’ identified by &quot;密码&quot;;</code><br>如果是所有数据库或所有表，用*代替<br><em>授权后刷新系统权限表：<code>flush privileges;</code></em><br>删除用户：<code>delect from user where User=&#39;用户名&#39; and Host=&#39;主机名&#39;;</code>;<br>删除后刷新系统权限表：<code>flush privileges;</code><br>删除数据库：<code>drop database 数据库名;</code><br>修改用户密码：<code>update mysql.user set password=password(&#39;新密码&#39;) where User=&#39;用户名&#39; and Host=&#39;主机名&#39;;</code><br>修改后刷新系统权限表：<code>flush privileges;</code>       </p>
-<h5 id="切换数据库：">切换数据库：</h5><p><code>use 数据库名;</code>         </p>
-<h5 id="显示数据：">显示数据：</h5><p><code>select 列 from 表名;</code><br>若显示全部内容，列使用*      </p>
-<h5 id="查看数据库：">查看数据库：</h5><p><code>show databases;</code><br><strong>数据库中的charset尽量使用utf8,而不是gbk，防止暴露服务器信息</strong><br>参考资料：<a href="http://www.2cto.com/Article/201310/247718.html" target="_blank" rel="external">GBK字符编码（字符集）缺陷导致web安全漏洞</a>【虽然看不太懂】           </p>
-<h3 id="phpmyadmin的使用">phpmyadmin的使用</h3><h4 id="安装：">安装：</h4><p>从官网下载后解压到<code>/var/www/html</code>，通过<code>localhost</code>访问      </p>
-<h4 id="配置：">配置：</h4><p>如果本地访问，直接使用就好<br>如果要连接到远程服务器的mysql，那么打开目录下的<code>libraries/config.defaut.php</code>文件，找到<code>$cfg[&#39;Servers&#39;][$i][&#39;host&#39;]</code>将值改为相应的服务器     </p>
-<h3 id="mysql备份">mysql备份</h3><h4 id="mysqldump命令">mysqldump命令</h4><p><code>mysqldump -h 主机 -u 用户名 -p 密码 数据库名</code></p>
-<h4 id="备份脚本（-sh）">备份脚本（.sh）</h4><pre><code>USER=<span class="string">"username"</span>
-PASSWORD=<span class="string">"password"</span>
-DATABASE=<span class="string">"datebase"</span>
-HOST=<span class="string">"localhost"</span>
-OPTIONS=<span class="string">"-h<span class="variable">$HOST</span> -u<span class="variable">$USER</span> -p<span class="variable">$PASSWORD</span> <span class="variable">$DATABASE</span>"</span>
-
-DATE=`date <span class="string">'+%Y%m%d-%H%M'</span>`
-BACKUP_DIR=/home/zk/datebase/
-DUMPFILE=<span class="variable">$DATE</span>.sql
-
-<span class="built_in">cd</span> <span class="variable">$BACKUP_DIR</span>
-mysqldump <span class="variable">$OPTIONS</span> &gt; <span class="variable">$DUMPFILE</span>
-</code></pre><p>该脚本将<code>datebase</code>数据库的内容备份到<code>/home/zk/datebase/</code>目录下，文件以备份时间命名</p>
-<h4 id="定时备份crontab">定时备份crontab</h4><p>参考资料：<a href="http://www.jb51.net/LINUXjishu/19905.html" target="_blank" rel="external">Linux crontab定时执行任务 命令格式与详细例子</a><br>基本格式：分 时 日 月 周 命令<br>每一行为一个任务，定时执行命令<br>可以用星号(*)表示任意值<br>crontab -e：直接编辑时程表（vi）<br>crontab -r：删除当前时程表<br>crontab -l：列出当前时程表<br>crontab FILE：使用FILE文件的内容替代当前时程表  </p>
-<h2 id="CI框架">CI框架</h2><h3 id="安装：-1">安装：</h3><p>从官网下载后解压到<code>/var/www/html</code>目录下即可<br>通过<code>localhost/...../index.php/..控制器../..方法../..参数..</code>访问<br>相关子目录：            </p>
-<blockquote>
-<p><code>application</code>：用户主要目录（主要是views, controllers, models, config）<br><code>system</code>：框架的系统目录，一般不用管<br><code>user_guide</code>：用户手册，英文版，不需要可以删除         </p>
-</blockquote>
-<h3 id="设计模式：MVC（Model_-_View_-_Controller）">设计模式：MVC（Model - View - Controller）</h3><h4 id="模型（Model）：处理页面和数据库的交互">模型（Model）：处理页面和数据库的交互</h4><h5 id="数据库配置：-/application/config/database-php文件">数据库配置：<code>.../application/config/database.php</code>文件</h5><p><code>$db[&#39;default&#39;][&#39;hostname&#39;]</code>：主机名<br><code>$db[&#39;default&#39;][&#39;username&#39;]</code>：mysql用户名<br><code>$db[&#39;default&#39;][&#39;password&#39;]</code>：mysql密码<br><code>$db[&#39;default&#39;][&#39;database&#39;]</code>：所用的数据库     </p>
-<h5 id="形式">形式</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="preprocessor">&lt;?</span> php          </span><br><span class="line">	<span class="class"><span class="keyword">Class</span> 模型名（首字母大写，与文件名相同，单文件名全小写） <span class="keyword">extends</span> <span class="title">CI_model</span>    </span><br><span class="line">	</span>&#123;        </span><br><span class="line">		<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> 方法名<span class="params">()</span>        </span><br><span class="line">		</span>&#123;            </span><br><span class="line">			...........        </span><br><span class="line">		&#125;    </span><br><span class="line">	&#125;</span></span><br></pre></td></tr></table></figure>
-<p>特殊方法：__construct()，构建函数，当模型被调用时，首先自动调用这个函数<br>通常要在构建函数中载入数据库<code>$this-&gt;load-&gt;database();</code>      </p>
-<h5 id="获取数据库内容">获取数据库内容</h5><h6 id="获取整张表">获取整张表</h6><p><code>$query=$this-&gt;db-&gt;get(&#39;表名&#39;);</code>返回Active Record类并且赋给变量$query<br><code>$query-&gt;result_array();</code>调用类的result_array()方法，返回一个包含各行内容的字典，可以在视图上通过foreach分别取出每一行<br><em>对于每一行，是一个以字段名为索引的字典</em></p>
-<h6 id="获取某一行的内容">获取某一行的内容</h6><p><code>$query=$this-&gt;db-&gt;get_where(&#39;表名&#39;, 筛选条件);</code>筛选条件是一个{‘字段名’=&gt;值}的数组<br><code>$query-&gt;row_array();</code>调用类的row_array()方法，返回一个包含匹配行的内容的字典        </p>
-<h5 id="向数据库写入内容">向数据库写入内容</h5><p><code>$this-&gt;input-&amp;gt;post(&#39;提交内容的name&#39;);</code>返回表当内对应name的value<br><code>$this-&gt;db-&gt;insert(&#39;表名&#39;, 内容)</code>写入数据库，内容是一个字典       </p>
-<h4 id="视图（View）：要展示的静态页面">视图（View）：要展示的静态页面</h4><p>可以把一个页面写成多个文件，显示时再拼接起来<br><em>比如可以创建一个templates文件夹，里面放一些各个网页通用头和尾</em><br>必须是php文件      </p>
-<h5 id="html_-&gt;_php改写">html -&gt; php改写</h5><p>连接的js和css等文件，还有图片等资源不能放在application目录下<br>需要在根目录下创建一个文件夹，把这些资源放进去<br>主要是修改连接的js和csss等文件、图片等资源的文件的地址          </p>
-<ul>
-<li>可以借助url的辅助函数<br>需要在方法中加入<code>$this-&gt;load-&gt;helper(&#39;url&#39;);</code>载入辅助函数<br>把根目录或者资源的目录写入<code>..../application/config/config.php</code>的<code>$config[&#39;base_url&#39;]</code><br>利用<code>base_url()</code>函数<br><em>如config中的base_url设置为localhost/join/resources</em><br><em>那么，base_url(‘image/background.jpg’)就会返回字符串loacalhost/join/resources/image/background.jpg</em>          </li>
-</ul>
-<p>js，css文件内不能写php语句，如果需要使用这个函数，可以把内容直接复制到页面上，而不通过连接<br><strong>注意：改写的时候要注意不要不小心把原文件上的括号、分号给删掉了</strong>       </p>
-<h4 id="控制器（Controller）：包含各种方法">控制器（Controller）：包含各种方法</h4><h5 id="形式-1">形式</h5><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;? php        </span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">控制器名（首字母大写，与文件名相同，但文件名全小写）</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">CI_controller</span>    </span><br><span class="line"></span>	&#123;        </span><br><span class="line">		public function 方法名()        </span><br><span class="line">		&#123;            </span><br><span class="line">			........        </span><br><span class="line">		&#125;    </span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>特殊方法：<strong>construct()，构建函数<br>通常需要加入`parents::</strong>construct();<code>，……并不知道有什么卵用，照搬=。=</code>$this-&gt;load-&gt;model(‘模型名’);<code>载入模型</code>$this-&gt;load-&gt;view(‘视图文件名’, $data);`：不是只显示这个视图的内容，而是把这个文件的 内容写到当前方法的页面上，并且把变量$data内的数据传递到这个视图文件上           </p>
-<h5 id="传递的数据在视图文件上的访问">传递的数据在视图文件上的访问</h5><p>如<code>$data[&#39;news&#39;][&#39;title&#39;]</code><br>在视图上通过<code>$news[&#39;title]</code>来访问这个变量           </p>
-<h5 id="调用模型上的方法：">调用模型上的方法：</h5><p><code>$this-&gt;模型名-&gt;方法名；</code>        </p>
-<h5 id="表单数据的传递">表单数据的传递</h5><p>controllers要有一个方法来接受表单的数据<br>form的action应指向这个方法<br>这个方法用来处理表单传递的数据，并且调用模型的方法与数据库进行交互           </p>
-<h2 id="提交到服务器">提交到服务器</h2><h3 id="登录：">登录：</h3><p><code>ssh 用户名@服务器</code>，然后输入密码        </p>
-<h3 id="服务器与本地文件的传输:">服务器与本地文件的传输:</h3><p>scp命令，用法与cp命令相似<br>比如上传本地<code>~/home.php</code>到服务器的主目录下:<br><code>scp ~/home.php 用户名@服务器:home.php</code></p>
-<h3 id="网站的目录：">网站的目录：</h3><p>一般来说，<br>对于nginx，放在<code>/usr/share/nginx/html/</code>目录下<br>对于apache，放在<code>/var/www/html/</code>目录下         </p>
-<p>nginx的配置挺复杂的，还有待以后进一步的学习</p>
-<h3 id="关闭ci框架的debug模式">关闭ci框架的debug模式</h3><p><strong>网站挂上去后最好关闭debug模式（防止程序信息暴露在前台）</strong><br><code>..../application/config/database.php</code>中的<code>$db[&#39;default&#39;][&#39;db_debug&#39;]</code>修改为FALSE即可<br>i</p>
-<h2 id="github">github</h2><p>其实一开始写后端的时候并没有git= =时间紧啊，没时间给我慢慢玩<br>不过网站挂上去，在写查重和改写雨停的优化版的时候就玩了玩git          </p>
-<h3 id="github在Windows上有客户端，直接使用就好">github在Windows上有客户端，直接使用就好</h3><h3 id="在linux上需要用git">在linux上需要用git</h3><h4 id="安装git：">安装git：</h4><p><code>sudo apt-get install git</code></p>
-<h4 id="配置git：">配置git：</h4><h5 id="本地创建ssh_key：">本地创建ssh key：</h5><p><code>ssh-keygen -t rsa -C &quot;邮箱&quot;</code>，会提示确认路径和密码，一路回车默认即可          </p>
-<h5 id="在github中添加ssh_key：">在github中添加ssh key：</h5><p>进入Account Settings，选择SSH Key，Add SSH Key，title随便填，key复制粘贴文件<code>~/.ssh/id_rsa.pub</code>的全部内容</p>
-<h5 id="设置username和email">设置username和email</h5><p>每次commit都会记录这两个信息<br><code>git config --global user.name=&quot;用户名&quot;</code><br><code>git config --global user.email=&quot;邮箱&quot;</code>           </p>
-<h4 id="设置要git的目录">设置要git的目录</h4><p>进入要git的目录<br>初始化：<code>git init</code><br>添加远程地址：<code>git remote add origin git@github.com:github用户名/远程仓库名.git</code>            </p>
-<h5 id="使用（简单的git命令）">使用（简单的git命令）</h5><p><code>git clone &lt;ADDRESS&gt;</code>：克隆代码库，可以是本地代码库，也可以是远程代码库（USERNAME@HOST:PATH）<br><code>git add &lt;-i&gt; &lt;FILE&gt; ....</code>：【-i，交互式】添加文件到代码库中<br><code>git rm &lt;FILE&gt;</code>：将文件移出代码库<br><code>git commit -m &lt;MESSAGE&gt;</code>：提交更改，将修改的文件提交到缓冲区<br><code>git push &lt;ORIGIN&gt; &lt;BRANCH&gt;</code>：推送代码库到远程代码库<br><code>git pull</code>：从远程同步代码库到本地并合并<br><code>git branch</code>：查看当前分支<br><code>git branch &lt;BRANCH&gt;</code>：创建分支（主分支为Master）<br><code>git branch -d &lt;BRANCH&gt;</code>：删除分支<br><code>git checkout &lt;BRANCH&gt;</code>：切换到指定分支<br><code>git checkout -- &lt;FILE&gt;</code>：从缓冲区替换本地改动<br><code>git log</code>：查看提交的历史记录<br><code>git status</code>：显示当前的修改状态<br><code>git reset &lt;LOG&gt;</code>：恢复到历史版本<br>参考资料：<br><a href="http://www.bootcss.com/p/git-guide/" target="_blank" rel="external">git - 简易指南</a><br><a href="http://www.eoeandroid.com/thread-274556-1-1.html" target="_blank" rel="external">【Github教程】史上最全github使用方法：github入门到精通</a></p>
-<h2 id="附：ubuntu下的sublime_text">附：ubuntu下的sublime text</h2><h3 id="安装：-2">安装：</h3><p><code>sudo apt-get install sublime-text</code></p>
-<h3 id="中文支持">中文支持</h3><p>参考资料：<a href="http://jingyan.baidu.com/article/6fb756eca7af6c241858fbf2.html" target="_blank" rel="external">解决Ubuntu下Sublime Text 2无法输入中文的方法</a></p>
-<h3 id="Markdown支持">Markdown支持</h3><p>参考资料：<a href="http://www.jianshu.com/p/378338f10263" target="_blank" rel="external">sublime text 2 下的Markdown写作</a><br>但是语法高亮的设置我一直找不到,最后是在<code>Package Control: install Pakage</code>中直接安装MarkdownEditing，但是语法高亮效果不太满意,不知道有没有更好的解决方法<br>注：语法高亮在markdown preview的设置文件中，而且需要下载主题才能使用。<br>另外可以在github上下载chrome的markdown preview plus插件，这样就能在浏览器上直接打开md文件啦（2015/04/28）</p>
-<h2 id="最后">最后</h2><p>雨停的前端做的好赞！！！诶，不会美工的小码农真是不能比啊╮(╯▽╰)╭</p>
-<p>=  =学习CI，用服务器的时候遇到好多逗比的问题去请教蛋蛋和六神       </p>
-<p>感谢蛋蛋和六神的指导嘿嘿～～～                   </p>
-<p>CI官网的教程写的有点晦涩，不太好懂，这里只是个人在使用中自己的理解，可能会有一些错误，欢迎指出～        </p>
-<p>不过网站还不会挂咯，找个时间得学学怎么挂网站～～</p>
-
-          
-        
-      </div>
-    
-
-    
-      <div class="post-footer">
-        
-          <div class="post-tags">
-            
-              <a href="/tags/后端/">
-                #后端
-              </a>
-            
-          </div>
-        
-
-        
-
-        
-        
-          <div class="post-eof"></div>
-        
-      </div>
-    
-  </div>
-
-
-  
 
           </div>
 
@@ -2284,7 +2525,7 @@ mysqldump <span class="variable">$OPTIONS</span> &gt; <span class="variable">$DU
       <div class="site-state motion-element">
         <div class="site-state-item site-state-posts">
           <a href="/archives">
-            <span class="site-state-item-count">12</span>
+            <span class="site-state-item-count">13</span>
             <span class="site-state-item-name">文章</span>
           </a>
         </div>
@@ -2298,7 +2539,7 @@ mysqldump <span class="variable">$OPTIONS</span> &gt; <span class="variable">$DU
 
         <div class="site-state-item site-state-tags">
           <a href="/tags">
-            <span class="site-state-item-count">9</span>
+            <span class="site-state-item-count">10</span>
             <span class="site-state-item-name">標籤</span>
           </a>
         </div>
