@@ -157,11 +157,14 @@
 - <span class="string">repo:</span> <span class="string">http:</span><span class="comment">//github.com/USERNAME/USERNAME.github.io`    </span>
 #USERNAME为github用户名     
 </code></pre></li>
-<li><p>执行部署命令<br>  <code>hexo d</code><br>  随后根据提示输入github帐号密码即可     </p>
+<li><p>执行部署命令<br>  <code>hexo d</code><br>  随后根据提示输入github帐号密码即可   </p>
+<ul>
+<li>部署git需要配置好git用户名和邮箱<br>  每次commit都会记录这两个信息<br>  <code>git config --global user.name &quot;用户名&quot;</code><br>  <code>git config --global user.email &quot;邮箱&quot;</code>   </li>
+</ul>
 </li>
 </ul>
 </li>
-<li>更换主题<br>以next主题为例<br>clone<code>https://github.com/iissnan/hexo-theme-next</code>到<code>themes/next</code>目录下<br>修改<code>_config.yml</code>文件，将<code>themes</code>修改为<code>next</code>即可   </li>
+<li>更换主题<br>以next主题为例<br><code>clone https://github.com/iissnan/hexo-theme-next</code>到<code>themes/next</code>目录下<br>修改<code>_config.yml</code>文件，将<code>themes</code>修改为<code>next</code>即可   </li>
 <li>相关配置信息<br>在文件<code>_config.yml</code>中，包括博客名，作者名，主题，部署方式等    </li>
 <li>其他信息<br>参照hexo官方文档和相关主题的官方文档  </li>
 </ul>
@@ -262,7 +265,7 @@
 
         <div class="site-state-item site-state-tags">
           <a href="/tags">
-            <span class="site-state-item-count">10</span>
+            <span class="site-state-item-count">15</span>
             <span class="site-state-item-name">標籤</span>
           </a>
         </div>

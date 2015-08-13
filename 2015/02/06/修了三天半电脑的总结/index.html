@@ -137,13 +137,37 @@
 <p><em>但是，恢复的数据会有少数被损坏，也就是说不可能完好无损的找回来，所以平时要保护好自己的数据啊？！？！？！！！</em><br><em>而且，找回来的分区必须设置为主分区= =好麻烦！改回逻辑分区的话需要把数据移到其他地方，把这些分区删除后新建扩展分区，在扩展分区下新建逻辑分区，再把数据移回来！</em><br><strong>因为一个硬盘只能存在四个主分区或扩展分区（其中扩展分区至多只能有一个）</strong><br>嗯……我比较懒，所以把原本win上的四个磁盘缩减为三个磁盘，都作为主分区，留下一个作为扩展分区给linux<br>另外呢，<strong>win系统分区必须激活设置为活动分区！！</strong>   </p>
 <h2 id="安装windows">安装windows</h2><p>找回数据时，把dell出厂的镜像分区也给找回来了，但是还原程序被格掉，重装后也识别不了出厂镜像= =它那鬼镜像（wim）还分成了两组，每组两个，着实看不懂要怎么用……只好放弃正版win8，上网找了原版的win8.1企业版，在PE下通过winNT安装，再用激活工具破解，从此又过上了盗版的日子<br><em>不过镜像我还留着，据说有方法能够调用，但是实在复杂，等我有空好好研究研究</em>  </p>
 <p>安装windows其实有个小插曲，一开始NT一直识别不了我下载的win8.1的安装程序，折腾半天后无奈的检验了一下SHA1，简直哭，SHA1值并不匹配——也就是下载的时候文件被损坏了！<br><strong>所以啊，以后安装重要的、安装过程复杂的程序、软件，一定一定要注意先校验一下MD5值或者SHA1值</strong>（在官网下载的话一般会提供）<br><em>否则如果在安装过程中才发现损坏，会很麻烦的。比如安装系统，装一半的时候才告诉你文件损坏，可是你原来的win早被格式化了，整起来可就麻烦多了（所幸现在系统安装程序在安装前大都保守地检验了一下安装文件的完整性）</em></p>
-<h3 id="internal_hard_disk_drive_not_found？">internal hard disk drive not found？</h3><p>这条错误信息着实折腾了我好久，到底是无法读取硬盘呢还是无法调用驱动程序？<br>大概是后者吧，毕竟我在BIOS中能找到硬盘的信息，在PE下也能正常访问硬盘的数据<br>硬盘驱动？这个一般操作系统都会提供——一开始我以为只要把系统装上，这个问题就能够解决，然而并没有这么简单！<br>在PE下安装系统后，需要重启进行最后的设置，但是每次都不能成功进入系统，都卡在这句错误信息上！<br>怎么办？我尝试了百度上的各种办法，最后终于成功了？！——<br><em>在BIOS的boot选项卡下把Secure Boot设置为Disabled，把Boot List Option改为Legacy</em><br>竟然这样就把问题解决了？！百思不得其解，只好求教度娘这两个选项的含义</p>
-<h4 id="Secure_Boot_##参考资料##">Secure Boot  <a href="http://bbs.taobao.com/catalog/thread/154503-260136140.htm" target="_blank" rel="external">##参考资料##</a></h4><p>若干年前，各大主板厂商推出UEFI取代历史悠久的BIOS，UEFI全称为“统一的可扩展固定接口”。<br>而Secure Boot是UEFI的一部分，它采用密钥，防止恶意软件侵入操作系统和硬件驱动程序</p>
+<h3 id="internal_hard_disk_drive_not_found？">internal hard disk drive not found？</h3><p>这条错误信息着实折腾了我好久，到底是无法读取硬盘呢还是无法调用驱动程序？<br>大概是后者吧，毕竟我在BIOS中能找到硬盘的信息，在PE下也能正常访问硬盘的数据<br>硬盘驱动？这个一般操作系统都会提供——一开始我以为只要把系统装上，这个问题就能够解决，然而并没有这么简单！<br>在PE下安装系统后，需要重启进行最后的设置，但是每次都不能成功进入系统，都卡在这句错误信息上！<br>怎么办？我尝试了百度上的各种办法，最后终于成功了？！——<br><em>在BIOS的boot选项卡下把Secure Boot设置为Disabled，把Boot List Option改为Legacy</em><br>竟然这样就把问题解决了？！百思不得其解，只好求教度娘这两个选项的含义  </p>
+<h4 id="Secure_Boot_##参考资料##">Secure Boot  <a href="http://bbs.taobao.com/catalog/thread/154503-260136140.html" target="_blank" rel="external">##参考资料##</a></h4><p>若干年前，各大主板厂商推出UEFI取代历史悠久的BIOS，UEFI全称为“统一的可扩展固定接口”。<br>而Secure Boot是UEFI的一部分，它采用密钥，防止恶意软件侵入操作系统和硬件驱动程序</p>
 <p>但是UEFI并不能得到广泛的推广，原因是微软的态度并不积极，他们要求安装Windows8时要关闭Secure Boot，而对预装的Windows8需要打开Secure Boot，所以我在安装windows时就必须把Secure Boot关闭啦！</p>
 <h4 id="Boot_List_Option">Boot List Option</h4><p>硬盘启动模式，包括Legacy和UEFI两种  </p>
 <p>UEFI如上文介绍，是一种新的BIOS；<br>Legacy则是传统的BIOS模式  </p>
 <p>在UEFI下安装的系统以后只能由UEFI模式进入系统；<br>在Legacy下安装的系统以后只能由Legacy模式进入系统  </p>
-<p>甚是复杂！！</p>
+<p>甚是复杂！！  </p>
+<h4 id="（2015/08/12补充）以UEFI模式安装windows系统">（2015/08/12补充）以UEFI模式安装windows系统</h4><p>参考资料：<a href="http://jingyan.baidu.com/article/d713063504112013fdf47589.html" target="_blank" rel="external">win8/win8.1 UEFI + GPT 安装详细图解</a></p>
+<ul>
+<li>先前windows安装失败的原因<br>  数据恢复后将分区表格式转换成了MRP格式，而安装uefi系统需要gpt分区表  </li>
+<li>UEFI系统启动速度比传统模式快  </li>
+<li>gpt分区表<ul>
+<li>支持四个以上的主分区  </li>
+<li>支持2.2TB以上的硬盘  </li>
+<li>但是XP不支持该分区表  </li>
+</ul>
+</li>
+<li>分区表转换方法  <ul>
+<li>通过PE系统下的diskgenuis工具   </li>
+<li>直接利用windows安装程序的命令行（需要烧制到光盘或U盘）<br>  <strong>注意：修改分区表后硬盘数据将丢失，要提前做好备份工作</strong>   <ul>
+<li>在安装界面下按<code>&lt;S-F10&gt;</code>打开命令行    </li>
+<li>输入<code>diskpart</code>启动分区工具   </li>
+<li>输入<code>list disk</code>打印所用硬盘，找到所要修改的硬盘的序号  </li>
+<li>输入<code>select disk {num}</code>选择num号硬盘  </li>
+<li>输入<code>clean</code>清空硬盘数据   </li>
+<li>输入<code>convert gpt</code>修改分区表类型   </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h2 id="Linux安装">Linux安装</h2><p>引导方式有两种——   </p>
 <ol>
 <li>win引导linux：<br> 把引导分区设置为挂载/boot的分区<br> 通过软件easybcd等软件进行引导  </li>
@@ -261,7 +285,7 @@
 
         <div class="site-state-item site-state-tags">
           <a href="/tags">
-            <span class="site-state-item-count">10</span>
+            <span class="site-state-item-count">15</span>
             <span class="site-state-item-name">標籤</span>
           </a>
         </div>
@@ -285,7 +309,7 @@
         <div class="post-toc">
           
           
-            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#还原windows导致linux无法进入的原因"><span class="nav-number">1.</span> <span class="nav-text">还原windows导致linux无法进入的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#那么，我们把linux引导加载程序grub修复了就好啦？"><span class="nav-number">2.</span> <span class="nav-text">那么，我们把linux引导加载程序grub修复了就好啦？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#找回丢失的数据"><span class="nav-number">3.</span> <span class="nav-text">找回丢失的数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装windows"><span class="nav-number">4.</span> <span class="nav-text">安装windows</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#internal_hard_disk_drive_not_found？"><span class="nav-number">4.1.</span> <span class="nav-text">internal hard disk drive not found？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Secure_Boot_##参考资料##"><span class="nav-number">4.1.1.</span> <span class="nav-text">Secure Boot  ##参考资料##</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Boot_List_Option"><span class="nav-number">4.1.2.</span> <span class="nav-text">Boot List Option</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux安装"><span class="nav-number">5.</span> <span class="nav-text">Linux安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">6.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#还原windows导致linux无法进入的原因"><span class="nav-number">1.</span> <span class="nav-text">还原windows导致linux无法进入的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#那么，我们把linux引导加载程序grub修复了就好啦？"><span class="nav-number">2.</span> <span class="nav-text">那么，我们把linux引导加载程序grub修复了就好啦？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#找回丢失的数据"><span class="nav-number">3.</span> <span class="nav-text">找回丢失的数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装windows"><span class="nav-number">4.</span> <span class="nav-text">安装windows</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#internal_hard_disk_drive_not_found？"><span class="nav-number">4.1.</span> <span class="nav-text">internal hard disk drive not found？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Secure_Boot_##参考资料##"><span class="nav-number">4.1.1.</span> <span class="nav-text">Secure Boot  ##参考资料##</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Boot_List_Option"><span class="nav-number">4.1.2.</span> <span class="nav-text">Boot List Option</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2015/08/12补充）以UEFI模式安装windows系统"><span class="nav-number">4.1.3.</span> <span class="nav-text">（2015/08/12补充）以UEFI模式安装windows系统</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux安装"><span class="nav-number">5.</span> <span class="nav-text">Linux安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">6.</span> <span class="nav-text">最后</span></a></li></ol></div>
           
         </div>
         <div class="post-toc-indicator-bottom post-toc-indicator"></div>
