@@ -59,7 +59,7 @@
       <li class="menu-item menu-item-home">
         <a href="/">
           <i class="menu-item-icon icon-home"></i> <br />
-          首頁
+          Home
         </a>
       </li>
     
@@ -67,7 +67,7 @@
       <li class="menu-item menu-item-archives">
         <a href="/archives">
           <i class="menu-item-icon icon-archives"></i> <br />
-          歸檔
+          Archives
         </a>
       </li>
     
@@ -75,7 +75,7 @@
       <li class="menu-item menu-item-tags">
         <a href="/tags">
           <i class="menu-item-icon icon-tags"></i> <br />
-          標籤
+          Tags
         </a>
       </li>
     
@@ -106,7 +106,7 @@
           
           
             
-              <a class="post-title-link" href="/2015/08/15/Note_for_Python/">
+              <a class="post-title-link" href="/2015/08/31/Note_for_Python/">
                 python笔记
               </a>
             
@@ -117,7 +117,7 @@
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-08-14
+            Posted on 2015-08-31
           
         </span>
 
@@ -181,9 +181,10 @@
 </ul>
 <h3 id="模块学习笔记">模块学习笔记</h3><h4 id="Bottle框架">Bottle框架</h4><ul>
 <li><a href="/Note_for_Python/Bottle/Bottle.html">Bottle</a></li>
-<li><a href="/Note_for_Python/Bottle/Template.html">Template</a>  </li>
+<li><a href="/Note_for_Python/Bottle/Templates.pdf">Template</a>  </li>
 </ul>
-<h4 id="sh模块">sh模块</h4><p><a href="/Note_for_Python/sh模块/sh模块.html">sh模块</a></p>
+<h4 id="sh模块">sh模块</h4><p><a href="/Note_for_Python/sh模块/sh模块.html">sh</a></p>
+<h4 id="tornado框架">tornado框架</h4><p><a href="/Note_for_Python/tornado/Tornado.pdf">Tornado</a></p>
 
           
         
@@ -225,6 +226,480 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/31/《C专家编程》小记/">
+                《C专家编程》小记
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          
+            Posted on 2015-08-30
+          
+        </span>
+
+        
+          
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    
+      <div class="post-body">
+
+        
+        
+
+        
+          
+            <p>书上底层的东西比较多，还有些东西不是很理解，等学习完更多的东西后得回头看看<br>知识点比较杂，这里只是简单的把自己觉得有用的东西罗列出来     </p>
+<ul>
+<li>C语言的基本数据类型与底层硬件相对应  </li>
+<li>宏  <ul>
+<li>使用应适量，不宜过度使用  </li>
+<li>宏名建议要大写  </li>
+<li>不宜使用宏来改变C语言的基础结构  </li>
+</ul>
+</li>
+<li>不宜省略形参名  </li>
+<li>合法的指针赋值形式  <ol>
+<li>两个操作数都是指向有限定符或无限定符的相容类型指针   </li>
+<li>左边指针所指向的类型必须具有右边指针所指向类型的全部限定符  </li>
+</ol>
+</li>
+<li>const并不能把一个变量变为一个常量<br>  只是限定它不可修改<br>  const常用于函数的形参  </li>
+<li>算术转换<br>  当执行算术运算时，操作数的类型如果不同，就会发生转换。<br>  数据类型一般朝着浮点精度更高，长度更长的方向转换，<br>  整型数如果转换为signed不会丢失信息，就转换为signed，否则转换为unsigned  </li>
+<li>sizeof()不是函数，而是运算符，其结果为无符号整型  <ul>
+<li>sizeof的操作数如果是类型，必须加括号，如<code>sizeof(int)</code>  </li>
+<li>sizeof的操作数如果是变量，有无括号都可以，如<code>sizeof(a)</code>和<code>sizeof a</code></li>
+</ul>
+</li>
+<li>程序中应避免无符号数，以免增加不必要的复杂性  </li>
+<li>编程语言的缺陷一般分为三类：<br>  不该做的做了，该做的没做，该做但做的不合适  </li>
+<li>NUL 和 NULL<br>  NUL用于结束一个字符串（即<code>\0</code>）<br>  NULL表示一个空指针  </li>
+<li>临时变量可声明于花括号的局部空间内（如if、while等语句的花括号内）  </li>
+<li>两个相邻的常量字符串会自动合并<br>  注意：两个常量字符串作为函数的两个参数时，如果不小心漏掉了逗号，会出现错误  </li>
+<li>C语言中许多符号是被“重载”的，即在不同的上下文环境里有不同的意义  </li>
+<li>C语言中部分符号优先级是不符合常规逻辑的，如：   <ol>
+<li>==和!=高于位操作符<br> 注意<code>val &amp; mask != 0</code>  </li>
+<li>==和!=高于赋值符<br> 注意<code>c = getchar() != EOF</code>  </li>
+<li>算数运算符高于移位运算符<br> 注意<code>msk &lt;&lt; 4 + lsb</code>  </li>
+</ol>
+</li>
+<li>逗号表达式的值为最右边操作数的值<br>  注意<code>i = 1, 2</code>  </li>
+<li>一些比较老的程序存在诸如<code>if( a == b &amp; c == d )</code>的语句<br>  由于==优先级高于&amp;，所以与<code>if( a == b &amp;&amp; c == d)</code>的执行效果是相同的<br>  历史原因：逻辑运算符是后来从&amp;中分离出来的，但为了兼容旧的代码，只好使==优先级高于&amp;  </li>
+<li>一个表达式中各意群的执行顺序是未定义的<br>  如：<code>x = f() + g() * h();</code>，其中f()、g()、h()谁先调用是未定义的（注意f()不一定是在g()和h()之后）  </li>
+<li>有些编程专家建议：只记住乘除法优先于加减法即可，其他运算都用括号显式地指定优先级  </li>
+<li>结合性用于相同优先级的操作符之间消除歧义；  </li>
+<li>优先级相同的操作符，其结合性也相同  </li>
+<li>如果计算表达式的值时需要考虑结合性，最好将其一分为二或者使用括号  </li>
+<li>函数调用中，各个参数的<strong>计算</strong>顺序是不确定的<br>  但是<strong>传参</strong>顺序是一定的（从右向左）  </li>
+<li><em>“在调用函数时，参数按照从右到左的次序压到堆栈里”</em>的说法是错误的<br>  参数在传递时首先<strong>尽可能地放到寄存器</strong>中，以提高速度<br>  注意：<strong>int变量i</strong>与<strong>结构变量s的int成员</strong>的传参方式是不同的<br>  前者一般会传递到寄存器中，后者一般会传递到堆栈中  </li>
+<li>gets()函数存在严重漏洞，官方手册强烈建议用fgets()函数取代<br>  即把<code>gets(line)</code>改为<br>  <code>if( fgets(line, sizeof(line), stdin) == NULL ) exit(1);</code>  </li>
+<li>C语言中读取argv的选项，其开头必须先判断首字符是否为“-”（有可能是文件名而不是参数）  </li>
+<li>尽量避免用<code>\</code>转义回车来将代码分解为多行<br>  万一在<code>\</code>之后不小心加入了空格，将带来难以发现的bug   </li>
+<li>maximal munch strategy（最大一口策略）<br>  如果下一个标记有超过一种的解释方案，编译器将选取能组成最长字符序列的方案<br>  如：<code>z=y+++x</code>将被解释为<code>z = (y++) + x</code>（但是最好还是用括号显示表示出来）  </li>
+<li>不应试图返回一个指向局部自动变量或数组的指针<br>  若为单一变量，会引起报错<br>  但如果为数组，有可能会因为某些间接形式而不会报错，该bug不易发现  </li>
+<li>函数返回数组的方法  <ol>
+<li>若为字符串常量，可以直接返回指针  </li>
+<li>使用全局声明的数组  </li>
+<li>使用静态数组  </li>
+<li>显示分配一些堆内存  </li>
+<li>最好的方法：由调用者分配堆内存，将内存的指针传入函数   </li>
+</ol>
+</li>
+<li>lint程序已经从编译器中被分离的出来，但是源代码应尽可能通过lint和cstyle程序的检查  </li>
+<li>C语言声明形式的原则：与使用形式相似<br>  如：<code>int *p;</code><br>  但是，这种原则并不直观，如指针声明形式改为<code>int &amp;p;</code>更为合理（C++已采纳这种声明形式）   </li>
+<li>const和指针<br>  <code>int const * grape;</code>：指向的整型只读<br>  <code>int * const grape;</code>：指针只读<br>  记忆：把const作为类型后缀，接在<code>*</code>之后针对指针，接在<code>int</code>之后针对整型  </li>
+<li>声明的结构  <ol>
+<li>至少一个<strong>类型说明符</strong>（包含类型说明符、存储类型、类型限定符）  </li>
+<li>至少一个<strong>声明器</strong>（包括指针、直接声明器、初始化内容），多个声明器由逗号分隔开  </li>
+<li>有且只有一个<strong>分号</strong>  </li>
+</ol>
+</li>
+<li>声明中，与标识符最贴近的（按照优先级、结合性）的符号即为标识符的本质<br>  如：<code>int (*foo[])();</code>，最贴近的是<code>[]</code>，即foo是一个数组    </li>
+<li>结构的定义及其变量的声明最好分开<br>  <strong>“一行代码只做一件事”</strong>的C语言编程原则  </li>
+<li>如果需要频繁的对整个数组进行赋值操作，可以把该数组放入结构中<br>  （结构变量可以整体赋值）   </li>
+<li>联合的作用：  <ol>
+<li>节省空间（但在大内存的今天，该作用不大）   </li>
+<li>将同一个数据解释成两种不同的东西<br> （下面这个例子可以整体取得整个四字节变量，也可以分别取得各个字节）  </li>
+</ol>
+</li>
+</ul>
+<pre><code>union bits32_tag{
+    <span class="keyword">int</span> whole;
+    <span class="keyword">struct</span> { <span class="keyword">char</span> c0, c1, c2, c3; } <span class="keyword">byte</span>;
+} <span class="keyword">value</span>;
+</code></pre><ul>
+<li>可以巧用枚举类型来方便调试<br>  宏定义的名字在编译时会被丢弃，但枚举名字在调试器中会一直存在   </li>
+<li>C语言声明解析方法（见书P64-66）  </li>
+<li><code>typedef</code>和<code>#define</code><br>  前者较后者，“封装”更为彻底<br>  后者在声明时能加入其他类型说明符进行扩展，前者声明时不行<br>  如将诸如<code>int (*foo[])();</code>的定义“封装”起来<br>  <code>typedef int (*A[])();</code>和<code>#define NEW(B) ( (*B[])() )</code>  <ol>
+<li><code>A x;</code>和<code>NEW(x);</code>等价，均可行    </li>
+<li><code>A x, y;</code>和<code>NEW(x, y);</code>不等价，只有前者可行   </li>
+</ol>
+</li>
+<li>不能给typedef加入多个声明器<br>  <em>即不能企图通过typedef定义一个类型名，使之一次性声明多种类型的变量</em>     </li>
+<li>不能把“typedef”嵌入到声明当中   </li>
+<li>typedef和struct的标签名可以和变量名相同，但应尽量避免   </li>
+<li>typedef的用法：<ol>
+<li>数组、结构、指针、函数等的组合类型   </li>
+<li>可移植类型    </li>
+</ol>
+</li>
+<li>typedef定义的标签名也可以用于强制类型转换    </li>
+<li>赋值符左侧的操作数称为左值<br>  左值分为可修改左值和不可修改左值（如数组名）   </li>
+<li>编译过程：C预处理器、前端（语法和语义分析）、后端（代码生成器）、优化器、汇编程序、链接-载入器  </li>
+<li>静态链接（<code>*.a</code>）：编译过程中，所用到的函数会被装入到可执行文件中（即每个程序对函数代码有一份单独的拷贝）<br>  动态链接（<code>*.so</code>）：编译过程中，只把用到的库文件名或路径名装入可执行文件，需要时再实时调用（即每个程序对函数代码共用一份拷贝）    </li>
+<li>动态编译运行速度稍慢，但可执行文件体积小，函数库版本升级更容易，而且部分函数库只能通过动态链接的形式使用   </li>
+<li>函数库包含函数的定义，头文件包含函数原型的声明<br>  头文件的名字通常不和它所对应的函数库名相似   </li>
+<li>Interpositioning：<br>  自己编写的函数名如果与函数库函数同名，自定义的函数会取代函数库的函数而不会引发编译器的报错     </li>
+<li>段<br>  在UNIX中，段是一个二进制文件相关的内容块<br>  在Intel x86内存模型中，地址空间并非一个整体，而是分成若干64K大小的区域，这些区域称为段  </li>
+<li>a.out（assembler output，汇编程序输出，一种目标文件格式）依次包含以下内容：   <ol>
+<li>a.out的标志数字0407（即Kirk McKusick的生日，也是PDP-11无条件转移指令的二进制编码）   </li>
+<li>a.out的其他内容  </li>
+<li>BSS段所需的大小<br> <em>BSS即Block Started by Symbol（由符号开始的块），保存了没有值的变量</em><br> 这里只保存了变量的大小，但并不占据目标文件的任何空间<br> 如：C语言中未初始化的全局变量<br> <strong>注意：局部变量并不进入a.out，而是在运行时创建</strong>    </li>
+<li>数据段<br> 包括初始化后的全局变量和静态变量  </li>
+<li>文本段<br> 包含可执行文件的指令  </li>
+</ol>
+</li>
+<li>进程的地址空间分布（由低到高）   <ol>
+<li>未被映射的虚拟地址空间<br> 任何对它的引用都是非法的，一般包括几K字节，用于捕捉空指针和小整型值的指针引用内存的情况     </li>
+<li>文本段    </li>
+<li>数据段<br> 通常是进程中最大的段   </li>
+<li>BSS段<br> 数据段和BSS段合称数据区      </li>
+<li>堆栈段   <ul>
+<li>主要有三个用途：   <ol>
+<li>为函数内部声明的局部变量提供存储空间    </li>
+<li>进行函数调用时，保存相关的维护性信息（过程活动记录等）    </li>
+<li>作为暂时的存储区   </li>
+</ol>
+</li>
+<li>函数可以通过参数或全局指针访问它所调用的函数的局部变量，运行时系统维护一个用于提示堆栈当前顶部位置的指针（常位于寄存器中，称为sp）    </li>
+</ul>
+</li>
+</ol>
+</li>
+<li>C不支持函数嵌套的原因<br>  支持函数嵌套的语言一般采取上层引用的访问方式，需要活动记录包含一个指向它的外层函数的活动记录的指针（被称为静态链接），它允许内层过程访问外层过程的活动记录，因此也可以访问外层过程的局部数据；<br>  而C语言所用函数在词法层次中都是最顶层的、分别独立的    </li>
+<li>volatile类型修饰符    <ul>
+<li>volatile本意为易变的   </li>
+<li>用来告知编译器，程序每次使用该变量都要从内存中读取（出于优化目的，编译器有可能会直接在暂存的寄存器中读取）   </li>
+<li>常用于多线程编程等情况   </li>
+</ul>
+</li>
+<li>线程控制  <ul>
+<li>头文件：<code>&lt;setjmp.h&gt;</code>   </li>
+<li><code>setjmp( jmp_buf j )</code>：保存当前的过程活动记录到j，并返回0   </li>
+<li><code>longjmp( jmp_buf j, int i )</code>：跳转到变量j所在的过程活动记录位置，并返回i     </li>
+<li><code>setjmp / longjmp</code>和<code>{标签} / goto</code>：<br>  前者只能跳转回曾经到过的地方，后者可以任意设置标签的位置<br>  后者不能跳出函数，前者甚至可以跳转到其他文件的函数    </li>
+<li>为了保证跳转过程中局部变量的可靠性，应使用volatile类型修饰符    </li>
+<li>常用于错误修复（发现不可修复的错误即把控制转入主输入循环，重新开始）、从深层嵌套的函数中跳出等   </li>
+<li>跟goto一样，这样控制线程会使程序难以理解和调试，应尽量避免使用     </li>
+</ul>
+</li>
+<li>UNIX和MS-DOS中的堆栈段   <ul>
+<li>UNIX的堆栈段是自动生长的<br>  当试图访问系统分配给堆栈的空间之外时，将会产生一个硬件中断，称为页错误<br>  一般，内核会通过向进程发送合适的信号（可能是段错误）来处理无效地址的引用   </li>
+<li>DOS的堆栈段是不可增长的，建立可执行文件时必须确定     </li>
+</ul>
+</li>
+<li>常用的C语言工具    <ul>
+<li>源代码检查：<ul>
+<li>cb：C程序美化器，使源文件有标准的布局和缩进格式    </li>
+<li>lint：C程序检查器   </li>
+</ul>
+</li>
+<li>可执行文件检查：   <ul>
+<li>dis：（<code>/usr/ccs/bin</code>）目标代码反汇编工具     </li>
+<li>nm：（<code>/usr/ccs/bin</code>）打印目标文件的符号表     </li>
+</ul>
+</li>
+<li>调试：<ul>
+<li>debugger：交互式调试器   </li>
+</ul>
+</li>
+<li>性能优化：   <ul>
+<li>time：（<code>/usr/bin/time</code>）显示程序所使用的实际使用和CPU时间   </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>内存媒介（速度、成本依次增加）<br>  磁带、硬盘、内存、cache存储器、CPU寄存器   </li>
+<li>虚拟内存    <ul>
+<li>以“页”为单位（一般为几K）在磁盘和内存之间来回移动（page in为移入内存，page out为移到硬盘），也以“页”为单位对内存进行保护    </li>
+<li>只有用户进程的内存在会被换进还出，系统内核进程常驻于物理内存当中    </li>
+<li>进程只能操作位于物理内存中的页面<br>  当进程引用一个不存在于物理内存中的页面时，MMU（内存管理单元，负责支持虚拟内存的硬件）会产生“页错误”。内核将对事件作出响应，<br>  若判断有效，内核将从硬盘中取回对应的页，换入物理内存当中<br>  若判断无效，内核将向进程发出一个“segmentation violation（段违规）”信号   </li>
+</ul>
+</li>
+<li>Cache存储器    <ul>
+<li>从MMU的角度看，不同机器Cache存储器的所属不同    <ul>
+<li>有些机器的Cache属于CPU一侧，Cache采用的是虚拟地址，每次切换进程时，它的内容必须进行刷新    </li>
+<li>有些机器的Cache属于物理内存一侧，Cache采用的是物理地址，容易使多个CPU共享同一个Cache    </li>
+</ul>
+</li>
+<li>数据以“行”（一般为16字节或32字节）为单位从内存中读入Cache     </li>
+<li>所有对内存的读写都要经过Cache<br>  当处理器需要从某个特定的地址提取数据时，这个请求首先递交给Cache<br>  如果数据已存在于Cache，它可以被直接提取；<br>  否则，Cache向内存传递这个请求，进行较缓慢的访问内存操作，并将数据读取到Cache     </li>
+<li>常见的Cache类型    <ul>
+<li>全写法Cache：每次写入Cache时同时写入内存，保持两者内容一致   </li>
+<li>写回法Cache：第一次写入时，只写入Cache；再次写入时，此时会把之前的数据写入到内存中保存起来；内核切换进程时，Cache数据都要写入内存中去   </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>拷贝整个数组<br>  用库函数<code>memcpy( 目的数组, 源数组, 元素个数 )</code>进行快速拷贝<br>  <em>比循环拷贝快的多</em>     </li>
+<li>malloc请求申请的内存大小为方便起见通常会被圆整为2的乘方    </li>
+<li>生存时间长的程序需要管理动态内存的分配和回收，堆经常会出现两种问题：    <ul>
+<li>内存损坏：释放或改写仍在使用的内存    </li>
+<li>内存泄漏：未释放不再使用的内存    </li>
+</ul>
+</li>
+<li>alloca分配的动态内存，在离开函数时会被自动释放<br>  可以避免内存损坏和内存泄漏，但是不适用于创建比其所在函数生命周期更长的结构    </li>
+<li>体积大的进程更有可能被系统换出，换进换出的时间也更长    </li>
+<li>总线错误（bus error）   <ul>
+<li>主要是未对齐的读写引起的<br>  对齐：数据项只能存储在地址是数据项大小的整倍数的内存位置上，通过迫使每个内存访问局限在一个Cache行或一个单独的页面内，可以极大的简化并加速如Cache控制器和MMU等硬件<br>  出现未对齐的内存访问请求时，被堵塞的组件就是地址总线     </li>
+<li>也有可能是引用物理上不存在的内存引起    </li>
+</ul>
+</li>
+<li>段错误（segmentation fault）   <ul>
+<li>MMU异常导致的错误，通常由解除引用一个未初始化或非法值的指针引起<br>  <strong>但是，如果未初始化的指针恰好具有未对齐的值，它会引起总线错误但不引起段错误</strong>      </li>
+<li>导致段错误的常见直接原因：   <ol>
+<li>解除引用一个包含非法值的指针     </li>
+<li>解除引用一个空指针    </li>
+<li>在未得到正确的权限时进行访问（如往只读的文本段存储值）           </li>
+<li>堆栈或堆空间用完    </li>
+</ol>
+</li>
+<li>导致段错误的常见编程错误：    <ol>
+<li>坏指针值错误<br> 对未初始化的指针解除引用，或向库函数传递一个坏指针，或解除引用已经被释放的指针<br> <strong>建议养成指针释放后立即将其设置为NULL的习惯</strong>      </li>
+<li>改写错误<br> 越过数组边界写入数据，或在动态分配的内存之外写入数据，或改写一些堆管理数据结构    </li>
+<li>指针释放引起的错误<br> 多次释放同一块内存，或释放一块未分配的内存，或释放一个无效指针     </li>
+</ol>
+</li>
+</ul>
+</li>
+<li>类型提升<br>  在所有表达式中，char都会被提升为int，float都会被提升为double<br>  <em>在老式编译器中，传参的时候也会被提升类型，然后再被适当裁剪</em><br>  <em>意义：简化编译器，压到堆栈中的参数都是同一长度的，运行时只需要知道参数数量，而不需要知道他们的长度</em><br>  但是，在新风格的函数定义下，已经声明过原型的函数，其参数不会进行类型提升，即char会直接以char类型进行传参     </li>
+<li>如果库函数调用或系统调用出错，程序会设置全局变量<code>errno</code>的值来提示问题原因<br>  <strong>注意：只有确实出现问题时，errno的值才是有效的</strong><br>  用法：在函数调用或系统调用前先设置全局变量<code>errno = 0;</code>，函数调用后再检查errno的值<br>  具体数值与其对应的错误类型参见<a href="http://baike.baidu.com/link?url=7YW0e9mAIPMy7oKijfh4hgrsEy7m96YNN8BHedQV9A5zPA-OO8HUKDs6e1ACx_6imL24GK-tSDkwiCSjf2docq#2" target="_blank" rel="external">errno_百度百科</a>        </li>
+<li>C语言与有限状态机（Finite State Machine）    <ul>
+<li>FSM用于基于输入的在几个不同的可选动作中进行循环的程序     </li>
+<li>基本思路：用一张表保存所有可能的状态，并列出进入每个状态时可能执行的所有动作，其中最后一个动作就是计算（通常是在当前状态和下一次输入的基础上，再经过一次查询）下一个应该进入的状态    </li>
+<li>C语言实现：绝大多数基于函数指针数组，状态函数返回一个通用的函数指针（void *），再转换为适当的类型    </li>
+<li>分析环（最简单的FSM）   <ul>
+<li>分析环用于绝大多数状态转换都是按连续的顺序进行的，与输入无关的程序     </li>
+<li>不需要建立一个转换表用于匹配状态/输入以获得下次状态     </li>
+</ul>
+</li>
+<li>直接用switch语句和循环也可以实现简单的FSM     </li>
+</ul>
+</li>
+<li>如果函数的参数涉及多个不同的参数，可以考虑使用类似<code>int argc, char *argv[]</code>的参数计数器和一个字符串指针数组      </li>
+<li>可调试性编码：<br>  把系统分成几个部分，先让程序总体结构运行，再逐步细化调试     </li>
+<li>程序的提示信息应具有启发性，而非煽动性，要避免使用带有亵渎性、口语化、幽默（平时自己的小程序还是该幽默点的好QAQ）或者夸张的非专业用语     </li>
+<li>使用realloc()函数时，不应直接把返回值直接赋给原指针<br>  否则，一旦realloc失败，返回NULL，那么将无法重新访问、或是释放原来的内存块     </li>
+<li><a href="/2015/08/31/指针&amp;数组">指针&amp;数组</a></li>
+</ul>
+
+          
+        
+      </div>
+    
+
+    
+      <div class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/C/">
+                #C
+              </a>
+            
+          </div>
+        
+
+        
+
+        
+        
+          <div class="post-eof"></div>
+        
+      </div>
+    
+  </div>
+
+
+  
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2015/08/31/指针&数组/">
+                指针&数组
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          
+            Posted on 2015-08-30
+          
+        </span>
+
+        
+          
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    
+      <div class="post-body">
+
+        
+        
+
+        
+          
+            <p>指针和数组是C语言中常用的类型（数据结构）<br>《C Programming Language》一书中提到，指针访问比数组访问效率高一些，这是真的吗？<br>本着一个求知（ba gua）的心，我决定一探究竟=。=  </p>
+<h2 id="指针和数组">指针和数组</h2><p>数组和指针的关系、区别是什么？  </p>
+<h3 id="简单地说，数组名是一个指针常量">简单地说，数组名是一个指针常量</h3><ol>
+<li>数组名映射到程序常量区的一段数据，其中保存了数组的首地址</li>
+<li>数组名的值不能改变，不能作为左值   </li>
+<li>通过下标访问数组元素是通过数组首元素地址（数组名）加上偏移量实现的<br> 因此，指针必须有类型限制（才能够正确的计算步长）<br> 另外，对于数组a，<code>a[6]</code>和<code>6[a]</code>是等价的<br> <strong>没错！<code>6[a]</code>是成立的，但是为了程序的可读性，尽量不要刻意这么用</strong>     </li>
+</ol>
+<h3 id="C语言的多维数组">C语言的多维数组</h3><h4 id="“数组的数组”和“多维数组”">“数组的数组”和“多维数组”</h4><ul>
+<li>数组的数组：<br>  即为“有一个数组，它的元素也是数组”，诸如<code>a[2][2]</code>的形式    </li>
+<li>多维数组：<br>  即为“有一个数组，它的元素都是整型（浮点数等）数据，但是它有多个维度”，诸如<code>a[2,2]</code>的形式     </li>
+</ul>
+<p><strong>显然，C语言所说的“多维数组”，本质上是“数组的数组”</strong>       </p>
+<h4 id="多维数组的内存布局">多维数组的内存布局</h4><p>简单来说，C语言以“行主序”的规则布局内存，也就是说“最右边的下标先变化”<br>以二维数组为例，<code>a[2][4]</code>的内存布局如下：<br><code>a[0][0], a[0][1], a[0][2], a[0][3], a[1][0], a[1][1], a[1][2], a[1][3]</code>      </p>
+<h3 id="锯齿状数组的使用">锯齿状数组的使用</h3><p>锯齿状数组：某一维或某几维长短不一的数组<br>以二维数组为例，<code>char a[5][50]</code><br>我可以在<code>a[0]</code>保存一个很长的字符串，在<code>a[1]</code>保存一个很短的字符串，但是这样做就浪费了许多的空间<br>这时候，我们就可以创建一个锯齿状数组来节约空间     </p>
+<pre><code><span class="built_in">char</span> my_string1<span class="literal">[]</span> = <span class="string">"aaaaaaaaaaaaaaaaa"</span>;
+<span class="built_in">char</span> my_string2<span class="literal">[]</span> = <span class="string">"a"</span>;
+<span class="built_in">char</span> *my_strings[<span class="number">5</span>] = { my_string1, my_string2 };
+</code></pre><h3 id="char_a[3];和char_b[4];不是同种类型"><code>char a[3];</code>和<code>char b[4];</code>不是同种类型</h3><p>虽然元素都是字符，而且都能通过<code>char *</code>指针访问，但它们的确是属于不同的类型<br>用二维数组来展示更加明显，假定<code>char c[1][2];</code>、<code>char d[3][4];</code><br>那么前者只能由指针<code>char (*p)[2];</code>来访问<br>后者只能由指针<code>char (*q)[4];</code>来访问<br>两者显然是不同的  </p>
+<h3 id="char_*p_=_&quot;abc&quot;;和char_a[]_=_&quot;abc&quot;"><code>char *p = &quot;abc&quot;;</code>和<code>char a[] = &quot;abc&quot;</code></h3><p>前者的”abc”保存在常量区中，不可改变<br>后者的”abc”保存在栈中，是可变的<br>如果试图改变前者的元素，如<code>p[1] = &#39;d&#39;;</code>，编译能够通过，但运行时会导致程序异常（试图修改常量区内容）<br><code>char *p = &quot;abc&quot;;</code>这种写法存在着弊病，C++尝试否定这种写法，但这种写法过于普遍，最后为了兼容C而只好接受<br>更好的写法是认为的加上常量限定符，即<code>const char *p = &quot;abc&quot;;</code>，来显式说明p指向的是一个常量<br>这样，当尝试去修改p所指向的值时，编译器就会报错  </p>
+<h3 id="函数传值">函数传值</h3><p>无论函数的形参是<code>char a[]</code>还是<code>char *a</code><br>a都是一个可变的指针变量，而不会作为一个常量     </p>
+<p>另外，假定有如下定义：    </p>
+<pre><code><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span>{
+    <span class="keyword">int</span> a[<span class="number">6</span>];
+    example(a);
+}
+<span class="function"><span class="keyword">void</span> <span class="title">example</span><span class="params">( <span class="keyword">int</span> a[] )</span></span>{
+    <span class="comment">/*empty*/</span>
+}
+</code></pre><p><code>sizeof( a )</code>得到的是数组的空间大小（而非长度）<br><code>sizeof( b )</code>得到的是一个指针的空间大小（而不能取得数组的大小）<br>所以，无法通过sizeof运算符在函数内部获取到“传入”的数组的大小<br>另外，为了直观，应尽量使用形参<code>char *a</code>     </p>
+<h4 id="那么，如何得知传入的数组的大小？">那么，如何得知传入的数组的大小？</h4><ol>
+<li>增加一个额外的参数，提示数组的长度     </li>
+<li>为数组的最后一个元素赋予特殊的值，来提示数组的结束    </li>
+</ol>
+<h2 id="效率比较">效率比较</h2><blockquote>
+<p>《C专家编程》指出，<br>“使用现代的产品质量优化的编译器，一维数组和指针引用所产生的代码并不具有显著差别”</p>
+</blockquote>
+<h3 id="通过下标访问元素">通过下标访问元素</h3><p>这里以<code>char a[] = &quot;abcd&quot;;</code>和<code>char *p = a;</code>为例<br>比较<code>a[3]</code>和<code>p[3]</code>的区别<br>（假设a数组的首地址为123,p的地址为789）  </p>
+<ul>
+<li><code>a[3]</code>  <ol>
+<li>计算目标地址，即<code>123 + 3 * 1</code>得到a的第四个元素地址为<code>126</code></li>
+<li>在地址<code>126</code>处提取一个字节的字符  </li>
+</ol>
+</li>
+<li><code>p[3]</code>  <ol>
+<li>在地址<code>789</code>处提取四个字节的地址，即a数组的首地址<code>123</code>    </li>
+<li>计算目标地址，即<code>123 + 3 * 1</code>得到a的第四个元素地址为<code>126</code></li>
+<li>在地址<code>126</code>处提取一个字节的字符  </li>
+</ol>
+</li>
+</ul>
+<p>可以看到，指针访问比数组访问多了一个步骤，从这一点看，通过下标的方式，数组访问的效率反而稍高一些  </p>
+<h3 id="处理多个元素">处理多个元素</h3><p>这里以<code>char a[] = &quot;abcd&quot;;</code>和<code>char *p = a;</code>为例<br>通过两种方式来遍历数组中的所有元素<br>（假设a数组的首地址为123,p的地址为789）  </p>
+<ul>
+<li><p>数组访问</p>
+<pre><code>for<span class="comment">(i=0; i&lt;3; i++)</span>{
+    t = a[i];
+}
+</code></pre></li>
+</ul>
+<ol>
+<li>访问第一个元素<br> 计算目标地址，即<code>123 + 0 * 1</code>得到a的第一个元素地址为<code>123</code><br> 在地址<code>123</code>处提取第一个字符’a’  </li>
+<li>访问第二个元素<br> 计算目标地址，即<code>123 + 1 * 1</code>得到a的第二个元素地址为<code>124</code><br> 在地址<code>124</code>处提取第二个字符’b’  </li>
+<li>……  </li>
+</ol>
+<ul>
+<li><p>指针访问  </p>
+<pre><code>for<span class="comment">(i=0; i&lt;3; i++)</span>{
+    t = *p++;
+}
+</code></pre></li>
+</ul>
+<ol>
+<li>访问第一个元素<br> 在地址<code>789</code>处提取四个字节的地址<code>123</code><br> 在地址<code>123</code>处提取第一个字符’a’<br> p自增即<code>p + 1</code>为<code>124</code>  </li>
+<li>访问第二个元素<br>在地址<code>789</code>处提取四个字节的地址<code>124</code><br> 在地址<code>124</code>处提取第一个字符’b’<br> p自增即<code>p + 1</code>为<code>125</code>  </li>
+<li>……  </li>
+</ol>
+<p>可以看到，数组访问每次都要计算目标地址，而指针访问只需要直接提取数据<br>尽管指针需要偏移，但只作加减运算，而数组访问需要进行乘法运算，显然效率低一些<br>（实际上，现代计算机处理器的乘法运算得到很好的优化，其计算速度已经接近加减运算了，真正的瓶颈在于除法运算）  </p>
+<h3 id="现代编译器">现代编译器</h3><p>现代编译器常常会直接把数组转换成对应的指针形式，<br>在这种编译器下，无论是数组访问还是指针访问都会形成相同的机器指令   </p>
+<h3 id="参考资料">参考资料</h3><ul>
+<li><a href="http://wenku.baidu.com/link?url=K8DAxyzLukIEuWQcHD-Pim5P-0hZdSfb9bhhBGAKX8yg6Ph-iw7PXSpk_H2LrW4Sq_5qCW3j6iPOb2RLoRFGl_8pqPb3p0j719tJQvCPN6m" target="_blank" rel="external">数组下标访问和指针访问的效率</a>  </li>
+<li><a href="http://blog.csdn.net/pony_maggie/article/details/6748662" target="_blank" rel="external">指针访问与数组访问的效率分析（汇编层面）</a>  </li>
+<li><a href="http://bbs.chinaunix.net/thread-979141-1-1.html" target="_blank" rel="external">指针和数组到底谁的效率高</a>  </li>
+</ul>
+<h1 id="#">#</h1>
+          
+        
+      </div>
+    
+
+    
+      <div class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/C/">
+                #C
+              </a>
+            
+          </div>
+        
+
+        
+
+        
+        
+          <div class="post-eof"></div>
+        
+      </div>
+    
+  </div>
+
+
+  
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/12/vim实用技巧/">
                 《vim实用技巧》笔记
               </a>
@@ -236,7 +711,7 @@
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-08-11
+            Posted on 2015-08-11
           
         </span>
 
@@ -616,7 +1091,7 @@ nnoremap &lt;silent&gt; ]<span class="constant">B </span><span class="symbol">:b
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-08-01
+            Posted on 2015-08-01
           
         </span>
 
@@ -695,136 +1170,6 @@ nnoremap &lt;silent&gt; ]<span class="constant">B </span><span class="symbol">:b
           
           
             
-              <a class="post-title-link" href="/2015/07/28/指针&数组/">
-                指针&数组
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          
-            發表於 2015-07-27
-          
-        </span>
-
-        
-          
-        
-
-        
-          
-        
-      </div>
-    </div>
-
-    
-      <div class="post-body">
-
-        
-        
-
-        
-          
-            <p>指针和数组是C语言中常用的类型（数据结构）<br>《C Programming Language》一书中提到，指针访问比数组访问效率高一些，这是真的吗？<br>本着一个求知（ba gua）的心，我决定一探究竟=。=  </p>
-<h2 id="指针和数组">指针和数组</h2><p>数组和指针的关系、区别是什么？  </p>
-<h3 id="简单地说，数组名是一个指针常量">简单地说，数组名是一个指针常量</h3><ol>
-<li>数组名映射到程序常量区的一段数据，其中保存了数组的首地址</li>
-<li>数组名的值不能改变，不能作为左值  </li>
-</ol>
-<h3 id="char_a[3];和char_b[4];不是同种类型"><code>char a[3];</code>和<code>char b[4];</code>不是同种类型</h3><p>虽然元素都是字符，而且都能通过<code>char *</code>指针访问，但它们的确是属于不同的类型<br>用二维数组来展示更加明显，假定<code>char c[1][2];</code>、<code>char d[3][4];</code><br>那么前者只能由指针<code>char (*p)[2];</code>来访问<br>后者只能由指针<code>char (*q)[4];</code>来访问<br>两者显然是不同的  </p>
-<h3 id="char_*p_=_&quot;abc&quot;;和char_a[]_=_&quot;abc&quot;"><code>char *p = &quot;abc&quot;;</code>和<code>char a[] = &quot;abc&quot;</code></h3><p>前者的”abc”保存在常量区中，不可改变<br>后者的”abc”保存在栈中，是可变的<br>如果试图改变前者的元素，如<code>p[1] = &#39;d&#39;;</code>，编译能够通过，但运行时会导致程序异常（试图修改常量区内容）<br><code>char *p = &quot;abc&quot;;</code>这种写法存在着弊病，C++尝试否定这种写法，但这种写法过于普遍，最后为了兼容C而只好接受<br>更好的写法是认为的加上常量限定符，即<code>const char *p = &quot;abc&quot;;</code>，来显式说明p指向的是一个常量<br>这样，当尝试去修改p所指向的值时，编译器就会报错  </p>
-<h3 id="函数传值">函数传值</h3><p>无论函数的形参是<code>char a[]</code>还是<code>char *a</code><br>a都是一个可变的指针变量，而不会作为一个常量  </p>
-<h2 id="效率比较">效率比较</h2><h3 id="通过下标访问元素">通过下标访问元素</h3><p>这里以<code>char a[] = &quot;abcd&quot;;</code>和<code>char *p = a;</code>为例<br>比较<code>a[3]</code>和<code>p[3]</code>的区别<br>（假设a数组的首地址为123,p的地址为789）  </p>
-<ul>
-<li><code>a[3]</code>  <ol>
-<li>计算目标地址，即<code>123 + 3 * 1</code>得到a的第四个元素地址为<code>126</code></li>
-<li>在地址<code>126</code>处提取一个字节的字符  </li>
-</ol>
-</li>
-<li><code>p[3]</code>  <ol>
-<li>在地址<code>789</code>处提取四个字节的地址，即a数组的首地址<code>123</code>    </li>
-<li>计算目标地址，即<code>123 + 3 * 1</code>得到a的第四个元素地址为<code>126</code></li>
-<li>在地址<code>126</code>处提取一个字节的字符  </li>
-</ol>
-</li>
-</ul>
-<p>可以看到，指针访问比数组访问多了一个步骤，从这一点看，通过下标的方式，数组访问的效率反而稍高一些  </p>
-<h3 id="处理多个元素">处理多个元素</h3><p>这里以<code>char a[] = &quot;abcd&quot;;</code>和<code>char *p = a;</code>为例<br>通过两种方式来遍历数组中的所有元素<br>（假设a数组的首地址为123,p的地址为789）  </p>
-<ul>
-<li><p>数组访问</p>
-<pre><code>for<span class="comment">(i=0; i&lt;3; i++)</span>{
-    t = a[i];
-}
-</code></pre></li>
-</ul>
-<ol>
-<li>访问第一个元素<br> 计算目标地址，即<code>123 + 0 * 1</code>得到a的第一个元素地址为<code>123</code><br> 在地址<code>123</code>处提取第一个字符’a’  </li>
-<li>访问第二个元素<br> 计算目标地址，即<code>123 + 1 * 1</code>得到a的第二个元素地址为<code>124</code><br> 在地址<code>124</code>处提取第二个字符’b’  </li>
-<li>……  </li>
-</ol>
-<ul>
-<li><p>指针访问  </p>
-<pre><code>for<span class="comment">(i=0; i&lt;3; i++)</span>{
-    t = *p++;
-}
-</code></pre></li>
-</ul>
-<ol>
-<li>访问第一个元素<br> 在地址<code>789</code>处提取四个字节的地址<code>123</code><br> 在地址<code>123</code>处提取第一个字符’a’<br> p自增即<code>p + 1</code>为<code>124</code>  </li>
-<li>访问第二个元素<br>在地址<code>789</code>处提取四个字节的地址<code>124</code><br> 在地址<code>124</code>处提取第一个字符’b’<br> p自增即<code>p + 1</code>为<code>125</code>  </li>
-<li>……  </li>
-</ol>
-<p>可以看到，数组访问每次都要计算目标地址，而指针访问只需要直接提取数据<br>尽管指针需要偏移，但只作加减运算，而数组访问需要进行乘法运算，显然效率低一些<br>（实际上，现代计算机处理器的乘法运算得到很好的优化，其计算速度已经接近加减运算了，真正的瓶颈在于除法运算）  </p>
-<h3 id="现代编译器">现代编译器</h3><p>现代编译器常常会直接把数组转换成对应的指针形式，<br>在这种编译器下，无论是数组访问还是指针访问都会形成相同的机器指令   </p>
-<h2 id="参考资料">参考资料</h2><ul>
-<li><a href="http://wenku.baidu.com/link?url=K8DAxyzLukIEuWQcHD-Pim5P-0hZdSfb9bhhBGAKX8yg6Ph-iw7PXSpk_H2LrW4Sq_5qCW3j6iPOb2RLoRFGl_8pqPb3p0j719tJQvCPN6m" target="_blank" rel="external">数组下标访问和指针访问的效率</a>  </li>
-<li><a href="http://blog.csdn.net/pony_maggie/article/details/6748662" target="_blank" rel="external">指针访问与数组访问的效率分析（汇编层面）</a>  </li>
-<li><a href="http://bbs.chinaunix.net/thread-979141-1-1.html" target="_blank" rel="external">指针和数组到底谁的效率高</a>  </li>
-</ul>
-
-          
-        
-      </div>
-    
-
-    
-      <div class="post-footer">
-        
-          <div class="post-tags">
-            
-              <a href="/tags/C/">
-                #C
-              </a>
-            
-          </div>
-        
-
-        
-
-        
-        
-          <div class="post-eof"></div>
-        
-      </div>
-    
-  </div>
-
-
-  
-    
-
-  <div class="post post-type-normal ">
-    <div class="post-header">
-
-      
-      
-        <h1 class="post-title">
-          
-          
-            
               <a class="post-title-link" href="/2015/06/03/简单的正则表达式解析器/">
                 简单的正则表达式解析器
               </a>
@@ -836,7 +1181,7 @@ nnoremap &lt;silent&gt; ]<span class="constant">B </span><span class="symbol">:b
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-06-02
+            Posted on 2015-06-02
           
         </span>
 
@@ -956,7 +1301,7 @@ nnoremap &lt;silent&gt; ]<span class="constant">B </span><span class="symbol">:b
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-05-10
+            Posted on 2015-05-10
           
         </span>
 
@@ -1256,7 +1601,7 @@ myFather=<span class="keyword">new</span> person(<span class="string">"Bill"</sp
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-05-07
+            Posted on 2015-05-07
           
         </span>
 
@@ -1819,7 +2164,7 @@ stactivepage<span class="comment">(_back_page)</span>;    <span class="comment">
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-04-22
+            Posted on 2015-04-22
           
         </span>
 
@@ -2139,7 +2484,7 @@ with <span class="function"><span class="title">open</span><span class="params">
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-04-19
+            Posted on 2015-04-19
           
         </span>
 
@@ -2225,289 +2570,6 @@ with <span class="function"><span class="title">open</span><span class="params">
 
 
   
-    
-
-  <div class="post post-type-normal ">
-    <div class="post-header">
-
-      
-      
-        <h1 class="post-title">
-          
-          
-            
-              <a class="post-title-link" href="/2015/04/06/fedora安装与配置/">
-                fedora安装与配置
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          
-            發表於 2015-04-05
-          
-        </span>
-
-        
-          
-        
-
-        
-          
-        
-      </div>
-    </div>
-
-    
-      <div class="post-body">
-
-        
-        
-
-        
-          
-            <h2 id="fedora的安装">fedora的安装</h2><h3 id="烧制启动盘">烧制启动盘</h3><p>百度了一下<br>fedora的安装不同于ubuntu<br>据说直接烧进U盘是不能正常安装的<br>因为fedora采用了分轨镜像     </p>
-<ol>
-<li>官网提供了烧进U盘的专用工具，但是在我的电脑上并不能成功安装，连界面都进不去  </li>
-<li>在linux下用dd命令烧进U盘（注意<code>of=/dev/sdb</code>而不是<code>of=/dev/sdb1</code>）<br>windows下也可以找到dd的程序，据说跟linux差别不大      </li>
-<li>但是，在一些帖子上看到有的人用Utraiso烧进U盘也能用？但在我的电脑上并不可行   </li>
-</ol>
-<p>最终采用了第2种方法进入了安装的界面</p>
-<h3 id="UEFI？">UEFI？</h3><p>分区的时候安装程序死活不让我过，提示——<br><code>For a UEFI installation you must include EFI system partition on a GPT-formatted disk, mounted a /boot/efi</code><br>我试着去分出一个挂载在<code>/boot/efi</code>上的分区，但是并不能解决问题<br>最后查阅资料后，改成传统的legacy模式进入安装程序就没有问题啦     </p>
-<h2 id="fedora的基本配置">fedora的基本配置</h2><h3 id="触控板">触控板</h3><p>默认的触控板上滑动只能移动鼠标，单击必须按下按钮，极不舒服<br>设置，在<code>Settings</code>的<code>Mouse&amp;Touchpad</code>把<code>Tap to click</code>钩上即可    </p>
-<h3 id="Terminal的快捷键">Terminal的快捷键</h3><p>默认终端是没有快捷键的，不舒服啊！得把快捷键加上<br>在<code>Settings</code>的<code>Keyboard</code>下<code>Shortcuts</code>选项卡的<code>Custom Shortcuts</code>中加入自定义快捷键，<code>Name</code>随便填，<code>Command</code>设置为<code>/usr/bin/gnome-terminal</code>，并且设置所要的快捷键，一般是<code>Ctrl</code>+<code>Alt</code>+<code>T</code>咯   </p>
-<h3 id="vim的markdown语法高亮插件">vim的markdown语法高亮插件</h3><p>据说，fedora下的sublime是写不了中文的耶？！？！郁闷了……<br>那就用vim吧～～但是要手动下载markdon语法高亮插件<br>嗯……这个插件还是蛮不错的！<br>在Home目录下新建名为<code>.vim</code>的文件夹，将插件clone到本地即可<br><code>https://github.com/plasticboy/vim-markdown</code>     </p>
-<p><em>安装fedora的时候不小心把以前的md文件弄丢了，索性曾经转换成html发布了出去，只要把html再转回markdon即可</em><br><a href="http://www.atool.org/html2markdown.php" target="_blank" rel="external">Html转换为MarkDown样式代码</a><br>这个工具还是蛮不错的，转换的结果还行～～    </p>
-<h3 id="shadowsocks安装与配置">shadowsocks安装与配置</h3><p>参考资料：<br><a href="https://github.com/shadowsocks/shadowsocks" target="_blank" rel="external">Shadowsocks|Github</a><br><a href="http://ttt.tt/150/" target="_blank" rel="external">科学上网利器 Shadowsocks 使用方法</a>         </p>
-<h4 id="安装">安装</h4><p><code>yum install python-pip</code><br><code>pip install shadowsocks</code></p>
-<h4 id="配置">配置</h4><h5 id="新建配置文件和相应目录">新建配置文件和相应目录</h5><p><code>/etc/shadowsocks/config.json</code><br>文件内容：    </p>
-<pre><code>{
-  "<span class="attribute">server</span>":<span class="value"><span class="string">"服务器地址"</span></span>,
-  "<span class="attribute">server_port</span>":<span class="value">服务器端口</span>,
-  "<span class="attribute">local_port</span>":<span class="value"><span class="number">1080</span></span>,
-  "<span class="attribute">password</span>":<span class="value"><span class="string">"密码"</span></span>,
-  "<span class="attribute">timeout</span>":<span class="value"><span class="number">60</span></span>,
-  "<span class="attribute">method</span>":<span class="value"><span class="string">"aes-256-cfb"</span>
-</span>}
-</code></pre><h4 id="启动">启动</h4><p>前台启动：<code>sslocal -c /etc/shadowsocks/config.json</code><br>后台启动：在<code>/etc/shadowsocks/</code>目录下执行<code>nohup sslocal &gt; log &amp;</code>      </p>
-<h5 id="添加服务到systemd">添加服务到systemd</h5><p>安装完shadowsocks后会发现，systemd中并没有sslocal、ssserver、shadowsocks之类的服务，那么需要我们手动添加进去<br>= =不过我不会玩systemd哦，只好疯狂了翻资料，然后自己写了个low low的service凑活着用吧，等有空恶补一下systemd的知识再来进一步完善<br>首先，systemd的服务配置文件是在<code>/etc/systemd/system/</code>目录下<br>文件名即为<code>服务名.service</code>，比如我新建的一个<code>sslocal.service</code><br>文件内容我是这么写哒——  </p>
-<pre><code><span class="title">[Service]</span>
-<span class="setting">Type=<span class="value">simple</span></span>
-<span class="setting">ExecStart=<span class="value">/usr/bin/sslocal -c /etc/shadowsocks/config.json</span></span>
-
-<span class="title">[Intsall]</span>
-<span class="setting">WantedBy=<span class="value">multi-user.target  </span></span>
-</code></pre><p>Service字段呢指明了类型为简单，然后执行一条命令<br>只要有这条字段我们就可以<code>systemctl start sslocal</code>啦<br>但是一执行<code>enable</code>他就会报错缺少Install字段<br>额……还不是很理解这个字段干嘛的，看到各种资料给的例子上都写上这么一句，就直接拔了下来，也能成功地执行<code>systemctl enable sslocal</code>来使这个服务开机自启啦<br>这个配置写的lowlow的，而且不知道会不会有什么错误的地方……<br>等我好好学一下systemd的知识再来完善吧……=。=  </p>
-<h4 id="firefox-&gt;foxyproxy插件">firefox-&gt;foxyproxy插件</h4><h5 id="添加代理服务器">添加代理服务器</h5><p>服务器ip设置为127.0.0.1，端口1080<br>选择<code>SOCKS proxy</code>-&gt;<code>SOCKS v5</code>     </p>
-<h5 id="添加gwflist规则">添加gwflist规则</h5><p>让插件判断哪些网址需要代理，哪些不需要<br><code>Pattern Subscriptions</code>选项卡，添加规则订阅<br>URL: <code>https://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt</code><br>添加刚才加入的代理<code>Add Proxy</code><br><code>Refesh Rate: 600</code><br><code>Format: AutoProxy</code><br><code>ObFuscation: Base64</code><br><strong>这个是谷歌的一个规则，所以添加时必须打开代理服务器，否则将获取不到</strong><br>把<code>Select Mode</code>修改为<code>Use proxies based on their pre-defined pattens and priorities</code>即可   </p>
-<h3 id="apache+php+mysql安装与配置">apache+php+mysql安装与配置</h3><p>参考资料：<a href="http://my.oschina.net/matrixchan/blog/367591" target="_blank" rel="external">在fedora21 上的php+mysql+apache环境搭建</a></p>
-<h4 id="apache">apache</h4><p>安装：<code>yum install httpd</code><br>控制：<br><code>systemctl [start | stop | restart | reload] httpd.service</code><br>或 <code>service httpd [start | stop |restart | reload]</code><br>开机自启：<code>systemctl enable httpd.service</code>    </p>
-<h4 id="php">php</h4><p>安装：<code>yum install php php-mysql</code><br>重启apache：<code>systemctl restart httpd.service</code>    </p>
-<h4 id="mysql">mysql</h4><p>安装：<code>yum install mariadb mariadb-server</code><br>控制：与apache类似，服务名为“mariadb”<br>开机自启：与apache类似<br>配置向导：<code>mysql_secure_installation</code>主要是设置root用户密码，其他设置一般一路回车即可  </p>
-<h3 id="sudoers">sudoers</h3><p>参考资料：<a href="http://www.linuxidc.com/Linux/2014-06/103424.htm" target="_blank" rel="external">Fedora 20下解决用户不在 sudoers 文件中的方法</a><br>fedora默认的一般用户并不是sudoer<br>也就是不能临时使用root权限来执行命令<br>但是我们可以手动加入到sudoers中<br>用root打开文件<code>/etc/sudoers</code><br>在最下面加入一行<code>USERNAME ALL=(ALL) ALL</code>即可<br><em>此处的USERNAME为要加入sudoers的用户名</em></p>
-<h3 id="sublime的安装与中文支持">sublime的安装与中文支持</h3><h4 id="fcitx安装">fcitx安装</h4><p>参考资料：<a href="http://www.tuicool.com/articles/MfEzUnY" target="_blank" rel="external">Fedora20安装fcitx输入法</a><br><code>yum install fcitx fcitx-pinyin fcitx-configtool im-chooser</code><br>然后用im-chooser更换输入法为fcitx<br>如果报错，则执行<code>gsettings set org.gnome.settings-daemon.plugins.keyboard active false</code><br>如果实在不行，尝试删除ibus，<code>yum install remove ibus</code>  </p>
-<h4 id="sublime_text安装">sublime text安装</h4><p>参考资料：<a href="http://www.tuicool.com/articles/vEB7Nry" target="_blank" rel="external">Fedora 20 sublime text 安装</a><br>在官方下载包，解压后复制到<code>/opt/sublime_text/</code>目录下<br>创建<code>sublime</code>命令：  </p>
-<pre><code>touch <span class="regexp">/usr/</span>bin/sublime
-chmod <span class="number">755</span> <span class="regexp">/usr/</span>bin/sublime
-vim <span class="regexp">/usr/</span>bin/sublime
-</code></pre><p>贴入一下代码：（假设创建sublime命令）  </p>
-<pre><code><span class="shebang">#!/bin/sh</span>
-<span class="built_in">export</span> SUBLIME_HOME=/opt/sublime_text
-<span class="variable">$SUBLIME_HOME</span>/sublime_text $*
-</code></pre><h4 id="中文输入支持">中文输入支持</h4><p>参考资料：<a href="http://blog.mkidding.com/fedora20%E4%BD%BF%E7%94%A8fcitx%E5%9C%A8sublime_text%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5/" target="_blank" rel="external">FEDORA20使用FCITX在SUBLIME_TEXT中文输入</a><br>1、新建名为<code>sublime_text_fcitx.c</code>文件，贴入以下代码：  </p>
-<pre><code><span class="comment">/*
-
-sublime-imfix.c
-
-Use LD_PRELOAD to interpose some function to fix sublime input method support for linux.
-
-By Cjacker Huang &lt;jianzhong.huang at i-soft.com.cn&gt;
-
-gcc -shared -o libsublime-imfix.so sublime_imfix.c `pkg-config –libs –cflags gtk+-2.0` -fPIC
-
-LD_PRELOAD=./libsublime-imfix.so sublime_text
-
-*/</span>
-
-<span class="variable">#include</span> <span class="subst">&lt;</span>gtk/gtk<span class="built_in">.</span>h<span class="subst">&gt;</span>
-
-<span class="variable">#include</span> <span class="subst">&lt;</span>gdk/gdkx<span class="built_in">.</span>h<span class="subst">&gt;</span>
-
-typedef GdkSegment GdkRegionBox;
-
-struct _GdkRegion
-
-{
-
-long size;
-
-long numRects;
-
-GdkRegionBox <span class="subst">*</span>rects;
-
-GdkRegionBox extents;
-
-};
-
-GtkIMContext <span class="subst">*</span>local_context;
-
-<span class="literal">void</span>
-
-gdk_region_get_clipbox (const GdkRegion <span class="subst">*</span>region,
-
-GdkRectangle <span class="subst">*</span>rectangle)
-
-{
-
-g_return_if_fail (region <span class="subst">!=</span> <span class="built_in">NULL</span>);
-
-g_return_if_fail (rectangle <span class="subst">!=</span> <span class="built_in">NULL</span>);
-
-rectangle<span class="subst">-&gt;</span>x <span class="subst">=</span> region<span class="subst">-&gt;</span>extents<span class="built_in">.</span>x1;
-
-rectangle<span class="subst">-&gt;</span>y <span class="subst">=</span> region<span class="subst">-&gt;</span>extents<span class="built_in">.</span>y1;
-
-rectangle<span class="subst">-&gt;</span>width <span class="subst">=</span> region<span class="subst">-&gt;</span>extents<span class="built_in">.</span>x2 – region<span class="subst">-&gt;</span>extents<span class="built_in">.</span>x1;
-
-rectangle<span class="subst">-&gt;</span>height <span class="subst">=</span> region<span class="subst">-&gt;</span>extents<span class="built_in">.</span>y2 – region<span class="subst">-&gt;</span>extents<span class="built_in">.</span>y1;
-
-GdkRectangle rect;
-
-rect<span class="built_in">.</span>x <span class="subst">=</span> rectangle<span class="subst">-&gt;</span>x;
-
-rect<span class="built_in">.</span>y <span class="subst">=</span> rectangle<span class="subst">-&gt;</span>y;
-
-rect<span class="built_in">.</span>width <span class="subst">=</span> <span class="number">0</span>;
-
-rect<span class="built_in">.</span>height <span class="subst">=</span> rectangle<span class="subst">-&gt;</span>height;
-
-<span class="comment">//The caret width is 2;</span>
-
-<span class="comment">//Maybe sometimes we will make a mistake, but for most of the time, it should be the caret.</span>
-
-<span class="keyword">if</span>(rectangle<span class="subst">-&gt;</span>width <span class="subst">==</span> <span class="number">2</span> <span class="subst">&amp;&amp;</span> GTK_IS_IM_CONTEXT(local_context)) {
-
-gtk_im_context_set_cursor_location(local_context, rectangle);
-
-}
-
-}
-
-<span class="comment">//this is needed, for example, if you input something in file dialog and return back the edit area</span>
-
-<span class="comment">//context will lost, so here we set it again.</span>
-
-static GdkFilterReturn event_filter (GdkXEvent <span class="subst">*</span>xevent, GdkEvent <span class="subst">*</span>event, gpointer im_context)
-
-{
-
-XEvent <span class="subst">*</span>xev <span class="subst">=</span> (XEvent <span class="subst">*</span>)xevent;
-
-<span class="keyword">if</span>(xev<span class="subst">-&gt;</span><span class="keyword">type</span> <span class="subst">==</span> KeyRelease <span class="subst">&amp;&amp;</span> GTK_IS_IM_CONTEXT(im_context)) {
-
-GdkWindow <span class="subst">*</span> win <span class="subst">=</span> g_object_get_data(G_OBJECT(im_context),”window”);
-
-<span class="keyword">if</span>(GDK_IS_WINDOW(win))
-
-gtk_im_context_set_client_window(im_context, win);
-
-}
-
-<span class="keyword">return</span> GDK_FILTER_CONTINUE;
-
-}
-
-<span class="literal">void</span> gtk_im_context_set_client_window (GtkIMContext <span class="subst">*</span>context,
-
-GdkWindow <span class="subst">*</span>window)
-
-{
-
-GtkIMContextClass <span class="subst">*</span>klass;
-
-g_return_if_fail (GTK_IS_IM_CONTEXT (context));
-
-klass <span class="subst">=</span> GTK_IM_CONTEXT_GET_CLASS (context);
-
-<span class="keyword">if</span> (klass<span class="subst">-&gt;</span>set_client_window)
-
-klass<span class="subst">-&gt;</span>set_client_window (context, window);
-
-<span class="keyword">if</span>(<span class="subst">!</span>GDK_IS_WINDOW (window))
-
-<span class="keyword">return</span>;
-
-g_object_set_data(G_OBJECT(context),”window”,window);
-
-int width <span class="subst">=</span> gdk_window_get_width(window);
-
-int height <span class="subst">=</span> gdk_window_get_height(window);
-
-<span class="keyword">if</span>(width <span class="subst">!=</span> <span class="number">0</span> <span class="subst">&amp;&amp;</span> height <span class="subst">!=</span><span class="number">0</span>) {
-
-gtk_im_context_focus_in(context);
-
-local_context <span class="subst">=</span> context;
-
-}
-
-gdk_window_add_filter (window, event_filter, context);
-
-}
-</code></pre><p><em>直接用vim贴入有可能会莫名其妙自动注释掉一些代码，要注意检查一下</em><br>2、编译为动态链接库<br>所需工具：gtk2-devel、glib2-devel<br>执行命令：  </p>
-<pre><code>gcc -shared -o sublime_text_fcitx<span class="class">.so</span> sublime_text_fcitx<span class="class">.c</span>  `pkg-config –libs –cflags gtk+-<span class="number">2.0</span>` -fPIC  
-</code></pre><p>将该so文件复制到<code>/opt/sublime_text</code>目录下  </p>
-<p>3、设置LD_PRELOAD并启动sublime<br><code>LD_PRELOAD=./libsublime-imfix.so sublime_text</code><br>但是每次都这样启动太麻烦了，<br>网上有的用sh脚本启动，其实也挺麻烦的<br>事实上直接修改<code>/usr/bin/sublime</code>的内容即可  </p>
-<p>4、修改<code>/usr/bin/sublime</code>内容<br>把LD_PRELOAD的设置添加进去，最终的配置如下：  </p>
-<pre><code><span class="shebang">#!/bin/sh</span>
-<span class="built_in">export</span> SUBLIME_HOME=/opt/sublime_text_3
-LD_LIB=<span class="variable">$SUBLIME_HOME</span>/libsublime-imfix.so
-LD_PRELOAD=<span class="variable">$LD_LIB</span> <span class="variable">$SUBLIME_HOME</span>/sublime_text $*
-</code></pre>
-          
-        
-      </div>
-    
-
-    
-      <div class="post-footer">
-        
-          <div class="post-tags">
-            
-              <a href="/tags/fedora/">
-                #fedora
-              </a>
-            
-              <a href="/tags/linux/">
-                #linux
-              </a>
-            
-              <a href="/tags/markdown/">
-                #markdown
-              </a>
-            
-              <a href="/tags/shadowsocks/">
-                #shadowsocks
-              </a>
-            
-          </div>
-        
-
-        
-
-        
-        
-          <div class="post-eof"></div>
-        
-      </div>
-    
-  </div>
-
-
-  
 
           </div>
 
@@ -2541,22 +2603,22 @@ LD_PRELOAD=<span class="variable">$LD_LIB</span> <span class="variable">$SUBLIME
       <div class="site-state motion-element">
         <div class="site-state-item site-state-posts">
           <a href="/archives">
-            <span class="site-state-item-count">13</span>
-            <span class="site-state-item-name">文章</span>
+            <span class="site-state-item-count">14</span>
+            <span class="site-state-item-name">posts</span>
           </a>
         </div>
 
         <div class="site-state-item site-state-categories">
           
             <span class="site-state-item-count">0</span>
-            <span class="site-state-item-name">分類</span>
+            <span class="site-state-item-name">categories</span>
           
         </div>
 
         <div class="site-state-item site-state-tags">
           <a href="/tags">
             <span class="site-state-item-count">15</span>
-            <span class="site-state-item-name">標籤</span>
+            <span class="site-state-item-name">tags</span>
           </a>
         </div>
 
@@ -2595,11 +2657,11 @@ LD_PRELOAD=<span class="variable">$LD_LIB</span> <span class="variable">$SUBLIME
 </div>
 
 <div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
-  主題 -
+  Theme -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Mist
   </a>
