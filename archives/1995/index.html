@@ -30,13 +30,11 @@
 
 
 
-  <title>
-   // Hey!Yahei~
-</title>
+  <title> 歸檔 // Hey!Yahei~ </title>
 </head>
 
 <body>
-  <div class="container one-column ">
+  <div class="container one-column  page-archive ">
     <div class="headband"></div>
 
     <div id="header" class="header">
@@ -95,127 +93,72 @@
           <div id="posts" class="posts-collapse">
             
 
-  
-  
-    <h2 id="Chap3_JAVA的基本程序设计结构">Chap3 JAVA的基本程序设计结构</h2><p>JAVA语法与C++语法相似，此处仅列出与C语法不同的语法点    </p>
-<ul>
-<li>JAVA虚拟机从指定类的main方法开始执行    <ul>
-<li>main方法必须是静态的    </li>
-<li>main方法不直接给操作系统返回“退出代码”，若正常退出，java应用程序返回0。如果希望返回其他代码，需要调用<code>System.exit</code>方法  </li>
-</ul>
-</li>
-<li>JAVA所有函数都属于某个类的方法   </li>
-</ul>
-<h3 id="注释">注释</h3><p>JAVA有三种注释方法   </p>
-<ol>
-<li><code>//</code>  </li>
-<li><code>/*</code>和<code>*/</code>   </li>
-<li><code>/**</code>和<code>*/</code>：将注释内容自动生成文档    </li>
-</ol>
-<h3 id="数据类型">数据类型</h3><p>JAVA是一种强类型语言   </p>
-<h4 id="整型">整型</h4><h5 id="四种整型类型">四种整型类型</h5><ul>
-<li><code>int</code>：4字节，约+-20亿  </li>
-<li><code>short</code>：2字节，约+-3万    </li>
-<li><code>long</code>：8字节，约+-9e19   </li>
-<li><code>byte</code>：1字节，-128～127   </li>
-</ul>
-<h5 id="整型常数表示：">整型常数表示：</h5><ul>
-<li>默认：十进制   </li>
-<li>后缀<code>L</code>：长整型   </li>
-<li>前缀<code>0</code>：八进制   </li>
-<li>前缀<code>0x</code>：十六进制    </li>
-<li>前缀<code>0b</code>：二进制   </li>
-<li>常数表示时可以人为的加上下划线<code>_</code>来使其更容易阅读<br>  如：<code>1_000_000</code>编译器会自动去除下划线    </li>
-</ul>
-<h4 id="浮点类型">浮点类型</h4><h5 id="两种浮点类型">两种浮点类型</h5><ul>
-<li><code>float</code>：4字节，6~7位有效数字   </li>
-<li><code>double</code>：8字节，15位有效数字   </li>
-<li>通常使用double类型，除非需要快速处理单精度类型数据、需要存储大量单精度类型数据     </li>
-</ul>
-<h5 id="浮点类型常数表示：">浮点类型常数表示：</h5><ul>
-<li>默认：double类型     </li>
-<li>后缀<code>F</code>：float类型    </li>
-<li>后缀<code>D</code>：double类型   </li>
-</ul>
-<h5 id="浮点类型的特殊常量">浮点类型的特殊常量</h5><ul>
-<li><code>Double.POSITIVE_INFINITY</code>：无穷大     </li>
-<li><code>Double.NEGATIVE_INFINITY</code>：无穷小   </li>
-<li><code>Double.NaN</code>：“not a number”非数值   </li>
-<li>float类型同理     </li>
-<li>判断一个特定值是否为数值     <ul>
-<li>不可以使用<code>if(x == Double.NaN)</code>    </li>
-<li>但可以使用<code>if(Double.isNaN(x))</code>     </li>
-</ul>
-</li>
-</ul>
-<h5 id="浮点类型存在舍入误差">浮点类型存在舍入误差</h5><p>这是因为浮点数值是采用二进制系统表示的，<br><code>(2.0-1.1)</code>将得到的是<code>0.899999999999999</code>而不是<code>0.9</code><br>所以浮点数值不适用于进制出现舍入误差的金融计算当中，此时可以使用<code>BigDecimal</code>类     </p>
-<h4 id="字符类型">字符类型</h4><p>16字节的UTF16编码格式<br>JAVA中不建议使用<code>char</code>类型，最好将需要处理的字符串用抽象数据类型表示    </p>
-<h4 id="boolean类型">boolean类型</h4><ul>
-<li>只有false和true两个值    </li>
-<li>不能和整型相互转换<br>  如<code>if( x=0 )</code>，表达式<code>x=0</code>的值为整型0   <ul>
-<li>在C语言中，该语句符合语法   </li>
-<li>但在JAVA中，该语句不符合语法，因为条件表达式要求是boolean类型，而boolean类型和整型不能相互转换    </li>
-</ul>
-</li>
-</ul>
-<h3 id="变量">变量</h3><h4 id="声明">声明</h4><ul>
-<li>可以使用除了“+”、空格等以外的任何unicode字符（包括中文）    </li>
-<li>变量名长度没有限制   </li>
-<li>一次可以声明多个变量，但不建议这样做，每行声明一个变量并给出相应的注释能提高程序的可读性     </li>
-<li>变量声明应尽可能靠近第一次使用的地方，而不一定都在函数开头   </li>
-<li>JAVA不区分“定义”和“声明”    </li>
-</ul>
-<h4 id="常量">常量</h4><ul>
-<li>定义借助<code>final</code>关键字，如<code>final double pi=3.14</code>     </li>
-<li>常量只能被赋值一次    </li>
-<li>“const”也是JAVA的保留字，但并不使用    </li>
-</ul>
-<h3 id="运算符">运算符</h3><h4 id="一般运算">一般运算</h4><ul>
-<li>整数除以0会引发异常，浮点数除以0会得到无穷大或NaN    </li>
-<li>支持<code>+=</code>、<code>++</code>、<code>A?B:C</code>、位运算符    </li>
-<li>对两个boolean值进行<code>&amp;</code>或<code>|</code>运算，两边的表达式都要经过计算<br>  但若进行<code>&amp;&amp;</code>或<code>||</code>运算，则采取“短路”原则   </li>
-<li>C和C++对于<code>&gt;&gt;</code>运算采取“符号拓展”还是<code>高位补0</code>是不确定的<br>  但JAVA规范为“符号拓展”，即可用于任意整型    </li>
-<li>JAVA不支持幂运算符<code>^</code>    </li>
-<li>JAVA不支持逗号运算符，但在for语句中可以用for分隔表达式列表     </li>
-</ul>
-<h4 id="数学函数与常量">数学函数与常量</h4><p>包含于数学类<code>Math</code>中    </p>
-<ul>
-<li>幂运算：<code>Math.pow(x,a)</code>      </li>
-<li>其他：<br>  <code>Math.sin()</code><br>  <code>Math.cos()</code><br>  <code>Math.tan()</code><br>  <code>Math.atan()</code><br>  <code>Math.exp()</code><br>  <code>Math.log()</code><br>  <code>Math.log10()</code><br>  等等     </li>
-<li>数学常量<br>  <code>Math.PI</code><br>  <code>Math.E</code><br>  等等    </li>
-<li><code>Math</code>类的方法都采用计算机浮点单元中的例程以获得最快的性能<br>  如果需要确保在所有平台上得到相同的结果，可以使用<code>StrictMath</code>类        </li>
-</ul>
-<h4 id="类型转换">类型转换</h4><p><img src="http://www.oschina.net/uploads/space/2012/0910/114649_PzTn_592434.jpg" alt="Java类型转换"><br>虚线表示转换过程中会损失精度<br>运算过程中会自动将操作数往“高级别”的类型转换<br>“级别”顺序：double,float,long,int,“others”      </p>
-<h4 id="强类型转换">强类型转换</h4><p>同C语言    </p>
-<ul>
-<li>浮点数转换为整型    <ul>
-<li>直接使用<code>(int)</code>等将自动截断小数部分     </li>
-<li>如果需要进行舍入运算，应借助<code>Math.round()</code>方法    </li>
-</ul>
-</li>
-<li>如果尝试将一种类型强制转换为超出范围的另一种类型，其数值将会被截断    </li>
-<li>一般不要将boolean类型强制转换为其他类型，也不要将其他类型强制转换为boolean类型<br>  如果非要这么做，可以借助三元运算符<code>b?1:0</code>     </li>
-</ul>
-<h4 id="优先级和结合性">优先级和结合性</h4><p><img src="http://b.hiphotos.baidu.com/space/pic/item/1c950a7b02087bf45b82b06bf2d3572c10dfcfc2.jpg" alt="Java优先级和结合性"><br>与C语言几乎一致，除了少量的特性增减<br>大致顺序如下：    </p>
-<ol>
-<li>初等运算符、方法调用       </li>
-<li>一元运算符、new     </li>
-<li>算术运算符（先乘除，后加减）    </li>
-<li>位“移”运算符      </li>
-<li>关系运算符（但<code>==</code>和<code>!=</code>优先级较低）、instanceof      </li>
-<li>位“与”    </li>
-<li>位“异”     </li>
-<li>位“或”     </li>
-<li>逻辑运算符（除了<code>!</code>，且<code>&amp;&amp;</code>优先级较高）     </li>
-<li>条件运算符    </li>
-<li>赋值运算符       </li>
-</ol>
-<h4 id="枚举类型">枚举类型</h4><pre><code><span class="keyword">enum</span> <span class="built_in">Size</span> { SMALL, MEDIUM, LARGE, EXTRA_LARGE };
-<span class="built_in">Size</span> s = <span class="built_in">Size</span>.MEDIUM;   
-</code></pre><p>此时的Size类型变量只能存储这个类型枚举出来的某个值，或是<code>null</code>           </p>
-<h3 id="字符串">字符串</h3>
+  <span class="archive-move-on"></span>
+
+  <span class="archive-page-counter">
+    
+    
+     
+    
+    嗯..! 目前共計 16 篇文章。 繼續努力。
+  </span>
+
   
 
+    
+    
+    
+
+    
+      
+      <div class="collection-title">
+        <h2 class="archive-year motion-element" id="archive-year-1995">1995</h2>
+      </div>
+    
+    
+
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/1995/07/31/Note_for_Java/Chap3JAVA的基本程序设计结构/">
+                《Java核心技术》Chap3笔记
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          
+            07-30
+          
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    
+
+    
+  </div>
+
+
+
+  
 
           </div>
 
@@ -245,7 +188,7 @@
       <div class="site-state motion-element">
         <div class="site-state-item site-state-posts">
           <a href="/archives">
-            <span class="site-state-item-count">15</span>
+            <span class="site-state-item-count">16</span>
             <span class="site-state-item-name">文章</span>
           </a>
         </div>
@@ -321,6 +264,12 @@
 
   
   
+  
+    <script type="text/javascript">
+      postMotionOptions = {stagger: 100, drag: true};
+    </script>
+  
+
 
   
   <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
@@ -509,6 +458,12 @@
 
 
   
+  
+    <script type="text/javascript" id="motion.page.archive">
+      $('.archive-year').velocity('transition.slideLeftIn');
+    </script>
+  
+
 
   
 
