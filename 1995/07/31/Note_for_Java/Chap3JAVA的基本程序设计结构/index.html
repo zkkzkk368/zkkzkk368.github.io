@@ -190,6 +190,7 @@
 <li>一次可以声明多个变量，但不建议这样做，每行声明一个变量并给出相应的注释能提高程序的可读性     </li>
 <li>变量声明应尽可能靠近第一次使用的地方，而不一定都在函数开头   </li>
 <li>JAVA不区分“定义”和“声明”    </li>
+<li>局部变量不会自动初始化为null     </li>
 </ul>
 <h4 id="常量">常量</h4><ul>
 <li>定义借助<code>final</code>关键字，如<code>final double pi=3.14</code>     </li>
@@ -272,7 +273,7 @@ boolean <span class="function"><span class="title">equals</span><span class="par
 boolean <span class="function"><span class="title">equalsIngoreCase</span><span class="params">(String other)</span></span>  
 int <span class="function"><span class="title">indexOf</span><span class="params">(String str [, int fromIndex])</span></span>  
 int <span class="function"><span class="title">indexOf</span><span class="params">(int cp [, int fromIndex])</span></span>   <span class="comment">//返回（以fromIndex为索引0的）与str字符串或cp代码点匹配的第一个子串的开始位置的索引，若不存在，返回-1  </span>
-int lastIndexOf(String str [, int fromIndex]  
+int <span class="function"><span class="title">lastIndexOf</span><span class="params">(String str [, int fromIndex])</span></span>  
 int <span class="function"><span class="title">lastIndexOf</span><span class="params">(int cp [, int fromIndex])</span></span>   <span class="comment">//最后一个子串   </span>
 int <span class="function"><span class="title">length</span><span class="params">()</span></span>  
 int <span class="function"><span class="title">codePointCount</span><span class="params">(int startIndex, int endIndex)</span></span>   <span class="comment">//startIndex到endIndex-1之间   </span>
@@ -394,7 +395,7 @@ static BigDecimal <span class="function"><span class="title">valueOf</span><span
 </code></pre><p>将可迭代对象（实现Iterable接口的对象）的每个程序暂存于变量element     </p>
 <p><em>如果需要打印整个数组，可以这样使用<code>System.out.println( Arrays.toString(a) )</code>，将得到诸如<code>[2,3,5,7,11,13]</code>的输出</em>    </p>
 <h4 id="数组初始化、匿名数组">数组初始化、匿名数组</h4><pre><code><span class="keyword">int</span>[] smallPrimes = {<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>};    <span class="comment">//注意无需使用new   </span>
-smallPrimes = <span class="keyword">new</span> <span class="keyword">int</span>[] = {<span class="number">17</span>, <span class="number">19</span>, <span class="number">23</span>, <span class="number">29</span>, <span class="number">31</span>, <span class="number">37</span>};   <span class="comment">//给smallPrimes重新初始化    </span>
+smallPrimes = <span class="keyword">new</span> <span class="keyword">int</span>[] {<span class="number">17</span>, <span class="number">19</span>, <span class="number">23</span>, <span class="number">29</span>, <span class="number">31</span>, <span class="number">37</span>};   <span class="comment">//给smallPrimes重新初始化    </span>
 </code></pre><p>Java还允许长度为0的数组，如<code>new elementType[0]</code><br><strong>注意：数组长度为0与null不同</strong>      </p>
 <h4 id="数组拷贝">数组拷贝</h4><h5 id="浅复制（共享）">浅复制（共享）</h5><pre><code><span class="keyword">int</span>[] luckyNumbers = smallPrimes;    <span class="comment">//两个名字共享一个数组    </span>
 </code></pre><h5 id="深复制">深复制</h5><p>借助<code>Arrays.copyOf(Arrays x, int length)</code>方法，拷贝x数组的length个元素生成新数组并返回    </p>
@@ -507,7 +508,7 @@ for(int n = 0; n <span class="xml"><span class="tag">&lt; <span class="attribute
       <div class="site-state motion-element">
         <div class="site-state-item site-state-posts">
           <a href="/archives">
-            <span class="site-state-item-count">16</span>
+            <span class="site-state-item-count">17</span>
             <span class="site-state-item-name">文章</span>
           </a>
         </div>
