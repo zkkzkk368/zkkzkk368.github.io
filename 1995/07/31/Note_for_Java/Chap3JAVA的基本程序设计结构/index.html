@@ -239,7 +239,129 @@
 <h4 id="枚举类型">枚举类型</h4><pre><code><span class="keyword">enum</span> <span class="built_in">Size</span> { SMALL, MEDIUM, LARGE, EXTRA_LARGE };
 <span class="built_in">Size</span> s = <span class="built_in">Size</span>.MEDIUM;   
 </code></pre><p>此时的Size类型变量只能存储这个类型枚举出来的某个值，或是<code>null</code>           </p>
-<h3 id="字符串">字符串</h3>
+<h3 id="字符串">字符串</h3><p>没有内置的字符串类型，但有预定义的String类<br>双引号扩起来的字符串都是String类的一个实例<br>java字符串都是Unicode字符序列    </p>
+<h4 id="子串">子串</h4><p>String类的substring方法可以提取从较长的字符串中提取出一个子串    </p>
+<pre><code><span class="keyword">String</span> greeting = <span class="string">"Hello"</span>;
+<span class="keyword">String</span> s = greeting.substring(<span class="number">0</span>, <span class="number">3</span>);   
+</code></pre><p><strong>注意：这里提取的是0-2的字符，即大于等于0,小于3</strong></p>
+<h4 id="拼接">拼接</h4><p>字符串可以用加号<code>+</code>进行拼接<br>如果字符串跟一个非字符串数值进行拼接，后者将会转换为一个字符串（任何java对象都可以转换成字符串）     </p>
+<h4 id="不可变字符串">不可变字符串</h4><p>String类对象是不可变字符串，即字符串内容不可以改变<br>倘若要改变字符串内容，可以借助子串和拼接<br>如：将greeting变量的内容从“Hello”改为“Help!”     </p>
+<pre><code><span class="setting">greeting = <span class="value">greeting.substring(<span class="number">0</span>, <span class="number">3</span>) + <span class="string">"p!"</span>;</span></span>
+</code></pre><p>优点：编译器可以让字符串共享，而通常情况下，共享的使用频率远高于提取、拼接字符串<br><em>共享：想象各种字符串存放在公共的存储池，变量指向存储池中相应的位置;复制字符串变量时，原始字符串和复制的字符串共享相同的字符</em><br>但有时侯需要用到构建字符串StringBuilder类     </p>
+<p><em>另外，当String类的实例指向另一个字符串（重新赋值）时，原始字符串会被垃圾回收机制自动回收</em>      </p>
+<h4 id="检测字符串是否相等">检测字符串是否相等</h4><p>使用<code>equals</code>方法检测两个字符串是否相等    </p>
+<pre><code>s.<span class="keyword">equals</span>(t);  
+</code></pre><p>该方法返回一个boolean值<br><em>如果需要忽略大小写，可以使用<code>equalsIgnoreCase</code>方法</em>     </p>
+<ul>
+<li>C语言中用<em>strcmp</em>函数进行字符串比较<br>  java中也有对应的<code>compareTo</code>方法，但是用<code>equals</code>方法更为直观      </li>
+<li>C++语言中直接用<code>==</code>来判断两个字符串是否相等，<br>  但在JAVA中用<code>==</code>判断的是两个字符串是否在同一位置（有可能共享），一般是没有意义的      </li>
+</ul>
+<h4 id="空串和null串">空串和null串</h4><p>空串：长度为0（<code>str.length() == 0</code>）,内容为空（<code>str.equals(&quot;&quot;)</code>）<br>null串：目前没有任何对象与该变量关联（<code>str == null</code>）            </p>
+<h4 id="代码点与代码单元">代码点与代码单元</h4><p>大多数常用的Unicode字符都使用一个代码单元表示，但辅助字符等需要一对代码单元表示<br>无论是用一个代码单元还是用一对代码单元表示，每个字符就作为一个代码点     </p>
+<ul>
+<li><code>length()</code>方法返回的是代码单元的数量     </li>
+<li><code>codePointCount(x, y)</code>方法返回代码单元为x至(y-1)的代码点数量<br>  <code>int cpCount = greeting.codePointCount(0, greeting.length())</code>可以获取一个字符串的代码点数量      </li>
+<li><code>charAt(i)</code>方法返回位置为i的代码单元<br>  如果想获取位置为i的代码单元，可以这么做<br>  <code>int index = greeting.offsetByCodePoints(0, i);</code><br>  <code>int cp = greeting.codePointAt(index);</code><br>  注意：<code>codePointAt()</code>方法的参数为代码单元的索引，而不是代码点的      </li>
+</ul>
+<h4 id="常用字符串方法">常用字符串方法</h4><pre><code>char <span class="function"><span class="title">charAt</span><span class="params">(int index)</span></span>      
+int <span class="function"><span class="title">codePointAt</span><span class="params">(int index)</span></span>     
+int <span class="function"><span class="title">offsetByCodePoints</span><span class="params">(int startIndex, int cpCount)</span></span>  
+int <span class="function"><span class="title">compareTo</span><span class="params">(String other)</span></span>  
+boolean <span class="function"><span class="title">endsWith</span><span class="params">(String suffix)</span></span>  
+boolean <span class="function"><span class="title">equals</span><span class="params">(Object other)</span></span>     
+boolean <span class="function"><span class="title">equalsIngoreCase</span><span class="params">(String other)</span></span>  
+int <span class="function"><span class="title">indexOf</span><span class="params">(String str [, int fromIndex])</span></span>  
+int <span class="function"><span class="title">indexOf</span><span class="params">(int cp [, int fromIndex])</span></span>   <span class="comment">//返回（以fromIndex为索引0的）与str字符串或cp代码点匹配的第一个子串的开始位置的索引，若不存在，返回-1  </span>
+int lastIndexOf(String str [, int fromIndex]  
+int <span class="function"><span class="title">lastIndexOf</span><span class="params">(int cp [, int fromIndex])</span></span>   <span class="comment">//最后一个子串   </span>
+int <span class="function"><span class="title">length</span><span class="params">()</span></span>  
+int <span class="function"><span class="title">codePointCount</span><span class="params">(int startIndex, int endIndex)</span></span>   <span class="comment">//startIndex到endIndex-1之间   </span>
+String <span class="function"><span class="title">replace</span><span class="params">(CharSequence oldString, CharSequence newString)</span></span>   <span class="comment">//返回新串，新串中将旧串中的oldString中的字符映射位newString中的对应字符    </span>
+boolean <span class="function"><span class="title">startWith</span><span class="params">(String prefix)</span></span>   
+String <span class="function"><span class="title">substring</span><span class="params">(int beginIndex [, int endIndex])</span></span>  <span class="comment">//startIndex到endIndex-1之间  </span>
+String <span class="function"><span class="title">toLowerCase</span><span class="params">()</span></span>   
+String <span class="function"><span class="title">toUpperCase</span><span class="params">()</span></span>   
+String <span class="function"><span class="title">trim</span><span class="params">()</span></span>    <span class="comment">//删除头部和尾部的空格     </span>
+</code></pre><p><strong>注意：java一般使用的是不可变字符串，因此上述方法都是返回新串，而不是进行原地操作</strong>       </p>
+<h4 id="构建字符串">构建字符串</h4><p>有时候需要用较短字符串构建长字符串（如按键、文件中的单词等）<br>采用String类来拼接字符串每次都产生新串，耗时费空间<br>此时可以使用<code>StringBuilder</code>类     </p>
+<h5 id="使用方法">使用方法</h5><ol>
+<li>构建一个空的字符串构建器<br> <code>StringBuilder builder = new StringBuilder();</code>     </li>
+<li>不断添加子串或字符<br> <code>builder.append(ch);</code><br> <code>builder.append(str);</code>     </li>
+<li>将builder下的字符串和字符构建成长字符串并返回<br> <code>String completedString = builder.toString();</code>    </li>
+</ol>
+<h5 id="StringBuilder类的常用方法"><code>StringBuilder</code>类的常用方法</h5><pre><code><span class="function"><span class="title">StringBuilder</span><span class="params">()</span></span>          
+int <span class="function"><span class="title">length</span><span class="params">()</span></span>          
+StringBuilder <span class="function"><span class="title">append</span><span class="params">(String str)</span></span>     
+StringBuilder <span class="function"><span class="title">append</span><span class="params">(char c)</span></span>           
+StringBuilder <span class="function"><span class="title">appendCodePoint</span><span class="params">(int cp)</span></span>     
+void <span class="function"><span class="title">setCharAt</span><span class="params">(int i, char c)</span></span>    
+StringBuilder <span class="function"><span class="title">insert</span><span class="params">(int offset, String str)</span></span>       
+StringBuilder <span class="function"><span class="title">insert</span><span class="params">(int offset, char c)</span></span>    
+StringBuilder <span class="function"><span class="title">delect</span><span class="params">(int startIndex, int endIndex)</span></span>     
+String <span class="function"><span class="title">toString</span><span class="params">()</span></span>   
+</code></pre><p><em>注意：上述返回StringBuilder的方法，都是返回this</em>    </p>
+<h3 id="输入输出">输入输出</h3><h4 id="输入">输入</h4><h5 id="相关方法">相关方法</h5><pre><code><span class="comment">/*java.util.Scanner*/</span>
+<span class="function"><span class="title">Scanner</span><span class="params">(InputStream in)</span></span>  <span class="comment">//用给定的输入流in创建一个Scanner对象  </span>
+String <span class="function"><span class="title">nextLine</span><span class="params">()</span></span>  <span class="comment">//读取一行   </span>
+String <span class="function"><span class="title">next</span><span class="params">()</span></span>  <span class="comment">//读取一个单词（以空格为分隔符）   </span>
+int <span class="function"><span class="title">nextInt</span><span class="params">()</span></span>  <span class="comment">//读取一个整型  </span>
+double <span class="function"><span class="title">nextDouble</span><span class="params">()</span></span>  <span class="comment">//读取一个浮点数   </span>
+boolean <span class="function"><span class="title">hasNext</span><span class="params">()</span></span>  <span class="comment">//检测是否还有单词可以读取   </span>
+boolean <span class="function"><span class="title">hasNextInt</span><span class="params">()</span></span>  
+boolean <span class="function"><span class="title">hasNextDouble</span><span class="params">()</span></span>  
+
+<span class="comment">/*java.lang.System*/</span>  
+static Console <span class="function"><span class="title">console</span><span class="params">()</span></span>  <span class="comment">//如果有可能进行交互操作，则通过控制台窗口为用户返回一个Console对象;否则返回null    </span>
+
+<span class="comment">/*java.io.Console*/</span>  
+static char[] <span class="function"><span class="title">readPassword</span><span class="params">(String prompt, Object...args)</span></span>   
+static String <span class="function"><span class="title">readLine</span><span class="params">(String prompt, Object...args)</span></span>    <span class="comment">//显示prompt，并读取用户输入   </span>
+</code></pre><h5 id="常见用法">常见用法</h5><pre><code><span class="literal">import</span> java.util.*;  <span class="comment">//加载java.util包</span>
+Scanner <span class="keyword">in</span> = <span class="keyword">new</span> Scanner(System.<span class="keyword">in</span>);  <span class="comment">//以标准输入流创建一个Scanner对象  </span>
+System.out.<span class="built_in">print</span>(<span class="string">"What is your name?"</span>);  <span class="comment">//输出到标准输出流  </span>
+<span class="built_in">String</span> name = <span class="keyword">in</span>.nextLine();  <span class="comment">//从标准输入流读取一行   </span>
+</code></pre><h4 id="格式化输出">格式化输出</h4><p>Java沿用了C语言库函数中的printf，此处只列出不同之处   </p>
+<h5 id="转换符">转换符</h5><p><code>%d</code>、<code>%x</code>、<code>%o</code>、<code>%f</code>、<code>%e</code>、<code>%g</code>、<code>%s</code>、<code>%c</code>、<code>%%</code><br><code>%b</code>：布尔<br><code>%h</code>：散列码<br><code>%tx</code>：日期时间，此处x为额外的参数<br><code>%n</code>：行分隔符<br><code>%a</code>：十六进制浮点数    </p>
+<h4 id="字符串输出">字符串输出</h4><p><code>System.out.print()</code><br><code>System.out.println()</code>输出一行（自动换行）    </p>
+<h5 id="标志">标志</h5><p><code>+</code>、<code>空格</code>、<code>0</code>、<code>-</code>、<code>,</code><br><code>(</code>：将负数括在括号内<br><code>,</code>：添加分组分隔符，如3,333,333<br><code>#</code>：对于f格式，添加小数点;对于x或0格式，添加0x或0<br><code>$</code>：给定被格式化的参数索引，如<code>%1$d, %1$x</code>表示以十进制和十六进制打印第一个参数，注意参数索引是从1开始，而不是0<br><code>&lt;</code>：沿用上一个参数的值，如<code>%d%&lt;x</code>表示以十进制和十六进制打印同一个参数   </p>
+<h5 id="格式化后存储字符串（而不直接输出）">格式化后存储字符串（而不直接输出）</h5><p><code>String.format()</code>方法    </p>
+<h5 id="日期时间参数（即%tx中的x）">日期时间参数（即<code>%tx</code>中的x）</h5><p><code>%tc</code>：完整的日期和时间，如Mon Feb 09 18:05:19 PST 2004<br><code>%tF</code>：ISO8601日期，如2004-02-09<br><code>%tD</code>：美国格式的日期，如02/09/2004<br><code>%tT</code>：24小时时间，如18:09:19<br><code>%tr</code>：12小时时间，如06:09:19pm<br><code>%tR</code>：24小时时间（没有秒），如18:09<br><code>%tY</code>：年份，如：2004<br><code>%tB</code>：月份的完整拼写，如February<br><code>%tb</code>：月份的缩写，如Feb<br><code>%tm</code>：月份的数字，如02<br><code>%td</code>：日的数字，如09<br><code>%tA</code>：星期几的完整拼写，如Monday<br><code>%ta</code>：星期几的缩写，如Mon<br><code>%tH</code>：24小时数字，如18<br><code>%tI</code>：12小时数字，如06<br><code>%tM</code>：分钟的数字，如05<br><code>%tS</code>：秒钟的数字，如19<br><code>%tL</code>：三位毫秒数字，如047<br><code>%tN</code>：九位毫秒数字，如047000000<br><code>%tP</code>：上下午标志（大写），如PM<br><code>%tp</code>：上下午标志（小写），如pm<br><code>%tZ</code>：时区，如PST    </p>
+<p>其他：<code>%ty</code>、<code>%tC</code>、<code>%te</code>、<code>%tj</code>、<code>%tk</code>、<code>%tl</code>、<code>%tz</code>、<code>%ts</code>、<code>%tQ</code>      </p>
+<p>使用方法：<br><code>System.out.printf( &quot;%1$s %2$tB %2$te %2$tY&quot;, &quot;Due date&quot;, new Date() );</code><br>或<code>System.out.printf( &quot;%s %tB %&lt;te %&lt;tY&quot;, &quot;Due date&quot;, new Date() );</code>     </p>
+<h4 id="文件输入输出">文件输入输出</h4><h5 id="文件输出">文件输出</h5><pre><code>Scanner <span class="keyword">in</span> = <span class="keyword">new</span> Scanner(Paths.<span class="keyword">get</span>(<span class="string">"myfile.txt"</span>));    <span class="comment">//用File对象构造一个Scanner对象，注意不要直接用字符串“myfile.txt”构造Scanner对象;如果文件名中存在反斜杠，则需要用两个反斜杠（第一个反斜杠为转义）    </span>
+</code></pre><p>如果用一个不存在的文件构造一个Scanner，则会发生异常      </p>
+<h5 id="文件输入">文件输入</h5><pre><code>PrintWriter <span class="keyword">out</span> = <span class="keyword">new</span> PrintWriter(<span class="string">"myfile.txt"</span>);    <span class="comment">//构造一个PrintWriter对象，如果不存在则创建    </span>
+<span class="keyword">out</span>.print(<span class="string">"....."</span>);   
+<span class="keyword">out</span>.println(<span class="string">"......"</span>);
+<span class="keyword">out</span>.printf(<span class="string">"....."</span>, ....);    
+</code></pre><p>如果用一个不能被创建的文件名构造PrintWriter，则会发生异常</p>
+<h5 id="文件路径">文件路径</h5><p>可以用绝对路径，也可以使用相对路径<br>如果是在控制台调用java，则以控制台的当前路径为基准；<br>如果是在集成环境调用java，则以IDE设定为基准；<br>可以通过<code>String dir = System.getProperty(&quot;user.dir&quot;);</code>来获取当前的路径      </p>
+<h3 id="流程控制">流程控制</h3><p>与C语言基本一致，只有以下少数区别    </p>
+<h4 id="嵌套的语句块内不能重定义外层语句块的同名变量">嵌套的语句块内不能重定义外层语句块的同名变量</h4><pre><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span>
+</span>{
+    <span class="keyword">int</span> n;
+    ...
+    {
+        <span class="keyword">int</span> k;
+        <span class="keyword">int</span> n;  <span class="comment">//Error!!!!!!!!1</span>
+    }
+}
+</code></pre><h4 id="没有goto语句，但是break语句可以带标签">没有goto语句，但是break语句可以带标签</h4><p>可以利用带标签的break语句跳出多层循环<br>但“goto”仍作为Java的保留字    </p>
+<h4 id="在循环中检测两个浮点数是否相等需要特别小心">在循环中检测两个浮点数是否相等需要特别小心</h4><p>如<code>for(double x=0; x!=10; x+=0.1) ....</code>有可能永远不会跳出循环<br>因为浮点数存在舍入误差，x可能从9.99999999999998跳到10.09999999999998     </p>
+<h4 id="switch语句中的case">switch语句中的case</h4><ul>
+<li>允许使用字符串常量   </li>
+<li><p>使用枚举常量时，无需列出枚举名       </p>
+<pre><code><span class="keyword">Size</span> sz = ...;
+<span class="keyword">switch</span> (sz)
+{
+    <span class="keyword">case</span> SMALL:   <span class="comment">//不需要用Size.SMALL    </span>
+        ....
+        <span class="keyword">break</span>;
+    ....
+}
+</code></pre></li>
+</ul>
+<h3 id="大数值">大数值</h3>
         
       </div>
     
@@ -359,7 +481,7 @@
         <div class="post-toc">
           
           
-            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Chap3_JAVA的基本程序设计结构"><span class="nav-number">1.</span> <span class="nav-text">Chap3 JAVA的基本程序设计结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注释"><span class="nav-number">1.1.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据类型"><span class="nav-number">1.2.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#整型"><span class="nav-number">1.2.1.</span> <span class="nav-text">整型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#四种整型类型"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">四种整型类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#整型常数表示："><span class="nav-number">1.2.1.2.</span> <span class="nav-text">整型常数表示：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浮点类型"><span class="nav-number">1.2.2.</span> <span class="nav-text">浮点类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#两种浮点类型"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">两种浮点类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#浮点类型常数表示："><span class="nav-number">1.2.2.2.</span> <span class="nav-text">浮点类型常数表示：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#浮点类型的特殊常量"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">浮点类型的特殊常量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#浮点类型存在舍入误差"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">浮点类型存在舍入误差</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符类型"><span class="nav-number">1.2.3.</span> <span class="nav-text">字符类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#boolean类型"><span class="nav-number">1.2.4.</span> <span class="nav-text">boolean类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量"><span class="nav-number">1.3.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#声明"><span class="nav-number">1.3.1.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常量"><span class="nav-number">1.3.2.</span> <span class="nav-text">常量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运算符"><span class="nav-number">1.4.</span> <span class="nav-text">运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一般运算"><span class="nav-number">1.4.1.</span> <span class="nav-text">一般运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数学函数与常量"><span class="nav-number">1.4.2.</span> <span class="nav-text">数学函数与常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类型转换"><span class="nav-number">1.4.3.</span> <span class="nav-text">类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#强类型转换"><span class="nav-number">1.4.4.</span> <span class="nav-text">强类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优先级和结合性"><span class="nav-number">1.4.5.</span> <span class="nav-text">优先级和结合性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#枚举类型"><span class="nav-number">1.4.6.</span> <span class="nav-text">枚举类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串"><span class="nav-number">1.5.</span> <span class="nav-text">字符串</span></a></li></ol></li></ol></div>
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Chap3_JAVA的基本程序设计结构"><span class="nav-number">1.</span> <span class="nav-text">Chap3 JAVA的基本程序设计结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注释"><span class="nav-number">1.1.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据类型"><span class="nav-number">1.2.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#整型"><span class="nav-number">1.2.1.</span> <span class="nav-text">整型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#四种整型类型"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">四种整型类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#整型常数表示："><span class="nav-number">1.2.1.2.</span> <span class="nav-text">整型常数表示：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浮点类型"><span class="nav-number">1.2.2.</span> <span class="nav-text">浮点类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#两种浮点类型"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">两种浮点类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#浮点类型常数表示："><span class="nav-number">1.2.2.2.</span> <span class="nav-text">浮点类型常数表示：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#浮点类型的特殊常量"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">浮点类型的特殊常量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#浮点类型存在舍入误差"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">浮点类型存在舍入误差</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符类型"><span class="nav-number">1.2.3.</span> <span class="nav-text">字符类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#boolean类型"><span class="nav-number">1.2.4.</span> <span class="nav-text">boolean类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量"><span class="nav-number">1.3.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#声明"><span class="nav-number">1.3.1.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常量"><span class="nav-number">1.3.2.</span> <span class="nav-text">常量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运算符"><span class="nav-number">1.4.</span> <span class="nav-text">运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一般运算"><span class="nav-number">1.4.1.</span> <span class="nav-text">一般运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数学函数与常量"><span class="nav-number">1.4.2.</span> <span class="nav-text">数学函数与常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类型转换"><span class="nav-number">1.4.3.</span> <span class="nav-text">类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#强类型转换"><span class="nav-number">1.4.4.</span> <span class="nav-text">强类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优先级和结合性"><span class="nav-number">1.4.5.</span> <span class="nav-text">优先级和结合性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#枚举类型"><span class="nav-number">1.4.6.</span> <span class="nav-text">枚举类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串"><span class="nav-number">1.5.</span> <span class="nav-text">字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#子串"><span class="nav-number">1.5.1.</span> <span class="nav-text">子串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拼接"><span class="nav-number">1.5.2.</span> <span class="nav-text">拼接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不可变字符串"><span class="nav-number">1.5.3.</span> <span class="nav-text">不可变字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检测字符串是否相等"><span class="nav-number">1.5.4.</span> <span class="nav-text">检测字符串是否相等</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空串和null串"><span class="nav-number">1.5.5.</span> <span class="nav-text">空串和null串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码点与代码单元"><span class="nav-number">1.5.6.</span> <span class="nav-text">代码点与代码单元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用字符串方法"><span class="nav-number">1.5.7.</span> <span class="nav-text">常用字符串方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构建字符串"><span class="nav-number">1.5.8.</span> <span class="nav-text">构建字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用方法"><span class="nav-number">1.5.8.1.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#StringBuilder类的常用方法"><span class="nav-number">1.5.8.2.</span> <span class="nav-text">StringBuilder类的常用方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出"><span class="nav-number">1.6.</span> <span class="nav-text">输入输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入"><span class="nav-number">1.6.1.</span> <span class="nav-text">输入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#相关方法"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">相关方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常见用法"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">常见用法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#格式化输出"><span class="nav-number">1.6.2.</span> <span class="nav-text">格式化输出</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#转换符"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">转换符</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串输出"><span class="nav-number">1.6.3.</span> <span class="nav-text">字符串输出</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#标志"><span class="nav-number">1.6.3.1.</span> <span class="nav-text">标志</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#格式化后存储字符串（而不直接输出）"><span class="nav-number">1.6.3.2.</span> <span class="nav-text">格式化后存储字符串（而不直接输出）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#日期时间参数（即%tx中的x）"><span class="nav-number">1.6.3.3.</span> <span class="nav-text">日期时间参数（即%tx中的x）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件输入输出"><span class="nav-number">1.6.4.</span> <span class="nav-text">文件输入输出</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#文件输出"><span class="nav-number">1.6.4.1.</span> <span class="nav-text">文件输出</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件输入"><span class="nav-number">1.6.4.2.</span> <span class="nav-text">文件输入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件路径"><span class="nav-number">1.6.4.3.</span> <span class="nav-text">文件路径</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流程控制"><span class="nav-number">1.7.</span> <span class="nav-text">流程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#嵌套的语句块内不能重定义外层语句块的同名变量"><span class="nav-number">1.7.1.</span> <span class="nav-text">嵌套的语句块内不能重定义外层语句块的同名变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#没有goto语句，但是break语句可以带标签"><span class="nav-number">1.7.2.</span> <span class="nav-text">没有goto语句，但是break语句可以带标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在循环中检测两个浮点数是否相等需要特别小心"><span class="nav-number">1.7.3.</span> <span class="nav-text">在循环中检测两个浮点数是否相等需要特别小心</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#switch语句中的case"><span class="nav-number">1.7.4.</span> <span class="nav-text">switch语句中的case</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大数值"><span class="nav-number">1.8.</span> <span class="nav-text">大数值</span></a></li></ol></li></ol></div>
           
         </div>
         <div class="post-toc-indicator-bottom post-toc-indicator"></div>
