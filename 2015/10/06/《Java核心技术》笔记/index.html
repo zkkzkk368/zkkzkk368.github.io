@@ -18,9 +18,9 @@
 
 
 
-	<meta name="keywords" content="C," />
+	<meta name="keywords" content="Java," />
 
-  <title> 指针&数组 // Hey!Yahei~ </title>
+  <title> 《Java核心技术》笔记 // Hey!Yahei~ </title>
 </head>
 
 <body>
@@ -93,7 +93,7 @@
           
           
             
-              指针&数组
+              《Java核心技术》笔记
             
           
         </h1>
@@ -102,7 +102,7 @@
       <div class="post-meta">
         <span class="post-time">
           
-            發表於 2015-08-30
+            發表於 2015-10-06
           
         </span>
 
@@ -123,90 +123,12 @@
         
 
         
-          <p>指针和数组是C语言中常用的类型（数据结构）<br>《C Programming Language》一书中提到，指针访问比数组访问效率高一些，这是真的吗？<br>本着一个求知（ba gua）的心，我决定一探究竟=。=  </p>
-<h2 id="指针和数组">指针和数组</h2><p>数组和指针的关系、区别是什么？  </p>
-<h3 id="简单地说，数组名是一个指针常量">简单地说，数组名是一个指针常量</h3><ol>
-<li>数组名映射到程序常量区的一段数据，其中保存了数组的首地址</li>
-<li>数组名的值不能改变，不能作为左值   </li>
-<li>通过下标访问数组元素是通过数组首元素地址（数组名）加上偏移量实现的<br> 因此，指针必须有类型限制（才能够正确的计算步长）<br> 另外，对于数组a，<code>a[6]</code>和<code>6[a]</code>是等价的<br> <strong>没错！<code>6[a]</code>是成立的，但是为了程序的可读性，尽量不要刻意这么用</strong>     </li>
-</ol>
-<h3 id="C语言的多维数组">C语言的多维数组</h3><h4 id="“数组的数组”和“多维数组”">“数组的数组”和“多维数组”</h4><ul>
-<li>数组的数组：<br>  即为“有一个数组，它的元素也是数组”，诸如<code>a[2][2]</code>的形式    </li>
-<li>多维数组：<br>  即为“有一个数组，它的元素都是整型（浮点数等）数据，但是它有多个维度”，诸如<code>a[2,2]</code>的形式     </li>
-</ul>
-<p><strong>显然，C语言所说的“多维数组”，本质上是“数组的数组”</strong>       </p>
-<h4 id="多维数组的内存布局">多维数组的内存布局</h4><p>简单来说，C语言以“行主序”的规则布局内存，也就是说“最右边的下标先变化”<br>以二维数组为例，<code>a[2][4]</code>的内存布局如下：<br><code>a[0][0], a[0][1], a[0][2], a[0][3], a[1][0], a[1][1], a[1][2], a[1][3]</code>      </p>
-<h3 id="锯齿状数组的使用">锯齿状数组的使用</h3><p>锯齿状数组：某一维或某几维长短不一的数组<br>以二维数组为例，<code>char a[5][50]</code><br>我可以在<code>a[0]</code>保存一个很长的字符串，在<code>a[1]</code>保存一个很短的字符串，但是这样做就浪费了许多的空间<br>这时候，我们就可以创建一个锯齿状数组来节约空间     </p>
-<pre><code><span class="built_in">char</span> my_string1<span class="literal">[]</span> = <span class="string">"aaaaaaaaaaaaaaaaa"</span>;
-<span class="built_in">char</span> my_string2<span class="literal">[]</span> = <span class="string">"a"</span>;
-<span class="built_in">char</span> *my_strings[<span class="number">5</span>] = { my_string1, my_string2 };
-</code></pre><h3 id="char_a[3];和char_b[4];不是同种类型"><code>char a[3];</code>和<code>char b[4];</code>不是同种类型</h3><p>虽然元素都是字符，而且都能通过<code>char *</code>指针访问，但它们的确是属于不同的类型<br>用二维数组来展示更加明显，假定<code>char c[1][2];</code>、<code>char d[3][4];</code><br>那么前者只能由指针<code>char (*p)[2];</code>来访问<br>后者只能由指针<code>char (*q)[4];</code>来访问<br>两者显然是不同的  </p>
-<h3 id="char_*p_=_&quot;abc&quot;;和char_a[]_=_&quot;abc&quot;"><code>char *p = &quot;abc&quot;;</code>和<code>char a[] = &quot;abc&quot;</code></h3><p>前者的”abc”保存在常量区中，不可改变<br>后者的”abc”保存在栈中，是可变的<br>如果试图改变前者的元素，如<code>p[1] = &#39;d&#39;;</code>，编译能够通过，但运行时会导致程序异常（试图修改常量区内容）<br><code>char *p = &quot;abc&quot;;</code>这种写法存在着弊病，C++尝试否定这种写法，但这种写法过于普遍，最后为了兼容C而只好接受<br>更好的写法是认为的加上常量限定符，即<code>const char *p = &quot;abc&quot;;</code>，来显式说明p指向的是一个常量<br>这样，当尝试去修改p所指向的值时，编译器就会报错  </p>
-<h3 id="函数传值">函数传值</h3><p>无论函数的形参是<code>char a[]</code>还是<code>char *a</code><br>a都是一个可变的指针变量，而不会作为一个常量     </p>
-<p>另外，假定有如下定义：    </p>
-<pre><code><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span>{
-    <span class="keyword">int</span> a[<span class="number">6</span>];
-    example(a);
-}
-<span class="function"><span class="keyword">void</span> <span class="title">example</span><span class="params">( <span class="keyword">int</span> a[] )</span></span>{
-    <span class="comment">/*empty*/</span>
-}
-</code></pre><p><code>sizeof( a )</code>得到的是数组的空间大小（而非长度）<br><code>sizeof( b )</code>得到的是一个指针的空间大小（而不能取得数组的大小）<br>所以，无法通过sizeof运算符在函数内部获取到“传入”的数组的大小<br>另外，为了直观，应尽量使用形参<code>char *a</code>     </p>
-<h4 id="那么，如何得知传入的数组的大小？">那么，如何得知传入的数组的大小？</h4><ol>
-<li>增加一个额外的参数，提示数组的长度     </li>
-<li>为数组的最后一个元素赋予特殊的值，来提示数组的结束    </li>
-</ol>
-<h2 id="效率比较">效率比较</h2><blockquote>
-<p>《C专家编程》指出，<br>“使用现代的产品质量优化的编译器，一维数组和指针引用所产生的代码并不具有显著差别”</p>
-</blockquote>
-<h3 id="通过下标访问元素">通过下标访问元素</h3><p>这里以<code>char a[] = &quot;abcd&quot;;</code>和<code>char *p = a;</code>为例<br>比较<code>a[3]</code>和<code>p[3]</code>的区别<br>（假设a数组的首地址为123,p的地址为789）  </p>
+          <p>《Java核心技术》笔记     </p>
 <ul>
-<li><code>a[3]</code>  <ol>
-<li>计算目标地址，即<code>123 + 3 * 1</code>得到a的第四个元素地址为<code>126</code></li>
-<li>在地址<code>126</code>处提取一个字节的字符  </li>
-</ol>
-</li>
-<li><code>p[3]</code>  <ol>
-<li>在地址<code>789</code>处提取四个字节的地址，即a数组的首地址<code>123</code>    </li>
-<li>计算目标地址，即<code>123 + 3 * 1</code>得到a的第四个元素地址为<code>126</code></li>
-<li>在地址<code>126</code>处提取一个字节的字符  </li>
-</ol>
-</li>
+<li>省略chap1和chap2</li>
+<li><a href="/Note_for_Java/Chap3JAVA的基本程序设计结构.html">chap3 Java的基本程序设计结构</a>     </li>
 </ul>
-<p>可以看到，指针访问比数组访问多了一个步骤，从这一点看，通过下标的方式，数组访问的效率反而稍高一些  </p>
-<h3 id="处理多个元素">处理多个元素</h3><p>这里以<code>char a[] = &quot;abcd&quot;;</code>和<code>char *p = a;</code>为例<br>通过两种方式来遍历数组中的所有元素<br>（假设a数组的首地址为123,p的地址为789）  </p>
-<ul>
-<li><p>数组访问</p>
-<pre><code>for<span class="comment">(i=0; i&lt;3; i++)</span>{
-    t = a[i];
-}
-</code></pre></li>
-</ul>
-<ol>
-<li>访问第一个元素<br> 计算目标地址，即<code>123 + 0 * 1</code>得到a的第一个元素地址为<code>123</code><br> 在地址<code>123</code>处提取第一个字符’a’  </li>
-<li>访问第二个元素<br> 计算目标地址，即<code>123 + 1 * 1</code>得到a的第二个元素地址为<code>124</code><br> 在地址<code>124</code>处提取第二个字符’b’  </li>
-<li>……  </li>
-</ol>
-<ul>
-<li><p>指针访问  </p>
-<pre><code>for<span class="comment">(i=0; i&lt;3; i++)</span>{
-    t = *p++;
-}
-</code></pre></li>
-</ul>
-<ol>
-<li>访问第一个元素<br> 在地址<code>789</code>处提取四个字节的地址<code>123</code><br> 在地址<code>123</code>处提取第一个字符’a’<br> p自增即<code>p + 1</code>为<code>124</code>  </li>
-<li>访问第二个元素<br>在地址<code>789</code>处提取四个字节的地址<code>124</code><br> 在地址<code>124</code>处提取第一个字符’b’<br> p自增即<code>p + 1</code>为<code>125</code>  </li>
-<li>……  </li>
-</ol>
-<p>可以看到，数组访问每次都要计算目标地址，而指针访问只需要直接提取数据<br>尽管指针需要偏移，但只作加减运算，而数组访问需要进行乘法运算，显然效率低一些<br>（实际上，现代计算机处理器的乘法运算得到很好的优化，其计算速度已经接近加减运算了，真正的瓶颈在于除法运算）  </p>
-<h3 id="现代编译器">现代编译器</h3><p>现代编译器常常会直接把数组转换成对应的指针形式，<br>在这种编译器下，无论是数组访问还是指针访问都会形成相同的机器指令   </p>
-<h3 id="参考资料">参考资料</h3><ul>
-<li><a href="http://wenku.baidu.com/link?url=K8DAxyzLukIEuWQcHD-Pim5P-0hZdSfb9bhhBGAKX8yg6Ph-iw7PXSpk_H2LrW4Sq_5qCW3j6iPOb2RLoRFGl_8pqPb3p0j719tJQvCPN6m" target="_blank" rel="external">数组下标访问和指针访问的效率</a>  </li>
-<li><a href="http://blog.csdn.net/pony_maggie/article/details/6748662" target="_blank" rel="external">指针访问与数组访问的效率分析（汇编层面）</a>  </li>
-<li><a href="http://bbs.chinaunix.net/thread-979141-1-1.html" target="_blank" rel="external">指针和数组到底谁的效率高</a>  </li>
-</ul>
-<h1 id="#">#</h1>
+
         
       </div>
     
@@ -216,8 +138,8 @@
         
           <div class="post-tags">
             
-              <a href="/tags/C/">
-                #C
+              <a href="/tags/Java/">
+                #Java
               </a>
             
           </div>
@@ -227,13 +149,11 @@
           <div class="post-nav">
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/2015/09/20/Note_for_Python/">python笔记</a>
-              
             </div>
 
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2015/08/31/《C专家编程》小记/">《C专家编程》小记</a>
+                <a href="/2015/09/20/Note_For_Linux/">《鸟哥的Linux私房菜》笔记</a>
               
             </div>
           </div>
@@ -328,7 +248,7 @@
         <div class="post-toc">
           
           
-            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#指针和数组"><span class="nav-number">1.</span> <span class="nav-text">指针和数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单地说，数组名是一个指针常量"><span class="nav-number">1.1.</span> <span class="nav-text">简单地说，数组名是一个指针常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C语言的多维数组"><span class="nav-number">1.2.</span> <span class="nav-text">C语言的多维数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#“数组的数组”和“多维数组”"><span class="nav-number">1.2.1.</span> <span class="nav-text">“数组的数组”和“多维数组”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多维数组的内存布局"><span class="nav-number">1.2.2.</span> <span class="nav-text">多维数组的内存布局</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锯齿状数组的使用"><span class="nav-number">1.3.</span> <span class="nav-text">锯齿状数组的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#char_a[3];和char_b[4];不是同种类型"><span class="nav-number">1.4.</span> <span class="nav-text">char a[3];和char b[4];不是同种类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#char_*p_=_"abc";和char_a[]_=_"abc""><span class="nav-number">1.5.</span> <span class="nav-text">char *p = "abc";和char a[] = "abc"</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数传值"><span class="nav-number">1.6.</span> <span class="nav-text">函数传值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#那么，如何得知传入的数组的大小？"><span class="nav-number">1.6.1.</span> <span class="nav-text">那么，如何得知传入的数组的大小？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#效率比较"><span class="nav-number">2.</span> <span class="nav-text">效率比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过下标访问元素"><span class="nav-number">2.1.</span> <span class="nav-text">通过下标访问元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理多个元素"><span class="nav-number">2.2.</span> <span class="nav-text">处理多个元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#现代编译器"><span class="nav-number">2.3.</span> <span class="nav-text">现代编译器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">2.4.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="##"><span class="nav-number"></span> <span class="nav-text">#</span></a></div>
+            <p class="post-toc-empty">此文章未包含目錄</p>
           
         </div>
         <div class="post-toc-indicator-bottom post-toc-indicator"></div>
