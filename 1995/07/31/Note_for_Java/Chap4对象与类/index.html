@@ -226,7 +226,268 @@ number007.salary += <span class="keyword">raise</span>;
 }
 </code></pre><h4 id="私有方法">私有方法</h4><p>将方法定义的<code>public</code>修改为<code>private</code>即可使方法私有化而不被外部调用<br>通常用于编写实现其他公有方法的辅助方法     </p>
 <h4 id="final实例域">final实例域</h4><p>对实例域使用<code>final</code>关键字可以使实例域被构造器初始化后就不可修改<br><code>final</code>关键字常用于：基本类型域、不可变类的域<br>不应对可变类使用<code>final</code>关键字，如：<code>private final Date hiredate;</code>hiredate是一个不可变的引用变量，但他引用的Date对象却是可变的，此处的<code>final</code>会给读者造成混乱    </p>
-<h3 id="静态域和静态方法">静态域和静态方法</h3>
+<h3 id="静态域和静态方法">静态域和静态方法</h3><p><code>static</code>修饰符    </p>
+<h4 id="静态域">静态域</h4><p>静态域属于类而不属于对象，故又称为类域<br>每个对象都共用一个静态域     </p>
+<h4 id="静态常量">静态常量</h4><p>修饰符<code>static final</code><br>实例域通常是私有的，但静态常量却是公有的，反正外部也无法改变常量<br>静态常量是属于类的，无需通过对象，而可以直接通过类来访问<br>如<code>Math.PI</code>     </p>
+<h4 id="静态方法">静态方法</h4><p>静态方法不能向对象实施操作（即不能使用隐式参数this），只能访问类的静态域（而不能访问对象的实例域）<br>如<code>Math.pow()</code><br>常用情形：</p>
+<ol>
+<li>不需要访问对象状态，参数都是显示提供的    </li>
+<li>不需要访问对象的实例域，只需要类的静态域      </li>
+</ol>
+<p><em>通过对象来访问静态域、静态常量、静态方法也不是不可以，只是这样会造成混淆</em>     </p>
+<blockquote>
+<p>C、C++、JAVA中的<code>static</code>修饰符<br>第一种含义（C）：变量一直存在，当再次进入该块时依然存在<br>第二种含义（C）：不能被其他文件访问的全局变量和函数<br>第三种含义（C++、JAVA）：属于类且不属于对象的变量和函数    </p>
+</blockquote>
+<h4 id="main方法">main方法</h4><p>每个类都可以定义一个共用静态的main方法<br>其中一个用来执行程序的主体结构<br>其他用来分别对类进行单独的测试     </p>
+<h3 id="方法参数">方法参数</h3><ul>
+<li>Java的方法参数都是按值调用，也就是说调用一个方法，它对外部的变量不会做任何的修改<br>  <strong>但是，当传入的是一个对象引用变量时，修改的是对象的设置，而并没有拷贝一个副本</strong>     </li>
+<li>方法参数的两种类型：基本数据类型、对象引用<br>  <strong>注意：即使是对象引用，其传参方式依旧是值传递，JAVA是不支持地址传递的</strong>      </li>
+</ul>
+<p><em>C++中引用调用的参数标有<code>&amp;</code>符号</em>     </p>
+<h3 id="对象构造">对象构造</h3><h4 id="重载">重载</h4><ul>
+<li>类的方法可以名字相同，但参数不同    </li>
+<li>重载解析（overloading resolution）：<br>  编译器会根据各个方法给出的参数类型与特定方法调用所使用的值类型进行匹配      </li>
+<li>如果编译器找不到匹配的参数，或者找除多个可能的匹配，就会产生编译错误       </li>
+</ul>
+<h4 id="默认域初始化">默认域初始化</h4><p>默认情况下，如果没有给域赋初值，会被自动初始化为<code>0</code>或<code>false</code>或<code>null</code><br><strong>但这不是一种良好的编程习惯，最好能够显式地初始化域</strong>       </p>
+<h4 id="无参数的构造器">无参数的构造器</h4><h5 id="如果编写类时没有给出任何构造器">如果编写类时没有给出任何构造器</h5><p>那么系统会自动提供一个给每个域赋予默认初始化值的无参数构造器<br>如：   </p>
+<pre><code><span class="title">public</span> Employee()
+{
+    <span class="title">name</span> = <span class="string">""</span>;
+    <span class="title">salary</span> = <span class="number">0</span>;
+    <span class="title">hireDay</span> = new Date();
+}
+</code></pre><h5 id="如果编写类时给出了构造器">如果编写类时给出了构造器</h5><p>那么<strong>至少必须提供一个无参数构造器</strong>，否则被视为不合法<br>提供无参数构造器时可以直接给出一个空的无参数构造器，它将表示采取默认初始化值的无参数构造器<br>如：   </p>
+<pre><code><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">()</span>
+</span>{
+}
+</code></pre><h5 id="显式域初始化">显式域初始化</h5><p>如果某些实例域无论在哪个构造器中都赋予相同的初值，那么可以直接在实例域的定义时赋值<br>而且初值无需是常量<br>如：   </p>
+<pre><code><span class="keyword">class</span> <span class="title">Employee</span>
+{
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> nextId;
+    <span class="keyword">private</span> <span class="keyword">int</span> id = assignId();
+    ...
+    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">assignId</span><span class="params">()</span>
+    </span>{
+        <span class="keyword">int</span> r = nextId;
+        nextId++;
+        <span class="keyword">return</span> r;
+    }
+    ...
+}
+</code></pre><p><em>在C++中，不能够直接初始化类的实例域，但是可以通过特殊的“初始化器列表”语法来进行实例域的初始化</em>           </p>
+<h4 id="参数名">参数名</h4><p>如果参数名与实例域重复，那么实例域名会被覆盖，但是可以通过隐式参数来使用     </p>
+<pre><code><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(String name, <span class="keyword">double</span> salary)</span>
+</span>{
+    <span class="keyword">this</span>.name = name;
+    <span class="keyword">this</span>.salary = salary;
+}
+</code></pre><h4 id="调用另一个构造器">调用另一个构造器</h4><p>构造器可以通过隐式参数this来调用另一个构造器<br>如：   </p>
+<pre><code><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(<span class="keyword">double</span> s)</span>
+</span>{
+    <span class="comment">//调用Employee(String n, double s)</span>
+    <span class="keyword">this</span>(<span class="string">"Employee #"</span> + nextId, s);
+    nextId++;
+}
+</code></pre><p>此时调用<code>new Employee(123)</code>就相当于调用<code>new Employee(&quot;Employee #123&quot;, 123)</code><br>意义：提高了代码的重用性   </p>
+<p><em>在C++中，构造器是不能调用另一个构造器的</em>     </p>
+<h4 id="初始化块">初始化块</h4><p>在类的声明中可以包含多个代码块，当一个对象被构建时，这些代码块会被自动执行<br>如：    </p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">Employee</span>
+</span>{
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> nextId;
+    <span class="keyword">private</span> <span class="keyword">int</span> id;
+    <span class="keyword">private</span> String name;
+    <span class="keyword">private</span> <span class="keyword">double</span> salary;
+    <span class="comment">//初始化块    </span>
+    {
+        id = nextId;
+        nextId++;
+    }
+    ...
+}
+</code></pre><ul>
+<li>初始化块放在域定义之后是合法的<br>  但这样容易引发循环定义，因此<br>  <strong>尽量将初始化块放在域定义之后</strong>       </li>
+</ul>
+<p>静态域的初始化块 </p>
+<pre><code><span class="title">static</span>
+{
+    <span class="title">Random</span> generator = new Random();
+    <span class="title">nextId</span> = generator.nextInt(<span class="number">10000</span>);
+}
+</code></pre><h4 id="初始化细节">初始化细节</h4><p>初始化有三种方法：定义时初始化、初始化块、构造器初始化<br>当构造一个对象时，初始化的顺序是这样的——   </p>
+<ol>
+<li>所有数据域被初始化位默认值（0、false、null）   </li>
+<li>依次执行所有域初始化语句和初始化块    </li>
+<li>执行构造器的主体    </li>
+</ol>
+<h4 id="对象析构和finalize方法">对象析构和finalize方法</h4><p><em>C++中，通常支持显示的析构器方法，用于回收分配给对象的存储空间</em><br>但是JAVA有垃圾回收机制，所以Java不需要也不支持析构器     </p>
+<p>Java支持名为finalize的方法<br>它将在垃圾回收期清楚对象之前被调用，用于回收内存以外的资源<br>但是不要依赖它来回收任何短缺的资源，因为很难知道这个方法被调用的具体时刻      </p>
+<h3 id="包">包</h3><p>Java允许使用包（package）将类组织起来     </p>
+<ul>
+<li>包可以使用嵌套层次    </li>
+<li>所有的标准包都处于java或javax包层次中    </li>
+<li>从编译器的角度看，嵌套的包之间没有任何关系，每一个都拥有独立的类集合    </li>
+</ul>
+<h4 id="类的导入">类的导入</h4><p>一个类可以使用所属包的所有类 和 其他包的公有类       </p>
+<h5 id="使用类的时在类名前添加完整的包名">使用类的时在类名前添加完整的包名</h5><p>如：   </p>
+<pre><code>java<span class="built_in">.</span>util<span class="built_in">.</span><span class="built_in">Date</span> today <span class="subst">=</span> <span class="literal">new</span> java<span class="built_in">.</span>util<span class="built_in">.</span><span class="built_in">Date</span>();   
+</code></pre><h5 id="利用import语句导入类">利用import语句导入类</h5><p>如：</p>
+<pre><code><span class="keyword">import</span> java.util.Date;
+<span class="built_in">Date</span> today = <span class="keyword">new</span> <span class="built_in">Date</span>();   
+</code></pre><p>也可以导入整个包：    </p>
+<pre><code><span class="preprocessor"><span class="keyword">import</span> java.util.*;</span>   
+</code></pre><p>但绝对不要导入所有标准包的所有类，如<code>import java.*.*;</code>     </p>
+<p>如果导入多个包的所有类，而且他们有重复的类名时，编译器会报错：    </p>
+<pre><code><span class="preprocessor"><span class="keyword">import</span> java.util.*;</span>   <span class="comment">//包含Date类   </span>
+<span class="preprocessor"><span class="keyword">import</span> java.sql.*;</span>    <span class="comment">//也包含Date类   </span>
+</code></pre><p>此时可以显示地导入特定类，来指明来源的包：    </p>
+<pre><code><span class="preprocessor"><span class="keyword">import</span> java.util.*;</span>   
+<span class="preprocessor"><span class="keyword">import</span> java.sql.*;</span>    
+<span class="preprocessor"><span class="keyword">import</span> java.util.Date;</span>   <span class="comment">//告知编译器，导入的是java.util包内的Date类     </span>
+</code></pre><p>如果两个类都要同时使用，那就只能通过完整名来使用类啦：    </p>
+<pre><code>java<span class="built_in">.</span>util<span class="built_in">.</span><span class="built_in">Date</span> deadline <span class="subst">=</span> <span class="literal">new</span> java<span class="built_in">.</span>util<span class="built_in">.</span><span class="built_in">Date</span>();   
+java<span class="built_in">.</span>sql<span class="built_in">.</span><span class="built_in">Date</span> today <span class="subst">=</span> <span class="literal">new</span> java<span class="built_in">.</span>sql<span class="built_in">.</span><span class="built_in">Date</span>(<span class="attribute">...</span>);    
+</code></pre><h4 id="静态导入">静态导入</h4><p>可以导入类的静态方法和静态域<br>如：  </p>
+<pre><code><span class="keyword">import</span> <span class="keyword">static</span> java.lang.System.*;  <span class="comment">//导入System类的所有静态方法和静态域      </span>
+<span class="keyword">out</span>.println(<span class="string">"Goodbye, World!"</span>);    <span class="comment">//无需再指明System类    </span>
+</code></pre><p>也可以导入特定静态方法或特定静态域<br>如：   </p>
+<pre><code><span class="keyword">import</span> <span class="keyword">static</span> java.lang.System.<span class="keyword">out</span>;  <span class="comment">//只导入System类的out方法   </span>
+</code></pre><h4 id="将类放入包中">将类放入包中</h4><p>在源文件开头添加package语句，如    </p>
+<pre><code><span class="keyword">package</span> com.horstmann.corejava;   
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Empoyee</span>
+{</span>
+    ...
+}
+</code></pre><h5 id="如果不在源文件中添加package语句">如果不在源文件中添加package语句</h5><p>那么源文件中的类都会放入一个默认包中（default package），默认包是没有名字的    </p>
+<h5 id="包中的文件必须放到与包名相匹配的目录中">包中的文件必须放到与包名相匹配的目录中</h5><p>以主体结构的源文件为基目录<br><code>com.horstmann.corejava</code>的源文件应放在<code>com/horstmann/corejava</code>目录下     </p>
+<p>编译包含主体结构的源文件时，编译器就会自动到相应的目录查找文件并进行编译     </p>
+<p>当然，也可以单独编译源文件并运行它的类，但参数给出的形式不同     </p>
+<pre><code><span class="preprocessor"># 通过指定路径来编译</span>
+javac <span class="keyword">com</span>/mycompany/PayrollApp.java
+<span class="preprocessor"># 通过指定包来运行   </span>
+java <span class="keyword">com</span>.mycompany.PayrollApp
+</code></pre><p><strong>注意：编译器在编译源文件时不会检查目录结构，如果对应包的源文件没有在指定目录，那么编译不会出错，但最终程序却无法运行</strong>             </p>
+<h4 id="包作用域">包作用域</h4><ul>
+<li><code>public</code>修饰的部分，可以被任意类使用     </li>
+<li><code>private</code>修饰的部分，只能被定义它们的类使用     </li>
+<li>既没有public也没有private修饰的部分，可以被同一包内的任何类使用      </li>
+</ul>
+<p><strong>用户无法自定义<code>java.</code>的类</strong>            </p>
+<h3 id="类路径">类路径</h3><h4 id="JAR文件">JAR文件</h4><p>类文件也可以存储在JAR（Java归档）文件中，文件中可以包含多个压缩形式的类文件和子目录，可以节省空间并改善性能<br>JAR文件使用ZIP格式组织文件和子目录，可以使用ZIP使用程序查看      </p>
+<h4 id="使类能被多个程序共享的几个要求">使类能被多个程序共享的几个要求</h4><ol>
+<li>把类都放到一个目录中<br> 如：<code>/home/user/classdir</code>      </li>
+<li>把JAR文件放在一个目录中<br> 如：<code>/home/user/archives</code>     </li>
+<li>设置类路径（class path）       </li>
+</ol>
+<h4 id="类路径-1">类路径</h4><p>类路径通常包含基目录、当前目录、jar文件目录      </p>
+<h5 id="类路径格式">类路径格式</h5><ul>
+<li>UNIX环境中，以冒号<code>:</code>为分隔符<br>  如：<code>/home/user/classdir:.:/home/user/archives/archive.jar</code><br>  其中句点<code>.</code>表示当前目录<br>  <strong>javac编译器总在当前目录中查找文件，但java虚拟机仅在类路径有句点<code>.</code>时才查找当前目录</strong>       </li>
+<li>Windows环境中，以分号<code>;</code>为分隔符<br>  如：<code>c:\classdir;.;c:\archives\archive.jar</code>    </li>
+<li>运行时库文件会被自动搜索，无需显式地将它们列在类路径中     </li>
+</ul>
+<h5 id="文件定位顺序">文件定位顺序</h5><ul>
+<li>对于虚拟机    <ol>
+<li>查看<code>jre/lib</code>和<code>jre/lib/ext</code>目录下的归档文件中所存放的系统类文件    </li>
+<li>按照类路径的顺序依次查找各个目录和归档文件     </li>
+</ol>
+</li>
+<li>对于编译器    <ul>
+<li>如果引用了一个类但没有指定包<br>  那么会查询所有import命令导入的包的所有源文件<br>  如果找不到这个类或者找到多个类则会报错     </li>
+<li>如果引用了一个类且指定了包<br>  那么会查询这个包下的所有源文件<br>  如果找不到这个类或者找到多个类则会报错          </li>
+</ul>
+</li>
+</ul>
+<h5 id="设置类路径">设置类路径</h5><h6 id="为虚拟机添加参数">为虚拟机添加参数</h6><p>采用<code>-classpath</code>或<code>-cp</code>选项为虚拟机指定类路径<br>如：<code>java -cp /home/user/classdir:.:/home/user/archives/archive.jar MyProg</code>          </p>
+<h6 id="设置环境变量CLASSPATH">设置环境变量<code>CLASSPATH</code></h6><p>以bash为例<br><code>export CLASSPATH=/home/user/classdir:.:/home/user/archives/archive.jar</code></p>
+<h3 id="文档注释">文档注释</h3><ul>
+<li>用<code>/**</code>和<code>*/</code>注释的内容会自动由javadoc工具生成一个HTML文档     </li>
+<li>文档从以下特性中抽取信息    <ul>
+<li>包   </li>
+<li>公有类与接口   </li>
+<li>公有的与受保护的构造器方法    </li>
+<li>公有的和受保护的域      </li>
+</ul>
+</li>
+<li>注释内容可以包含HTML标签   <ul>
+<li>但不要使用<code>&lt;h1&gt;</code>和<code>&lt;hr&gt;</code>，防止和文档格式冲突    </li>
+<li>如果文档中包含其他文件（如图像）的链接<br>  那么文件需要放在子目录<code>doc-files</code>中，javadoc将从源拷贝其中的文件到文档目录中<br>  如<code>&lt;img src=&quot;doc-files/uml.png&quot; alt=&quot;UML diagram&quot;&gt;</code>     </li>
+</ul>
+</li>
+</ul>
+<h4 id="类注释">类注释</h4><p>类注释放在<strong>import语句之后，类定义之前</strong>     </p>
+<h4 id="方法注释">方法注释</h4><p>方法注释放在<strong>所描述的方法之前</strong><br>可以使用以下特殊的标记——   </p>
+<ul>
+<li><code>@param</code>变量描述<br>  为“参数”部分添加一个条目，该描述可以占多行     </li>
+<li><code>@return</code>描述<br>  对“返回”部分添加条目，可以占多行     </li>
+<li><code>@throws</code>类描述<br>  表示该方法可能出现的异常      </li>
+</ul>
+<p>如：    </p>
+<pre><code>/<span class="keyword">*</span><span class="keyword">*</span>  
+ <span class="keyword">*</span> Raises the salary of an employee.  
+ <span class="keyword">*</span> <span class="comment">@param byPercent the percentage by which to raise the salary (e.g. 10 means 10%)</span>
+ <span class="keyword">*</span> <span class="comment">@return the amount of the raise</span>
+ <span class="keyword">*</span>/
+public double raiseSalary(double byPercent)
+{
+    ...
+}
+</code></pre><h4 id="域注释">域注释</h4><p>只对公有域（通常指的是静态常量）建立文档<br>如：    </p>
+<pre><code><span class="comment">/**
+ * The "Hearts" card suit
+ */</span>
+<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> HEARTS = <span class="number">1</span>;
+</code></pre><h4 id="通用注释">通用注释</h4><p>可以使用以下标记     </p>
+<ul>
+<li><code>@author</code>姓名<br>  产生一个“作者”条目，可以使用多个      </li>
+<li><code>@version</code>文本<br>  产生一个“版本”条目，为对当前版本的描述    </li>
+<li><code>@since</code>文本<br>  产生一个“始于”条目，对引入特性的版本的描述    </li>
+<li><code>@deprecated</code>文本<br>  对类、方法、变量添加一个不再使用的注释，并给出取代的建议<br>  如：<code>@deprecated Use &lt;code&gt; setVisible(true) &lt;/code&gt; instead</code>       </li>
+<li><code>@see</code>引用<br>  在<code>see also</code>部分添加一个超链接     <ul>
+<li><code>@see com.horstmann.corejava.Employee#raiseSalary(double)</code>    <ul>
+<li>包名和类名可以省略，此时表示当前包或当前类      </li>
+<li>类名和方法名必须用井号<code>#</code>隔开，因为javadoc无法自动区分类名和方法名       </li>
+</ul>
+</li>
+<li><code>@see &lt;a href=&quot;www.horstmann.com/corejava.html&quot;&gt;The Core Java home page&lt;/a&gt;</code><br>  可以使用a标签提供一个超链接     </li>
+<li><code>@see &quot;Core Java 2 volume 2&quot;</code><br>  可以添加双引号<code>&quot;&quot;</code>使双引号的内容显示到文档上     </li>
+<li>可以为一个特性添加多个<code>@see</code>标记，但是必须放在一起      </li>
+</ul>
+</li>
+<li><code>@link</code>引用<br>  指向其他类或方法的超链接<br>  如<code>{@link package.class#feature label}</code>     </li>
+</ul>
+<h4 id="包与概述注释">包与概述注释</h4><p>有两种方法书写包注释      </p>
+<ul>
+<li>提供一个<code>package.html</code>文件<br>  <code>&lt;body&gt;</code>标签内的内容都会被提取出来形成文档     </li>
+<li>提供一个<code>package-info.java</code>文件<br>  一个javadoc注释紧跟在包语句后<br>  不该添加其他的代码或注释      </li>
+</ul>
+<h4 id="注释的抽取">注释的抽取</h4><p>（假设HTML文件放在目录docDirectory下）     </p>
+<ul>
+<li>切换到包含想要生成文档的源文件目录      </li>
+<li>调用javadoc命令生成文档   <ul>
+<li>如果是一个包<br>  <code>javadoc -d docDirectory nameOfPackage</code>    </li>
+<li>如果有多个包<br>  <code>javadoc -d docDirectory nameOfPackage1 nameOfPackage2 ...</code>    </li>
+<li>如果文件在默认包中<br>  <code>javadoc -d docDirectory *.java</code>     </li>
+</ul>
+</li>
+</ul>
+<h3 id="类设计技巧">类设计技巧</h3><ul>
+<li>一定要保证数据私有    <ul>
+<li>防止破坏封装性    </li>
+<li>访问器方法、更改器方法    </li>
+<li>实例域私有化      </li>
+</ul>
+</li>
+<li>一定要对数据初始化    <ul>
+<li>Java系统只会对对象的实例域进行初始化，而不会对局部变量进行初始化     </li>
+<li>不要依赖系统的初始化，应该显式的初始化所有数据    </li>
+</ul>
+</li>
+<li>不要在类中使用过多的基本类型      </li>
+<li>不是所有的域都需要独立的域访问器和域更改器<br>  如常量   </li>
+<li>将职责过多的类进行分解    </li>
+<li>类名和方法名要能够体现它们的职责<br>  一般以形容词（动名词）+名词来命名<br>  访问器以<code>get</code>为前缀，更改器以<code>set</code>为前缀     </li>
+</ul>
+
         
       </div>
     
@@ -348,7 +609,7 @@ number007.salary += <span class="keyword">raise</span>;
         <div class="post-toc">
           
           
-            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Chap4对象与类"><span class="nav-number">1.</span> <span class="nav-text">Chap4对象与类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预定义类"><span class="nav-number">1.1.</span> <span class="nav-text">预定义类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对象与对象变量"><span class="nav-number">1.1.1.</span> <span class="nav-text">对象与对象变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GregorianCalendar类"><span class="nav-number">1.1.2.</span> <span class="nav-text">GregorianCalendar类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更改器方法与访问器方法"><span class="nav-number">1.1.3.</span> <span class="nav-text">更改器方法与访问器方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GregorianCalendar类的其他方法："><span class="nav-number">1.1.4.</span> <span class="nav-text">GregorianCalendar类的其他方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#日期格式规范的几个方法"><span class="nav-number">1.1.5.</span> <span class="nav-text">日期格式规范的几个方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户自定义类"><span class="nav-number">1.2.</span> <span class="nav-text">用户自定义类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义示例"><span class="nav-number">1.2.1.</span> <span class="nav-text">定义示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个源文件的使用"><span class="nav-number">1.2.2.</span> <span class="nav-text">多个源文件的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隐式参数与显式参数"><span class="nav-number">1.2.3.</span> <span class="nav-text">隐式参数与显式参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#封装的优点"><span class="nav-number">1.2.4.</span> <span class="nav-text">封装的优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于类的访问权限"><span class="nav-number">1.2.5.</span> <span class="nav-text">基于类的访问权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#私有方法"><span class="nav-number">1.2.6.</span> <span class="nav-text">私有方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#final实例域"><span class="nav-number">1.2.7.</span> <span class="nav-text">final实例域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态域和静态方法"><span class="nav-number">1.3.</span> <span class="nav-text">静态域和静态方法</span></a></li></ol></li></ol></div>
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Chap4对象与类"><span class="nav-number">1.</span> <span class="nav-text">Chap4对象与类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预定义类"><span class="nav-number">1.1.</span> <span class="nav-text">预定义类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对象与对象变量"><span class="nav-number">1.1.1.</span> <span class="nav-text">对象与对象变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GregorianCalendar类"><span class="nav-number">1.1.2.</span> <span class="nav-text">GregorianCalendar类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更改器方法与访问器方法"><span class="nav-number">1.1.3.</span> <span class="nav-text">更改器方法与访问器方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GregorianCalendar类的其他方法："><span class="nav-number">1.1.4.</span> <span class="nav-text">GregorianCalendar类的其他方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#日期格式规范的几个方法"><span class="nav-number">1.1.5.</span> <span class="nav-text">日期格式规范的几个方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户自定义类"><span class="nav-number">1.2.</span> <span class="nav-text">用户自定义类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义示例"><span class="nav-number">1.2.1.</span> <span class="nav-text">定义示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个源文件的使用"><span class="nav-number">1.2.2.</span> <span class="nav-text">多个源文件的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隐式参数与显式参数"><span class="nav-number">1.2.3.</span> <span class="nav-text">隐式参数与显式参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#封装的优点"><span class="nav-number">1.2.4.</span> <span class="nav-text">封装的优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于类的访问权限"><span class="nav-number">1.2.5.</span> <span class="nav-text">基于类的访问权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#私有方法"><span class="nav-number">1.2.6.</span> <span class="nav-text">私有方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#final实例域"><span class="nav-number">1.2.7.</span> <span class="nav-text">final实例域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态域和静态方法"><span class="nav-number">1.3.</span> <span class="nav-text">静态域和静态方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#静态域"><span class="nav-number">1.3.1.</span> <span class="nav-text">静态域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态常量"><span class="nav-number">1.3.2.</span> <span class="nav-text">静态常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态方法"><span class="nav-number">1.3.3.</span> <span class="nav-text">静态方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#main方法"><span class="nav-number">1.3.4.</span> <span class="nav-text">main方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法参数"><span class="nav-number">1.4.</span> <span class="nav-text">方法参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象构造"><span class="nav-number">1.5.</span> <span class="nav-text">对象构造</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#重载"><span class="nav-number">1.5.1.</span> <span class="nav-text">重载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#默认域初始化"><span class="nav-number">1.5.2.</span> <span class="nav-text">默认域初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#无参数的构造器"><span class="nav-number">1.5.3.</span> <span class="nav-text">无参数的构造器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#如果编写类时没有给出任何构造器"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">如果编写类时没有给出任何构造器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如果编写类时给出了构造器"><span class="nav-number">1.5.3.2.</span> <span class="nav-text">如果编写类时给出了构造器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显式域初始化"><span class="nav-number">1.5.3.3.</span> <span class="nav-text">显式域初始化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参数名"><span class="nav-number">1.5.4.</span> <span class="nav-text">参数名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调用另一个构造器"><span class="nav-number">1.5.5.</span> <span class="nav-text">调用另一个构造器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化块"><span class="nav-number">1.5.6.</span> <span class="nav-text">初始化块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化细节"><span class="nav-number">1.5.7.</span> <span class="nav-text">初始化细节</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对象析构和finalize方法"><span class="nav-number">1.5.8.</span> <span class="nav-text">对象析构和finalize方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包"><span class="nav-number">1.6.</span> <span class="nav-text">包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类的导入"><span class="nav-number">1.6.1.</span> <span class="nav-text">类的导入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用类的时在类名前添加完整的包名"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">使用类的时在类名前添加完整的包名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#利用import语句导入类"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">利用import语句导入类</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态导入"><span class="nav-number">1.6.2.</span> <span class="nav-text">静态导入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将类放入包中"><span class="nav-number">1.6.3.</span> <span class="nav-text">将类放入包中</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#如果不在源文件中添加package语句"><span class="nav-number">1.6.3.1.</span> <span class="nav-text">如果不在源文件中添加package语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#包中的文件必须放到与包名相匹配的目录中"><span class="nav-number">1.6.3.2.</span> <span class="nav-text">包中的文件必须放到与包名相匹配的目录中</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包作用域"><span class="nav-number">1.6.4.</span> <span class="nav-text">包作用域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类路径"><span class="nav-number">1.7.</span> <span class="nav-text">类路径</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JAR文件"><span class="nav-number">1.7.1.</span> <span class="nav-text">JAR文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使类能被多个程序共享的几个要求"><span class="nav-number">1.7.2.</span> <span class="nav-text">使类能被多个程序共享的几个要求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类路径-1"><span class="nav-number">1.7.3.</span> <span class="nav-text">类路径</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#类路径格式"><span class="nav-number">1.7.3.1.</span> <span class="nav-text">类路径格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件定位顺序"><span class="nav-number">1.7.3.2.</span> <span class="nav-text">文件定位顺序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置类路径"><span class="nav-number">1.7.3.3.</span> <span class="nav-text">设置类路径</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#为虚拟机添加参数"><span class="nav-number">1.7.3.3.1.</span> <span class="nav-text">为虚拟机添加参数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#设置环境变量CLASSPATH"><span class="nav-number">1.7.3.3.2.</span> <span class="nav-text">设置环境变量CLASSPATH</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文档注释"><span class="nav-number">1.8.</span> <span class="nav-text">文档注释</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类注释"><span class="nav-number">1.8.1.</span> <span class="nav-text">类注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法注释"><span class="nav-number">1.8.2.</span> <span class="nav-text">方法注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#域注释"><span class="nav-number">1.8.3.</span> <span class="nav-text">域注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通用注释"><span class="nav-number">1.8.4.</span> <span class="nav-text">通用注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包与概述注释"><span class="nav-number">1.8.5.</span> <span class="nav-text">包与概述注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注释的抽取"><span class="nav-number">1.8.6.</span> <span class="nav-text">注释的抽取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类设计技巧"><span class="nav-number">1.9.</span> <span class="nav-text">类设计技巧</span></a></li></ol></li></ol></div>
           
         </div>
         <div class="post-toc-indicator-bottom post-toc-indicator"></div>
