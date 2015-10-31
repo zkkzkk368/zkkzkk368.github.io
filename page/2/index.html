@@ -106,326 +106,6 @@
           
           
             
-              <a class="post-title-link" href="/2015/04/23/python爬虫初探/">
-                python爬虫初探
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          
-            發表於 2015-04-22
-          
-        </span>
-
-        
-          
-        
-
-        
-          
-        
-      </div>
-    </div>
-
-    
-      <div class="post-body">
-
-        
-        
-
-        
-          
-            <ul>
-<li>主要涉及的模块和工具  <ul>
-<li>正则表达式（re模块）<br>主要用来匹配筛选所需要的字符串<br>基本的使用方法见python笔记：<a href="/Note_for_Python/chap10自带电池/4re模块、正则表达式.html">re模块、正则表达式</a>    </li>
-<li>requests模块<br>主要用来对网页发送请求，并处理响应的数据<br>参考资料：<a href="http://cn.python-requests.org/zh_CN/latest/" target="_blank" rel="external">requests官方文档</a>  </li>
-<li>BeautifulSoup（bs4模块）<br>用来简化数据筛选的过程<br>参考资料：<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" target="_blank" rel="external">beautifulsoup官方文档</a></li>
-<li>ie、firefox、chrome的开发者工具<br>用来分析网页上的数据，包括页面内容、headers、form data等  </li>
-</ul>
-</li>
-</ul>
-<h2 id="requests模块">requests模块</h2><p>参考资料：<a href="http://cn.python-requests.org/zh_CN/latest/" target="_blank" rel="external">requests官方文档</a><br>嗯……据说requests是基于urllib3的第三方库<br>简单的使用如下：</p>
-<h3 id="requests-get获取页面">requests.get获取页面</h3><p>返回一个response对象<br>第一个参数为页面的url，可以加入关键词参数cookies  </p>
-<h3 id="requests-post发送数据">requests.post发送数据</h3><p>也是返回一个response对象<br>第一个参数为页面的额url，可以加入关键词参数headers和data<br>headers即为Requests Headers的内容，参数形式是一个字典<br>data即为form data的内容，参数形式也是一个字典  </p>
-<h3 id="response对象的属性">response对象的属性</h3><ul>
-<li>encoding：页面编码<br>一般requests会自动推测出编码  </li>
-<li>text：以文本的方式存放的页面内容</li>
-<li>content：以字节形式存放的页面内容</li>
-<li>status_code：页面的状态码<br>可以用来判断是否正常打开页面</li>
-<li>headers：页面的响应头即Response Headers</li>
-<li>cookies：当前的cookies</li>
-</ul>
-<h2 id="BeautifulSoup（bs4模块）">BeautifulSoup（bs4模块）</h2><p>参考资料：<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" target="_blank" rel="external">beautifulsoup官方文档</a>  </p>
-<ul>
-<li>BeautifulSoup函数：将文档转换为一个BeautifulSoup对象并返回<br>参数为一个字符串<br>文档内容会自动转换为unicode编码  </li>
-</ul>
-<h3 id="BeautifulSoup对象">BeautifulSoup对象</h3><p>一般情况下可以直接当作它的子对象tag对象来使用<br>其中包含以下子对象  </p>
-<h4 id="tag对象">tag对象</h4><p>对象的名称与html和xml的标签名都相同  </p>
-<ul>
-<li>name：即标签的名字</li>
-<li>attrs：即标签内包含的属性<br>比如class、id、name、type等<br>可以通过has_attr()方法判断对象内（也就是标签内）是否包含这些属性  </li>
-<li>contents：即始末标签间的显示内容  </li>
-<li>tag对象内常常还会有tag对象，称为子节点  <ul>
-<li>children：一个生成器，依次生成直接子节点的内容，可用于迭代</li>
-<li>descendants：一个生成器，一次生成最里层的子孙节点的内容，可用于迭代<br>比较：children和descendants<br>假设有一个标签<code>&lt;head&gt;&lt;title&gt;aaa&lt;/title&gt;&lt;/head&gt;</code><br>通过<code>soup.children</code>将会获取<code>&lt;title&gt;aaa&lt;/title&gt;</code>整个直接子节点<br>通过<code>soup.descendants</code>则会获取<code>aaa</code>这样的子孙节点  </li>
-</ul>
-</li>
-<li>与子节点对应的为父节点  <ul>
-<li>parents：与children类似</li>
-<li>parent：得到某个父节点</li>
-</ul>
-</li>
-<li>既然有父有子，那么也会有兄弟节点<ul>
-<li>next_sibling：获取下一个同级节点</li>
-<li>next_siblings：迭代获取之后的所有节点</li>
-<li>previous_sibling：获取上一个同级节点</li>
-<li>previous_sibling：迭代获取之前的所有节点</li>
-</ul>
-</li>
-</ul>
-<h3 id="string对象">string对象</h3><p>即尖括号<code>&lt;&gt;</code>之外的内容</p>
-<h3 id="其他">其他</h3><ul>
-<li>next_element和previous_element：获取下（上）一个对象，包括tag和string</li>
-<li>next_elements和previous_elements：迭代获取下（上）一个对象</li>
-<li><p>find_all方法<br>  查找标签<br>  直接访问tag对象只能得到第一个匹配结果，如果需要得到所有结果需要借助find_all函数<br>  函数返回一个包含所有该标签的内容的列表  </p>
-<ul>
-<li>单个指定<br>第一个参数为标签名，可以指定关键词参数，筛选属性<br>如：<code>soup.find(&#39;a&#39;, id=&#39;link3&#39;)</code>  </li>
-<li>正则匹配<br>将一个re.compile的对象作为参数代替标签名<br>BeautifulSoup将通过match的方式来查找匹配的标签  </li>
-<li>多个指定<br>将多个标签（字符串）放入列表作为参数传入</li>
-<li>True<br>传入<code>True</code>将表示匹配任何值</li>
-</ul>
-</li>
-<li><p>find方法<br>用法与find_all类似  </p>
-</li>
-<li>prettify方法<br>将文档返回为一个有缩进的字符串，便于print输出<br>无参数  </li>
-<li>UnicodeDammit函数（啧啧……这函数名）<br>自动检测编码，如果能导入<code>chardet</code>或<code>cchardet</code>可以大大提高自动检测的准确率<br>可直接用于任何字符串<br>返回一个具有以下属性的对象<br>unicode_markup：自动解码的结果<br>original_encoding：检测到的编码形式  </li>
-</ul>
-<h2 id="从网页上爬下所需信息">从网页上爬下所需信息</h2><p>这个比较简单，从源码中找到所需要的信息，观察它的规则，用正则表达式表达出来并且借助re模块的函数进行匹配提取即可<br>比如：我要爬下十大的标题——<br>查看源码：</p>
-<pre><code>&lt;<span class="tag">a</span> href=<span class="string">"dispbbs.asp?boardid=736&amp;id=4508354"</span> target=<span class="string">"_blank"</span>&gt;&lt;<span class="attribute">font</span> <span class="attribute">color</span>=<span class="hexcolor">#000066</span>&gt;[CIE创道人生大讲堂]世界那么大，出去创业吧——为你讲述众筹之王的创业之道（抢楼有大礼哦~）&lt;/<span class="attribute">font</span>&gt;&lt;/a&gt;
-&lt;<span class="tag">a</span> href=<span class="string">"dispbbs.asp?boardid=114&amp;id=4508053"</span> target=<span class="string">"_blank"</span>&gt;&lt;<span class="attribute">font</span> <span class="attribute">color</span>=<span class="hexcolor">#000066</span>&gt;真是哔狗了，刚加的妹子被我吓跑了&lt;/<span class="attribute">font</span>&gt;&lt;/a&gt;
-&lt;<span class="tag">a</span> href=<span class="string">"dispbbs.asp?boardid=100&amp;id=4508066"</span> target=<span class="string">"_blank"</span>&gt;&lt;<span class="attribute">font</span> <span class="attribute">color</span>=<span class="hexcolor">#000066</span>&gt;[微创业联盟]创业，就问你约不约！——抢楼有精美礼品相赠哦！&lt;/<span class="attribute">font</span>&gt;&lt;/a&gt;
-......（这里仅列出三条）  
-</code></pre><p>可以找到其中的规律，并且用以下正则表达式表示：</p>
-<pre><code><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"dispbbs\.asp\?boardid=[0-9]+&amp;id=[0-9]+"</span> <span class="attribute">target</span>=<span class="value">"_blank"</span>&gt;</span><span class="tag">&lt;<span class="title">font</span> <span class="attribute">color</span>=<span class="value">#000066</span>&gt;</span>(.+?)<span class="tag">&lt;/<span class="title">font</span>&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span>
-</code></pre><ol>
-<li>要对特殊字符“.”和“?”进行转义</li>
-<li>可以看到“boardid”和“id”接的是一串数字，用<code>[0-9]+</code>进行匹配</li>
-<li>所要提取的部分内容为任意数量的任意字符，而且要防止贪婪匹配，用<code>(.+?)</code>进行匹配</li>
-</ol>
-<p>然后用<code>re.findall</code>函数把匹配项都找出来就可以了<br>接着我们把内容写入文件，比如把包含所有匹配项的<code>titles</code>写到<code>/home/zk/TopTen</code>文件中去  </p>
-<pre><code>import codecs, os
-f = codecs.<span class="function"><span class="title">open</span><span class="params">(<span class="string">'/home/zk/TopTen'</span>, <span class="string">'w'</span>, <span class="string">'utf-8'</span>)</span></span>
-<span class="keyword">for</span> <span class="tag">i</span>, title <span class="keyword">in</span> <span class="function"><span class="title">zip</span><span class="params">( range(<span class="number">1</span>,<span class="number">11</span>)</span></span>, titles ):
-    f.<span class="function"><span class="title">write</span><span class="params">( str(i)</span></span> + title + os<span class="class">.linesep</span> )
-f.<span class="function"><span class="title">close</span><span class="params">()</span></span>
-</code></pre><p>因为写入的内容包含中文，所以我们需要使用codecs模块的open函数打开文件，指定编码为utf-8  </p>
-<h2 id="模拟登录">模拟登录</h2><h3 id="收集信息">收集信息</h3><p>借助chrome的开发者工具，可以捕捉到网页的相关信息<br>登录后，我们只要找到POST了包含用户名信息的页面，就可以找到处理登录的页面<br>cc98是post到<code>sign.asp</code>中去<br>查看这个页面的post信息，主要关注以下的信息  </p>
-<blockquote>
-<p>General</p>
-<blockquote>
-<p>Request URL:<a href="http://www.cc98.org/sign.asp" target="_blank" rel="external">http://www.cc98.org/sign.asp</a></p>
-<h6 id="#">#</h6><p>Request Headers<br>Accept:text/plain, <em>/</em>; q=0.01<br>Accept-Encoding:gzip, deflate<br>Accept-Language:en-US,en;q=0.8<br>Connection:keep-alive<br>Content-Length:60<br>Content-Type:application/x-www-form-urlencoded; charset=UTF-8<br>Cookie:ASPSESSIONIDQSCRDADB=NMLCLJEDIAGPHCHGOKDBHPGN; upNum=0; aspsky=username=zkkzkk&amp;usercookies=3&amp;userid=509527&amp;useranony=&amp;userhidden=2&amp;password=6cc9bed70c3c80e1; BoardList=BoardID=Show; owaenabled=True; autoplay=True<br>Host:www.cc98.org<br>Origin:<a href="http://www.cc98.org" target="_blank" rel="external">http://www.cc98.org</a><br>Referer:<a href="http://www.cc98.org/" target="_blank" rel="external">http://www.cc98.org/</a><br>User-Agent:Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36<br>X-Requested-With:XMLHttpRequest</p>
-<h6 id="#-1">#</h6><p>Form Data<br>a:i<br>u:zkkzkk<br>p:<strong><strong><strong>*</strong></strong></strong><br>userhidden:2</p>
-</blockquote>
-</blockquote>
-<ul>
-<li>Request URL：<br>是这个请求发送的url  </li>
-<li>Request Headers：<br>是我们发送的请求头，其中<br><code>Host</code>不是自己指定和设置的，http请求会自动处理<br><code>Content-Type</code>、<code>User-Agent</code>、<code>Accept-Encoding</code>必须有，值照抄即可  </li>
-<li>Form Data：<br>就是我们提交的表单<br>这里的<code>a</code>和<code>userhidden</code>不知道是什么意思，先照搬<br><code>u</code>显然是用户名<br><code>p</code>则是密码，这里安全起见，我把他用星号代替了，这里其实是一个用hashlib.md5加密了的密码  </li>
-</ul>
-<h3 id="模拟">模拟</h3><h4 id="利用requests-post函数即可模仿post">利用<code>requests.post</code>函数即可模仿post</h4><pre><code><span class="preprocessor">#headers主要照搬Requests Headers的信息，删去Host和Cookie即可</span>
-headers = {
-    <span class="string">'Accept'</span>:<span class="string">'text/plain, */*; q=0.01'</span>,
-    <span class="string">'Accept-Encoding'</span>:<span class="string">'gzip, deflate'</span>,
-    <span class="string">'Accept-Language'</span>:<span class="string">'en-US,en;q=0.8'</span>,
-    <span class="string">'Connection'</span>:<span class="string">'keep-alive'</span>,
-    <span class="string">'Content-Length'</span>:<span class="string">'60'</span>,
-    <span class="string">'Content-Type'</span>:<span class="string">'application/x-www-form-urlencoded; charset=UTF-8'</span>,
-    <span class="string">'Origin'</span>:<span class="string">'http://www.cc98.org'</span>,
-    <span class="string">'Referer'</span>:<span class="string">'http://www.cc98.org/'</span>,
-    <span class="string">'User-Agent'</span>:<span class="string">'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'</span>,
-    <span class="string">'X-Requested-With'</span>:<span class="string">'XMLHttpRequest'</span>
-}
-<span class="preprocessor">#payload为一些表单信息</span>
-payload = {
-    <span class="string">'a'</span> : <span class="string">'i'</span>,
-    <span class="string">'u'</span> : <span class="string">'zkkzkk'</span>,
-    <span class="string">'p'</span> : <span class="string">'***********'</span>, 
-    <span class="string">'userhidden'</span> : <span class="string">'2'</span>
-}
-r = requests.post(<span class="string">'http://www.cc98.org/sign.asp'</span>, data=payload, headers=headers)
-</code></pre><p>函数返回一个包含登陆信息cookies的对象r<br>接下来我们只要用这个cookies去访问cc98上的页面即可  </p>
-<pre><code>rr = requests.<span class="function"><span class="title">get</span><span class="params">(<span class="string">'http://www.cc98.org'</span>, cookies=r.cookies)</span></span>
-</code></pre><h2 id="练（wan）习（wan）：模拟登录10-71-45-100并爬下C大程的课件">练（wan）习（wan）：模拟登录10.71.45.100并爬下C大程的课件</h2><p>先上源码——</p>
-<pre><code><span class="comment"># coding: utf-8</span>
-<span class="keyword">import</span> requests,sys,bs4,re,urllib,os,codecs
-
-<span class="comment">#设置编码为utf8，不然后边对中文进行url编码的时候会出现奇怪的错误</span>
-reload(sys)
-sys.setdefaultencoding(<span class="string">'utf8'</span>)
-
-<span class="comment">#登录URL</span>
-URL = <span class="string">'http://10.71.45.100/cstcx/web/login/check.asp?tn=xjc&amp;Rnd.7055475=.533424'</span>
-
-<span class="comment">#HEADERS</span>
-    <span class="comment">#这里只去掉了Request Headers中的Host和Cookie，其他照搬</span>
-headers = {
-<span class="string">'Accept'</span>:<span class="string">'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'</span>,
-<span class="string">'Accept-Encoding'</span>:<span class="string">'gzip, deflate'</span>,
-<span class="string">'Accept-Language'</span>:<span class="string">'en-US,en;q=0.8'</span>,
-<span class="string">'Cache-Control'</span>:<span class="string">'max-age=0'</span>,
-<span class="string">'Connection'</span>:<span class="string">'keep-alive'</span>,
-<span class="string">'Content-Length'</span>:<span class="string">'32'</span>,
-<span class="string">'Content-Type'</span>:<span class="string">'application/x-www-form-urlencoded'</span>,
-<span class="string">'Origin'</span>:<span class="string">'http://10.71.45.100'</span>,
-<span class="string">'Referer'</span>:<span class="string">'http://10.71.45.100/cstcx/web/index.asp?tid=27&amp;tt=xjc&amp;tn=%D0%EC%BE%B5%B4%BA&amp;Rnd.5751838=.1000522'</span>,
-<span class="string">'User-Agent'</span>:<span class="string">'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'</span>
-}
-
-<span class="comment">#FORM DATA</span>
-payload = {
-<span class="string">'txtUser'</span>:<span class="string">'3140100805'</span>,
-<span class="string">'txtPwd'</span>:<span class="string">'123456'</span>
-}
-
-<span class="comment">#模拟登录</span>
-check = requests.post(URL, data=payload, headers=headers)
-
-<span class="comment">#“参考资料”URL</span>
-rsrcURL = <span class="string">'http://10.71.45.100/cstcx/web/courceinfo/resource.asp?coid=18&amp;flag=0&amp;coname=C%D7%A8%CC%E215&amp;clsid=25&amp;clsname=C%D7%A8%CC%E215&amp;techid=27&amp;loc=%BF%CE%B3%CC%D0%C5%CF%A2%3E%3E%3E%B2%CE%BF%BC%D7%CA%C1%CF'</span>
-
-<span class="comment">#“讲稿”URL</span>
-docuURL = <span class="string">'http://10.71.45.100/cstcx/web/courceinfo/jianggao.asp?coid=18&amp;loc=%BF%CE%B3%CC%D0%C5%CF%A2%3E%3E%3E%BD%B2%B8%E5'</span>
-
-<span class="comment">#“参考资料”本地存放目录</span>
-rsrcDIR = <span class="string">'/home/zk/C大程资料/Resources/'</span>
-
-<span class="comment">#“讲稿”本地存放目录</span>
-docuDIR = <span class="string">'/home/zk/C大程资料/Documents/'</span>
-
-<span class="function"><span class="keyword">def</span> <span class="title">GetHref</span><span class="params">(URL)</span>:</span>
-    <span class="string">'''
-    利用模拟登录获得的cookies访问“参考资料”或“讲稿”的页面
-    获取所需资源的名称和url并返回（字典）
-    '''</span>
-    resources = requests.get(URL, cookies=check.cookies)
-    resources.encoding = <span class="string">'gb2312'</span>   <span class="comment">#requests识别出来的是iso，需要手动修改</span>
-    rsrc_soup = bs4.BeautifulSoup(resources.text)    <span class="comment">#用BeautifulSoup处理页面内容</span>
-    rsrc_a = rsrc_soup.find_all(<span class="string">'a'</span>)    <span class="comment">#找出页面内容中的a标签</span>
-    rsrc = {}    <span class="comment">#初始化一个字典，用于储存name-href键值对</span>
-    <span class="keyword">for</span> a <span class="keyword">in</span> rsrc_a:    <span class="comment">#逐个处理每个a标签</span>
-        href = re.findall(<span class="string">'href="(.+?)"'</span>, str(a))[<span class="number">0</span>]    <span class="comment">#用正则表达式筛选出文件的url</span>
-        href = href.replace(<span class="string">'../../'</span>, <span class="string">'http://10.71.45.100/cstcx/'</span>)    <span class="comment">#由于页面上写的是相对路径，我们需要将其恢复为绝对路径，以便后边的正常访问</span>
-        name = href.split(<span class="string">'/'</span>)[-<span class="number">1</span>]    <span class="comment">#截取文件名</span>
-        rsrc[name] = href    <span class="comment">#存入字典</span>
-    <span class="keyword">return</span> rsrc
-
-<span class="function"><span class="keyword">def</span> <span class="title">Download</span><span class="params">(rsrc, DIR)</span>:</span>
-    <span class="string">'''
-    依据本地文件名判断文件是否已经下载过
-    如果是新文件则下载到本地、打印下载信息
-    注释掉的代码为原先采用文件记录的形式判断是否重复
-    '''</span>
-    <span class="comment">#lst = open(DIR + 'list','r')</span>
-    <span class="comment">#lst_name = lst.readlines()</span>
-    <span class="comment">#lst.close()</span>
-    <span class="comment">#lst = codecs.open(DIR + 'list', 'a','utf8')</span>
-    lst_name = os.listdir(DIR)    <span class="comment">#获取本地目录的文件名</span>
-    <span class="keyword">for</span> name,url <span class="keyword">in</span> rsrc.items():    <span class="comment">#逐个处理所获取的name-href键值对</span>
-        <span class="keyword">if</span> name <span class="keyword">not</span> <span class="keyword">in</span> lst_name:    <span class="comment">#如果这个文件不在本地？</span>
-            <span class="comment">#lst.write(name + os.linesep)</span>
-            urllib.urlretrieve(url, DIR + name)    <span class="comment">#下载该文件</span>
-            <span class="keyword">print</span> <span class="string">'New file: '</span> + DIR + name    <span class="comment">#打印信息</span>
-        <span class="comment">#lst.close()</span>
-
-<span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span>
-    rsrc = GetHref(rsrcURL)
-    Download(rsrc, rsrcDIR)    
-    docu = GetHref(docuURL)
-    Download(docu, docuDIR)
-    <span class="keyword">print</span> <span class="string">'Finished~'</span>
-
-
-<span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:
-    main()
-</code></pre><p>信息的抓取和登录模拟就跟玩CC98差不多<br>在这个玩这个练习的时候呢，主要遇到的是页面的编码问题  </p>
-<ol>
-<li>requests编码判断错误<br>requests自带自动识别页面编码的功能，所以没过多的关注页面的编码问题<br>但是在保存本地文件的时候发现文件名都是乱码<br>最后发现是它的识别出错了，识别的结果是<code>ISO8859-1</code>，这是一个英文的编码<br>查看页面的源码后可以看到head标签下的meta子标签说明了<code>charset=gb2312</code><br>所以我们需要手动修改requests对象的encoding属性为<code>gb2312</code>  </li>
-<li><p>python编码问题<br>原先的默认编码是啥我倒是不知道<br>但是我把取出来的带中文的页面内容作为url去下载文件时会出错，说是不存在页面<br>后来百度了一下，在程序最前端加入以下代码修改python默认编码即可——  </p>
-<pre><code>import sys
-<span class="function"><span class="title">reload</span><span class="params">(sys)</span></span>
-sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf8'</span>)</span></span>
-</code></pre></li>
-</ol>
-<p>另外一个问题是如何下载文件，有以下三种方法：<br>参考资料：<a href="http://www.pythontab.com/html/2014/pythonjichu_0121/681.html" target="_blank" rel="external">python下载文件的三种方法</a>  </p>
-<ol>
-<li><p>urllib.urlretrieve直接下载<br>第一个参数为url，第二个参数为保存的本地路径<br>如这次的代码  </p>
-<pre><code>urlli.<span class="function"><span class="title">urlretrieve</span><span class="params">(url, DIR + name)</span></span>
-</code></pre></li>
-<li><p>urllib2.urlopen获取文件内容，以二进制的形式写入本地文件</p>
-<pre><code>url = <span class="string">'.....'</span>
-f = urllib2.<span class="function"><span class="title">urlopen</span><span class="params">(url)</span></span>
-data = f.<span class="function"><span class="title">read</span><span class="params">()</span></span>
-with <span class="function"><span class="title">open</span><span class="params">(<span class="string">'demo2.zip'</span>, <span class="string">'wb'</span>)</span></span> as <span class="tag">code</span>:
-    <span class="tag">code</span>.<span class="function"><span class="title">write</span><span class="params">(data)</span></span>
-</code></pre></li>
-<li><p>requests.get获取文件内容，以二进制的形式写入本地文件</p>
-<pre><code>url = <span class="string">'....'</span>
-r = requests.<span class="function"><span class="title">get</span><span class="params">(url)</span></span>
-with <span class="function"><span class="title">open</span><span class="params">(<span class="string">'demo3.zip'</span>, <span class="string">'wb'</span>)</span></span> as <span class="tag">code</span>:
-    <span class="tag">code</span>.<span class="function"><span class="title">write</span><span class="params">(r.content)</span></span>
-</code></pre></li>
-</ol>
-<p>显然urllib模块的方法最简单</p>
-
-          
-        
-      </div>
-    
-
-    
-      <div class="post-footer">
-        
-          <div class="post-tags">
-            
-              <a href="/tags/python/">
-                #python
-              </a>
-            
-              <a href="/tags/爬虫/">
-                #爬虫
-              </a>
-            
-          </div>
-        
-
-        
-
-        
-        
-          <div class="post-eof"></div>
-        
-      </div>
-    
-  </div>
-
-
-  
-    
-
-  <div class="post post-type-normal ">
-    <div class="post-header">
-
-      
-      
-        <h1 class="post-title">
-          
-          
-            
               <a class="post-title-link" href="/2015/04/20/Hexo的使用/">
                 Hexo的使用
               </a>
@@ -1331,6 +1011,381 @@ dialog <span class="tag">p</span> {
             
               <a href="/tags/前端/">
                 #前端
+              </a>
+            
+          </div>
+        
+
+        
+
+        
+        
+          <div class="post-eof"></div>
+        
+      </div>
+    
+  </div>
+
+
+  
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/1995/07/31/Note_for_Java/Chap5继承/">
+                《Java核心技术》Chap5笔记
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          
+            發表於 1995-07-30
+          
+        </span>
+
+        
+          
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    
+      <div class="post-body">
+
+        
+        
+
+        
+          
+            <h2 id="继承">继承</h2><h3 id="类、超类、子类">类、超类、子类</h3><p>通过<code>extends</code>关键字来实现类的继承    </p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">Manager</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">Employee</span>
+</span>{
+    ...<span class="comment">//Add some new methods and new fields</span>
+}
+</code></pre><p>此时，<code>Manager</code>为<code>Employee</code>的<strong>子类</strong>，<code>Employee</code>为<code>Manager</code>的<strong>超类</strong><br><code>Manager</code>会继承<code>Employee</code>的所有方法和域      </p>
+<h4 id="重写类方法、访问超类的私有域">重写类方法、访问超类的私有域</h4><p>重新定义一个方法，如果与超类的某个方法重名，那么该方法会覆盖掉超类的方法<br>但是，<strong>子类并不能访问超类的私有域</strong><br>解决方法：<br>通过超类的方法来访问超类的私有域，<br>如果子类重写了超类的方法，那么可以通过关键字<code>super</code>来访问超类的方法<br>如：   </p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">Manager</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">Employee</span>
+</span>{
+    public double getSalary()   <span class="comment">//超类中也有一个getSalary方法</span>
+    {
+        double baseSalary = <span class="keyword">super</span>.getSalary();  <span class="comment">//通过super关键字来访问超类的方法</span>
+        <span class="keyword">return</span> baseSalary + bonus;
+    }
+}
+</code></pre><p><em>C++中，访问超类是用<code>::</code>操作符的形式</em>     </p>
+<h4 id="子类的构造器">子类的构造器</h4><p>子类的构造器第一行必须调用超类的构造器对对象进行构造<br>如：</p>
+<pre><code><span class="keyword">public</span> Manager(<span class="keyword">String</span> n, <span class="keyword">double</span> s, <span class="built_in">int</span> <span class="built_in">year</span>, <span class="built_in">int</span> <span class="built_in">month</span>, <span class="built_in">int</span> <span class="built_in">day</span>)
+{
+    <span class="keyword">super</span>(n, s, <span class="built_in">year</span>, <span class="built_in">month</span>, <span class="built_in">day</span>);   <span class="comment">//借助super关键字</span>
+    bonus = <span class="number">0</span>;  <span class="comment">//而外的域初始化</span>
+}
+</code></pre><p>如果没有显式地调用超类的构造器，那么将自动调用超类默认的（没有参数）的构造器；<br>如果超类没有默认的构造器，也没有显示地调用超类的构造器，那么java编译器将会报错    </p>
+<p><em>在C++的构造函数中，使用初始化列表语法来调用超类的构造函数</em>     </p>
+<h4 id="对象的引用变量">对象的引用变量</h4><p>如果将对象的引用变量声明为某个类的引用变量，那么它除了可以引用这个类的对象之外，还可以引用它的子类的对象<br>如：<br>已知<code>Manager</code>是<code>Employee</code>的子类，<br><code>Employee e;</code>既可以引用<code>Employee</code>的对象，也可以引用<code>Manager</code>类的对象     </p>
+<p>这种一个对象变量可以指示多种实际类型的现象称为<strong>多态</strong>（polymorphism）<br>在运行时能自动选择调用哪个方法的现象称为<strong>动态绑定</strong>（dynamic binding）     </p>
+<h4 id="继承层次">继承层次</h4><p>由一个类派生出来的所有类的集合称为<strong>继承层次</strong>（inheritance hierarchy）<br>从某个特定的类到其祖先的路径称为<strong>继承链</strong>（inheritance chain）    </p>
+<p><em>Java不支持多继承</em>    </p>
+<h4 id="多态">多态</h4><p>如前所述，某个类的引用变量可以引用该类的子类的实例，称对象变量是<strong>多态的</strong><br>但是，不能通过这个引用变量访问子类的方法和域<br>如：    </p>
+<pre><code>Manager boss = new Manager(...);
+Employee <span class="keyword">e</span> = boss;    <span class="comment">//Manager是Employee的子类</span>
+boss.setBonus(5000);  <span class="comment">//setBonus()是Manager类特有的方法，Employee没有该方法    </span>
+<span class="keyword">e</span>.setBonus(5000);     <span class="comment">//ERROR!!!! Employee没有这个方法，不能调用;此时可以利用强制类型转换解决  </span>
+<span class="keyword">e</span>.getBonus();         <span class="comment">//OK，Employee有这个方法，但是Manager重写了这个方法，由于动态绑定，此处会自动调用Manager的方法   </span>
+</code></pre><p><strong>注意：不能将一个超类的引用赋给子类变量</strong>（如：<code>Manager boss = e;</code>）    </p>
+<h4 id="动态绑定、对象方法调用的过程">动态绑定、对象方法调用的过程</h4><ol>
+<li>编译器查看对象的声明类型和方法名<br> 编译器会一一列出对象所在类的所有该方法名（包括超类的public方法）的方法（此处还没有检查参数类型）    </li>
+<li>编译器查看调用方法时提供的参数类型<br> 编译器会挑出类型匹配的所有方法（不一定要完全匹配，兼容即可）    <ul>
+<li>方法名和参数类型作为一个方法的签名（唯一证明），而返回类型不是<br>  因此覆盖方法时应保证返回类型是兼容的    </li>
+</ul>
+</li>
+<li>如果是<code>private</code>、<code>static</code>、<code>final</code>方法<br> 编译器则可以准确地知道调用哪一个方法，这种调用方式称为<strong>静态绑定</strong>    </li>
+<li>程序运行时采用动态绑定调用方法，虚拟机一定调用与x所引用对象的实际类型最合适的那个类的方法    </li>
+</ol>
+<p>如果每次调用方法都进行一次搜索，那么时间开销太大了<br>因此，虚拟机会预先为每个类创建一个方法表（method table），调用方法时虚拟机直接在该表中查找对应的方法      </p>
+<ul>
+<li>动态绑定的特性：无需对现存代码进行修改，就可以对程序进行扩展。<br>  假如为一个类创建子类，那么子类的实例无需对该类进行重新编译即可调用该类的方法     </li>
+</ul>
+<p><strong>注意：覆盖一个方法时，子类方法的可见性不得低于超类方法的可见性;特别是当超类方法是public时，子类方法必须是public</strong>      </p>
+<h4 id="阻止继承：final类和方法">阻止继承：final类和方法</h4><ul>
+<li>final类：不允许扩展（即不允许利用该类定义子类）的类<br>  类中的方法会自动设置为final，而域不会     </li>
+<li>final方法：不允许覆盖（重写）的方法    </li>
+<li>如果类中某个方法很简短、被频繁调用且没有真正进行覆盖<br>  那么即时编译器会将其进行内联处理以提高程序效率<br>  如果虚拟机又加载了一个子类，子类对这个方法进行了覆盖，那么编译器会自动取消内联    </li>
+</ul>
+<h4 id="强制类型转换">强制类型转换</h4><ul>
+<li>与内置类型的强制转换形式一致    </li>
+<li>只能在继承称此内进行类型转换    </li>
+<li>子类转换成超类是允许的<br>  正如超类的引用变量能直接引用子类     </li>
+<li><p>超类转换成子类不一定允许<br>  如果出错，会引发一个异常，如果没有被捕获，那么出现编译错误<br>  通常需要借助<code>instranceof</code>运算符来判断该对象是否能成为目标子类的实例<br>  如：（<code>Manager</code>是<code>Employee</code>的子类）        </p>
+<pre><code><span class="keyword">if</span><span class="comment">( staff[1] instanceof Manager )</span>
+{
+    boss = <span class="comment">(Manager)</span> staff[<span class="number">1</span>];
+}
+</code></pre></li>
+</ul>
+<p><strong>注意：尽可能避免强制类型转换和<code>instanceof</code>的使用</strong><br><em>在C++中，如果强制转换失败将得到的是null对象，而不会产生异常或是出现编译错误</em>     </p>
+<h4 id="抽象类">抽象类</h4><p>用<code>abstract</code>修饰符定义抽象类和抽象方法    </p>
+<ul>
+<li>抽象方法相当于“占位”的作用，表明这个类存在这个方法，但类的定义中不给出该方法的具体定义，而在其子类中进行具体的定义     </li>
+<li>包含抽象方法的类必须定义为抽象类，不包含抽象方法的类也可以定义为抽象类    <ul>
+<li>抽象类不允许直接产生实例，但其具体子类可以     </li>
+<li>可以定义一个抽象类的引用变量，用它来引用其子类的实例    </li>
+</ul>
+</li>
+</ul>
+<p>如：   </p>
+<pre><code><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">Person</span>   <span class="comment">//包含抽象方法，必须定义为抽象类</span>
+{
+    <span class="keyword">private</span> String name;
+    <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">(String n)</span>
+    </span>{
+        name = n;
+    }
+    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">getDescription</span><span class="params">()</span></span>;  <span class="comment">//抽象方法</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span>
+    </span>{
+        <span class="keyword">return</span> name;
+    }
+}
+</code></pre><p><em>C++中，在方法定义的尾部加上<code>=0</code>来表示一个纯虚函数（抽象方法）;包含抽象方法的类自动作为抽象类</em>  </p>
+<p>抽象类的作用：<br>假设<code>Student</code>和<code>Employee</code>为<code>Person</code>的子类<br><code>Student</code>和<code>Emloyee</code>中都定义了<code>getDescription</code>方法<br>变量<code>Student s = new Student</code>和<code>Employee e = new Employee</code>都可以调用这个方法<br>但是<code>Person p = s</code>或<code>Person p = e</code>则不行（因为<code>Person</code>类不具有这个方法）<br>如果给<code>Person</code>类添加一个<code>getDescription</code>抽象方法，那么变量<code>p</code>就能调用这个方法（即时编译器会自动确定调用哪一个类的方法）     </p>
+<h4 id="受保护访问">受保护访问</h4><p>使用<code>protected</code>的实例域对所有子类及同一个包的所有其他类都可见<br>该实例域可以被子类的方法访问<br>假设p域为A类的protected域，B类和C类为A类的子类<br>但B类中的方法只能访问B对象的p域，而不能访问C类的p域<br><strong>注意：该修饰符应当谨慎使用;一定程度上破坏了oop的数据封装原则</strong><br><em>C++中，保护域仅对子类可见，这一点上Java的protected安全性比较低</em>    </p>
+<h4 id="控制可见性的访问修饰符归纳">控制可见性的访问修饰符归纳</h4><ul>
+<li><code>private</code>：仅对本类可见（常用于实例域）    </li>
+<li><code>public</code>：对所有类可见（常用于方法）    </li>
+<li><code>protected</code>：对本包和所有子类可见（常用于特殊的实例域）    </li>
+<li>默认：本包可见（尽量避免）    </li>
+</ul>
+<h3 id="Object：所有类的超类">Object：所有类的超类</h3><p>每个类均由Object类扩展而来，但无需显式的书写<code>extends Object</code><br>可以创建一个Object类的引用变量来引用任何类型的对象<br>所有类都拥有一些通用方法，这些方法定义在Object类中<br><em>C++中没有所有类的根类，但每个指针都可以转换成`void </em>`指针*     </p>
+<h4 id="equals方法">equals方法</h4><p>该方法不是标准库提供的方法，需要自己编写<br>检查两个对象是否相等（状态相同）<br>形式：<code>objectA.equals(objectB)</code>，返回布尔值     </p>
+<p>一般实现机制：    </p>
+<ol>
+<li>检查两个对象是否为同一个引用     </li>
+<li>检查参数里的对象是否为null     </li>
+<li>检查两个对象是否为同一个类     </li>
+<li>检查两个对象的实例域是否完全相等      </li>
+</ol>
+<p><strong>如果在子类中定义equals方法，那么它必须显调用超类的equals方法</strong>     </p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">Manager</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">Employee</span>
+</span>{
+    ...
+    public boolean equals(<span class="type">Object</span> otherObject)
+    {
+        <span class="comment">//检查是否属于同一个类     </span>
+        <span class="keyword">if</span>( !<span class="keyword">super</span>.equals(otherObject) ) 
+            <span class="keyword">return</span> <span class="literal">false</span>;   
+        <span class="type">Manager</span> other = (<span class="type">Manager</span>) otherObject;
+        <span class="comment">//检查实例域是否完全相等</span>
+        <span class="keyword">return</span> bonus == other.bonus;
+    }
+}
+</code></pre><h4 id="相等测试与继承">相等测试与继承</h4><ul>
+<li>Java语言规范要求equals方法具有以下特性    <ul>
+<li>自反性：<code>x.equals(x)</code>应该返回true    </li>
+<li>对称性：若<code>x.equals(y)</code>为true，则<code>y.equals(x)</code>也应该为true   </li>
+<li>传递性：若<code>x.equals(y)</code>和<code>y.equals(z)</code>为true，则<code>x.equals(z)</code>也应该为true    </li>
+<li>一致性：若x和y引用的对象不变，那么反复调用<code>x.equals(y)</code>应该返回相同的结果   </li>
+<li>对于任意非空引用x，<code>x.equals(null)</code>应该返回false    </li>
+</ul>
+</li>
+<li>编写equals方法的建议   <ul>
+<li>显式参数命名为<code>otherObject</code>，类型为<code>Object</code>（否则无法覆盖<code>Object.equals()</code>），之后将其转换为一个叫做<code>other</code>的变量    </li>
+<li>检测<code>this</code>和<code>otherObject</code>是否引用同一个对象<br>  <code>if(this == otherObject) return true;</code>   </li>
+<li>检测<code>otherObject</code>是否为null<br>  <code>if(otherObject == null) return false;</code>    </li>
+<li>检测<code>this</code>与<code>otherObject</code>是否属于同一个类    <ul>
+<li>如果equals在每个子类中语义不同：<br>  <code>if(getClass() != otherObject.getClass()) return false;</code>    </li>
+<li>如果语义统一<br>  <code>if(!(otherObject instanceof ClassName)) return false;</code>    </li>
+</ul>
+</li>
+<li>将<code>otherObject</code>转换成相应的类的类型变量<br>  <code>ClassName other = (ClassName) otherObject;</code>    </li>
+<li>用<code>==</code>比较所需的基本类型域，用<code>equals</code>比较所需的对象域<br>  如果都匹配，返回true，否则返回false     </li>
+<li><strong>如果在子类中重定义equals，则必须调用<code>suer.equals(other)</code></strong>    </li>
+</ul>
+</li>
+<li>对于数组类型的域，可以使用静态的<code>Arrays.equals</code>方法检测两个数组是否相等<br>  甚至可以用于对象数组，它将自动调用对应类的<code>equals</code>方法    </li>
+<li>可以使用<code>@Override</code>对覆盖超类的方法进行标记<br>  当尝试定义一个新的方法（即不小心出现错误）的时候，编译器会报错<br>  如：<code>@Override public boolean equals(Object otherObject)</code>    </li>
+</ul>
+<h4 id="hashCode方法">hashCode方法</h4><p>散列码是由对象导出的一个整型值，是没有规律的<br>一般两个不同的对象的散列码不同    </p>
+<ul>
+<li><code>Object.hashCode()</code>导出的是对象的存储地址    </li>
+<li>自定义类可以自己重写<code>hashCode</code>方法    </li>
+<li><code>String.hashCode()</code>的散列码是由字符串内容计算得到     </li>
+<li><code>hashCode()</code>与<code>equals()</code>的结果应统一<br>  即当<code>x.equals(y)</code>返回true时，<code>x.hashCode()</code>与<code>y.hashCode()</code>的结果应该一致      </li>
+<li><code>Objects.hashCode(Object a)</code>（注意是Objects不是Object）<br>  当a为null时返回0,否则返回<code>a.hashCode()</code>     </li>
+<li><p>散列码的计算应合理组合实例域的散列码，以便能够均匀地产生散列码<br>  也可以直接借助<code>Objects.hash</code>来生成散列码<br>  如利用实例域<code>x</code>、<code>y</code>、<code>z</code>组合生成散列码：    </p>
+<pre><code><span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span>
+</span>{
+    <span class="function"><span class="keyword">return</span> Objects.<span class="title">hash</span><span class="params">(x, y, z)</span></span>;
+}
+</code></pre></li>
+</ul>
+<h4 id="toString方法">toString方法</h4><p>用于返回表示对象值的字符串<br>如<code>Point.toString()</code>返回<code>java.awt.Point[x=10,y=20]</code><br>通常toString方法都以类名+域值的形式返回    </p>
+<ul>
+<li>标准库中大多数类都提供了<code>toString</code>方法     </li>
+<li>自定义类最好也能提供这个方法，以便后期调试     </li>
+<li>当一个对象与字符串相加时，系统会自动调用toString方法<br>  如<code>&quot;abcd&quot; + x</code>相当于<code>&quot;abcd&quot; + x.toString()</code>     </li>
+<li>当用<code>System.out.println(x)</code>打印对象x时，也会自动调用toString方法<br>  即<code>System.out.println(x.toString())</code>    </li>
+<li><code>Object.toString()</code>返回对象的类名与散列码<br>  如<code>System.out.println(System.out)</code>返回<code>java.io.PrintStream@2f6684</code>      </li>
+<li>但是，数组直接继承了object类的toString方法<br>  也就是说<br>  <code>int[] luckNumbers = {2, 3, 5};</code><br>  <code>String s = &quot;&quot; + luckNumbers;</code><br>  得到的s将会是<code>I@1a46e30</code>（I表示整型数组）     <ul>
+<li>此时我们可以调用静态方法<code>Arrays.toString()</code>来打印<br>  如<code>String s = &quot;&quot; + Arrays.toString(luckNumbers);</code>    </li>
+<li>如果要打印多维数组，那么应调用<code>Arrays.deepToString</code>方法     </li>
+</ul>
+</li>
+<li><p>一般的<code>toString</code>方法的定义方式    </p>
+<pre><code><span class="keyword">public</span> <span class="function">String <span class="title">toString</span><span class="params">()</span>
+</span>{
+    <span class="keyword">return</span> getClass().getName()    <span class="comment">//获取类名   </span>
+        + <span class="string">"[name="</span>    + name
+        + <span class="string">",salary="</span>  + salary
+        + <span class="string">",hireDay="</span> + hireDay
+        + <span class="string">"]"</span>;
+}
+</code></pre></li>
+</ul>
+<h3 id="泛型数组列表">泛型数组列表</h3><p>Java允许定义数组时用变量来确定数组大小<br>而<code>ArrayList</code>类又提供了一个动态数组，称为<strong>数组列表</strong><br><code>ArrayList</code>类是一个采用类型参数（type parameter）的泛型类（generic class）    </p>
+<ul>
+<li>数组列表管理着对象引用的一个内部数组    </li>
+<li><p>当内部数组占满后如果再往其中添加内容，数组列表会自动创建一个更大的数组，并把数据拷贝到新的数组上  </p>
+<pre><code><span class="comment">//创建数组列表时需要指明对象的类</span>
+ArrayList&lt;Employee&gt; staff = <span class="keyword">new</span> ArrayList&lt;Employee&gt;();    
+<span class="comment">//等号右边可以不指明对象类型</span>
+ArrayList&lt;Employee&gt; staff = <span class="keyword">new</span> ArrayList&lt;&gt;();  
+<span class="comment">//可以对数组列表调用“add”方法添加对象</span>
+staff.<span class="built_in">add</span>(<span class="keyword">new</span> Employee(...));
+<span class="comment">//如果能提前估计对象的熟练，可以在填充数组前，调用“ensureCapacity”方法指定内部数组的大小，当超过这个大小时会自动创建一个更大的数组（这是与普通数组的区别）  </span>
+staff.ensureCapacity(<span class="number">100</span>);   
+<span class="comment">//也可以在初始化时直接指定内部数组的大小   </span>
+ArrayList&lt;Employee&gt; staff = <span class="keyword">new</span> ArrayList&lt;&gt;(<span class="number">100</span>);
+<span class="comment">//调用“size”方法返回内部数组的实际大小  </span>
+<span class="comment">//与普通数组的“length”方法类似 </span>
+staff.<span class="built_in">size</span>();
+<span class="comment">//当确认数组大小不再发生变化时，可以调用“trimToSize”回收多余空间</span>
+<span class="comment">//如果大小固定后再次添加元素，那么将会移动存储块</span>
+staff.trimToSize();
+</code></pre></li>
+</ul>
+<p><em>在老版本的Java中，程序员采用Vector类实现动态数组，但ArrayList类更加有效</em><br><em>在C++中，利用vector模板来实现动态数组。C++中重载了[]运算符，Java中必须显式调用;C++中向量是值传递的，即a=b会拷贝一个新的给a，Java中ArrayList类是引用的传递，即a和b引用同一个数组列表</em>    </p>
+<h4 id="访问数组列表元素">访问数组列表元素</h4><pre><code>staff.set<span class="comment">(i, harry)</span>;          <span class="comment">//类似于数组的staff[i] = harry;</span>
+Employee e = staff.get<span class="comment">(i)</span>;    <span class="comment">//类似于数组的e = staff[i];</span>
+staff.add<span class="comment">(i, e)</span>;              <span class="comment">//把e插入到i位置，i～(size()-1)的元素后移</span>
+Employee e = staff.remove<span class="comment">(i)</span>; <span class="comment">//移除i位置的元素并返回，类似python的pop</span>
+staff.toArray<span class="comment">(a)</span>;             <span class="comment">//把数组列表staff的内容填入普通数组a    </span>
+for<span class="comment">(Employee e : staff)</span>       <span class="comment">//可以利用for each遍历数组列表</span>
+{
+    ...
+}
+</code></pre><h4 id="类型化与原始数组列表的兼容性">类型化与原始数组列表的兼容性</h4><p>P186～187，此处并没有看懂！</p>
+<h3 id="对象包装器与自动装箱">对象包装器与自动装箱</h3><p>有时候需要将基本类型转换成对象使用<br>这些类称为<strong>包装器</strong>（wrapper）   </p>
+<ul>
+<li>常见对象包装器类   <ul>
+<li>Interger  </li>
+<li>Long  </li>
+<li>Float  </li>
+<li>Double  </li>
+<li>Short    </li>
+<li>Byte    </li>
+<li>…以上六个对象包装器类又派生于Number类     </li>
+<li>Charactrer    </li>
+<li>Void     </li>
+<li>Boolean    </li>
+</ul>
+</li>
+<li>对象包装器类是不可变的    </li>
+<li>对象包装器类是不可扩展的（final类）    </li>
+<li>常用于构造数组列表<br>  数组列表是不支持基本类型数据的<br>  此时可以借助对象包装器类实现<br>  如<code>ArrayList&lt;Interger&gt; list = new ArrayList&lt;&gt;();</code>    </li>
+<li>为数组列表添加修改元素时会<strong>自动装箱</strong>（autoboxing）<br>  如：<code>list.add(3)</code>会自动替换成<code>list.add(Interger.valueOf(3))</code>    </li>
+<li>表达式中绝大多数的对象包装器能够自动装箱和拆箱<br>  如：<br>  <code>int n = list.get(i);</code>等价于<code>int n = list.get(i).intValue();</code><br>  <code>Interger n = 3;</code>、<code>n++</code>等也会自动装箱和拆箱    </li>
+<li>但是对于<code>==</code>运算符，对象包装器不会自动拆箱<br>  如：a、b为某对象包装器的实例<br>  <code>if(a==b) ...</code>判断的是a和b是否为同一个引用<br>  <code>if(a.equals(b)) ...</code>才能实现两个值的比较    </li>
+<li>对象包装器类不能实现方法的传递的参数可变<br>  因为对象包装器类是不可变的<br>  可以借助<code>org.omg.CORBA</code>包中定义的持有者类型（holder）<br>  如：IntHolder、BooleanHolder等<br>  持有者类型都包含一个公有值域<code>value</code>！！！可以直接访问这个域    </li>
+</ul>
+<p>常见方法——   </p>
+<pre><code><span class="comment">//java.lang.Interger，其他对象包装类的方法类似</span>
+int <span class="function"><span class="title">intValue</span><span class="params">()</span></span>      <span class="comment">//以int的形式返回对象的值   </span>
+static String <span class="function"><span class="title">toString</span><span class="params">(int i)</span></span>   <span class="comment">//以String对象的形式返回i的十进制表示    </span>
+static String <span class="function"><span class="title">toString</span><span class="params">(int i, int radix)</span></span>   <span class="comment">//同上，但以radix进制表示 </span>
+static int <span class="function"><span class="title">parseInt</span><span class="params">(String s)</span></span>   <span class="comment">//以十进制将s转换为整型   </span>
+static int <span class="function"><span class="title">parseInt</span><span class="params">(String s, int radix)</span></span>  <span class="comment">//同上，以radix进制</span>
+static Interger <span class="function"><span class="title">valueOf</span><span class="params">(String s)</span></span>  <span class="comment">//以十进制将s转换成Interger类的实例   </span>
+static Interger <span class="function"><span class="title">valueOf</span><span class="params">(String s, int radix)</span></span>    <span class="comment">//同上，以radix进制    </span>
+<span class="comment">//java.text.NumberFormat    </span>
+Number <span class="function"><span class="title">parse</span><span class="params">(String s)</span></span>     <span class="comment">//将s转换成数值并返回    </span>
+</code></pre><h3 id="参数数量可变的方法">参数数量可变的方法</h3><p>在参数类型之后加上三个句点<code>.</code>即表示可接受任意数量的该类型参数<br>如<code>printf</code>方法的定义<br><code>public PrintStream printf(String fmt, Obejct... args){}</code><br>剩下的这些参数会依次放入args数组中    </p>
+<h3 id="枚举类">枚举类</h3><ul>
+<li>由<code>enum</code>关键字定义的枚举类型实际上是由枚举类实现的   </li>
+<li>构造器值在构造枚举常量时被调用     </li>
+<li>所有的枚举类型都是Enum类的子类   </li>
+<li><p>在枚举类型中可以添加一些构造器、方法、域<br>  例如：   </p>
+<pre><code><span class="keyword">public</span> <span class="keyword">enum</span> Size
+{
+    SMALL(<span class="string">"S"</span>), MEDIUM(<span class="string">"M"</span>), LARGE(<span class="string">"L"</span>), EXTRA_LARGE(<span class="string">"XL"</span>);
+    <span class="keyword">private</span> <span class="keyword">String</span> abbreviation;
+    <span class="keyword">private</span> Size(<span class="keyword">String</span> abbreviation)
+    {
+        <span class="keyword">this</span>.abbreviation = abbreviation;
+    }
+    <span class="keyword">public</span> <span class="keyword">String</span> getAbbreviation()
+    {
+        <span class="keyword">return</span> abbreviation;
+    }
+}
+</code></pre></li>
+</ul>
+<p>常用方法——   </p>
+<pre><code><span class="comment">//java.lang.Enum&lt;E&gt;</span>
+static Enum <span class="function"><span class="title">valueOf</span><span class="params">(Class enumClass, String name)</span></span>  <span class="comment">//返回指定类、指定名字的枚举常量</span>
+static <span class="function"><span class="title">toString</span><span class="params">()</span></span>   <span class="comment">//枚举常量名</span>
+int <span class="function"><span class="title">ordinal</span><span class="params">()</span></span>    <span class="comment">//返回枚举常量在enum声明中的位置（从0开始）</span>
+int <span class="function"><span class="title">compareTo</span><span class="params">(E other)</span></span>    <span class="comment">//如果枚举常量在other前，返回负值;如果this==other，返回0;如果在other后，返回正值</span>
+</code></pre><h3 id="反射">反射</h3><p>能够分析类能力的程序称为<strong>反射</strong>（reflective）         </p>
+<ul>
+<li>反射机制用来——   <ul>
+<li>在运行中分析类的能力   </li>
+<li>在运行中查看对象    </li>
+<li>实现通用的数组操作代码    </li>
+<li>利用Method对象（类似C++中的函数指针）     </li>
+</ul>
+</li>
+</ul>
+<p>反射机制通常用于工具构造，而不是应用程序设计     </p>
+<blockquote>
+<p>此节暂时跳过<br>P192-212  </p>
+</blockquote>
+<h3 id="继承设计的技巧">继承设计的技巧</h3><ol>
+<li>将公共操作和域放在超类   </li>
+<li>不要使用受保护域<br> protected机制并不能很好的保护域<br> 第一，子类集合是无限制的，任何人都能派生一个子类并编写代码来直接访问受保护域，破坏了封装性;<br> 第二，Java中，同一个包中所有类都可以访问受保护域<br> <strong>受保护域一般用于指示那些不提供一般用途，而应在子类中重新定义的方法</strong>     </li>
+<li>只使用继承来实现”is a“关系<br> 不滥用继承    </li>
+<li>除非所有继承的方法都有意义，否则不要使用继承     </li>
+<li>在覆盖方法时，不要改变预期的行为<br> 即不要偏离最初设计的想法   </li>
+<li>使用多态，而非类型信息<br> 如<code>if(x...)...else if(x...)...</code>（用来判断x的类型，来执行相应的动作）应放在同一个方法里  </li>
+<li>不要过多地使用反射<br> 反射在编译时很难发现错误   </li>
+</ol>
+
+          
+        
+      </div>
+    
+
+    
+      <div class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/Java/">
+                #Java
               </a>
             
           </div>
